@@ -1,253 +1,1761 @@
-/* ============================================================
-   EL CONFESIONARIO 🤫
-   BACKEND GOOGLE APPS SCRIPT
+<!DOCTYPE html>
+<html lang="es">
 
-   - Recibe video mediante POST de formulario
-   - Guarda video en Drive
-   - Registra RESPUESTAS
-   - Actualiza VECES SORTEADA
-   - Permite comprobar un ID_ENVIO mediante JSONP
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+>
+
+<title>El Confesionario 🤫</title>
+
+<style>
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+}
+
+body {
+  min-height: 100vh;
+  background:
+    radial-gradient(
+      circle at top,
+      #482949 0%,
+      #281628 45%,
+      #100b11 100%
+    );
+  color: white;
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Arial,
+    sans-serif;
+  text-align: center;
+  overflow-x: hidden;
+}
+
+.pantalla {
+  display: none;
+  min-height: 100vh;
+  padding: 40px 24px;
+  align-items: center;
+  justify-content: center;
+}
+
+.pantalla.activa {
+  display: flex;
+}
+
+.contenedor {
+  width: 100%;
+  max-width: 760px;
+  margin: auto;
+}
+
+h1 {
+  font-size: clamp(40px, 8vw, 70px);
+  margin: 0 0 20px;
+}
+
+h2 {
+  font-size: clamp(30px, 6vw, 46px);
+}
+
+p {
+  font-size: 20px;
+  line-height: 1.5;
+}
+
+.subtitulo {
+  opacity: .82;
+  margin-bottom: 35px;
+}
+
+button {
+  display: block;
+  width: 100%;
+  max-width: 560px;
+  margin: 15px auto;
+  padding: 20px 24px;
+  border: 0;
+  border-radius: 20px;
+  font-size: 21px;
+  font-weight: 800;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+button:disabled {
+  opacity: .45;
+}
+
+.principal {
+  background: #f2d58b;
+  color: #251625;
+}
+
+.secundario {
+  background: #513750;
+  color: white;
+}
+
+.peligro {
+  background: #682d3b;
+  color: white;
+}
+
+.tarjeta {
+  padding: 30px;
+  border: 1px solid rgba(255,255,255,.18);
+  border-radius: 26px;
+  background: rgba(255,255,255,.07);
+  backdrop-filter: blur(12px);
+  margin: 25px 0;
+}
+
+.tipo {
+  font-size: 18px;
+  opacity: .75;
+  margin-bottom: 15px;
+}
+
+.pregunta {
+  font-size: clamp(27px, 5vw, 42px);
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+.slot {
+  min-height: 230px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+video {
+  width: 100%;
+  max-height: 58vh;
+  border-radius: 25px;
+  background: black;
+}
+
+#videoCamara {
+  transform: scaleX(-1);
+}
+
+.cronometro {
+  font-size: 32px;
+  font-weight: 900;
+  margin: 18px;
+}
+
+.avisoTiempo {
+  min-height: 34px;
+  font-size: 22px;
+  font-weight: 800;
+}
+
+.mensaje-error {
+  margin-top: 20px;
+  padding: 20px;
+  border-radius: 18px;
+  background: rgba(150,40,60,.25);
+  line-height: 1.5;
+}
+
+.spinner {
+  width: 60px;
+  height: 60px;
+  margin: 30px auto;
+  border: 7px solid rgba(255,255,255,.18);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: girar 1s linear infinite;
+}
+
+@keyframes girar {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+#modalInactividad {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  background: rgba(0,0,0,.84);
+  align-items: center;
+  justify-content: center;
+  padding: 25px;
+}
+
+.modalCaja {
+  width: 100%;
+  max-width: 520px;
+  background: #2b1c2b;
+  border-radius: 26px;
+  padding: 35px;
+}
+
+#contadorInactividad {
+  font-size: 52px;
+  font-weight: 900;
+}
+
+.pequeno {
+  opacity: .75;
+  font-size: 16px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+
+<section id="inicio" class="pantalla activa">
+
+<div class="contenedor">
+
+  <div style="font-size:80px;">🤫</div>
+
+  <h1>EL CONFESIONARIO</h1>
+
+  <p class="subtitulo">
+    Lo que se diga aquí...
+    queda entre nosotros 😈
+  </p>
+
+  <button id="btnPlay" class="principal">
+    🎰 PLAY
+  </button>
+
+  <div class="pequeno">
+    😈 100 confesiones esperando
+  </div>
+
+</div>
+
+</section>
+
+
+<section id="sorteo" class="pantalla">
+
+<div class="contenedor">
+
+  <h2>🎰 TU CONFESIÓN ES...</h2>
+
+  <div class="tarjeta slot">
+
+    <div>
+
+      <div id="slotTipo" class="tipo"></div>
+
+      <div id="slotTexto" class="pregunta">
+        😈
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+</section>
+
+
+<section id="resultado" class="pantalla">
+
+<div class="contenedor">
+
+  <h2>😈 TE TOCÓ</h2>
+
+  <div class="tarjeta">
+
+    <div id="resultadoTipo" class="tipo"></div>
+
+    <div id="resultadoTexto" class="pregunta"></div>
+
+  </div>
+
+  <button id="btnAceptar" class="principal">
+    😈 ACEPTO
+  </button>
+
+  <button id="btnCambiar" class="secundario">
+    🔄 CAMBIAR CONFESIÓN
+  </button>
+
+  <button id="btnAbandonarResultado" class="peligro">
+    🚪 ME ARREPIENTO
+  </button>
+
+</div>
+
+</section>
+
+
+<section id="prepararCamara" class="pantalla">
+
+<div class="contenedor">
+
+  <h2>📹 ES HORA DE CONFESAR</h2>
+
+  <div class="tarjeta">
+
+    <div id="preguntaPreparar" class="pregunta"></div>
+
+  </div>
+
+  <p>
+    Cuando estés listo,
+    activa la cámara.
+  </p>
+
+  <button id="btnActivarCamara" class="principal">
+    📹 ACTIVAR CÁMARA
+  </button>
+
+  <button id="btnAbandonarCamara" class="peligro">
+    🚪 ABANDONAR
+  </button>
+
+  <div id="errorCamara"></div>
+
+</div>
+
+</section>
+
+
+<section id="camara" class="pantalla">
+
+<div class="contenedor">
+
+  <div id="preguntaCamara" class="pregunta"></div>
+
+  <br>
+
+  <video
+    id="videoCamara"
+    autoplay
+    muted
+    playsinline
+  ></video>
+
+  <div id="cronometro" class="cronometro">
+    00:00
+  </div>
+
+  <div id="avisoTiempo" class="avisoTiempo"></div>
+
+  <button id="btnGrabar" class="principal">
+    🔴 GRABAR
+  </button>
+
+  <button
+    id="btnDetener"
+    class="principal"
+    style="display:none;"
+  >
+    ⏹ DETENER
+  </button>
+
+  <button id="btnAbandonarGrabacion" class="peligro">
+    🚪 ABANDONAR
+  </button>
+
+</div>
+
+</section>
+
+
+<section id="revision" class="pantalla">
+
+<div class="contenedor">
+
+  <h2>👀 REVISA TU CONFESIÓN</h2>
+
+  <video
+    id="videoRevision"
+    controls
+    playsinline
+  ></video>
+
+  <button id="btnEnviar" class="principal">
+    🤐 ENVIAR CONFESIÓN
+  </button>
+
+  <button id="btnRepetir" class="secundario">
+    🔄 REPETIR VIDEO
+  </button>
+
+  <button id="btnAbandonarRevision" class="peligro">
+    🚪 ABANDONAR
+  </button>
+
+</div>
+
+</section>
+
+
+<section id="guardando" class="pantalla">
+
+<div class="contenedor">
+
+  <h2>🤐 GUARDANDO TU CONFESIÓN...</h2>
+
+  <div class="spinner"></div>
+
+  <p id="estadoGuardado">
+    Enviando video...
+  </p>
+
+  <p class="pequeno">
+    No cierres esta pantalla.
+  </p>
+
+</div>
+
+</section>
+
+
+<section id="errorEnvio" class="pantalla">
+
+<div class="contenedor">
+
+  <h2>😵 NO PUDE CONFIRMAR EL ENVÍO</h2>
+
+  <p>
+    Tu video sigue guardado temporalmente
+    en este iPad.
+  </p>
+
+  <div
+    id="detalleErrorEnvio"
+    class="mensaje-error"
+  ></div>
+
+  <button id="btnReintentar" class="principal">
+    🔄 REINTENTAR ENVÍO
+  </button>
+
+  <button id="btnAbandonarError" class="peligro">
+    🚪 ABANDONAR
+  </button>
+
+</div>
+
+</section>
+
+
+<section id="final" class="pantalla">
+
+<div class="contenedor">
+
+  <div style="font-size:90px;">🤫</div>
+
+  <h1>CONFESIÓN GUARDADA</h1>
+
+  <p>
+    😈 Tu confesión llegó sana y salva.
+  </p>
+
+  <p class="pequeno">
+
+    Preparando el Confesionario
+    para la siguiente víctima...
+
+    <br><br>
+
+    <strong id="contadorFinal">
+      5
+    </strong>
+
+  </p>
+
+</div>
+
+</section>
+
+
+<div id="modalInactividad">
+
+<div class="modalCaja">
+
+  <h2>👀 ¿SIGUES AHÍ?</h2>
+
+  <p>
+    El Confesionario se reiniciará en:
+  </p>
+
+  <div id="contadorInactividad">
+    10
+  </div>
+
+  <button id="btnSigoAqui" class="principal">
+    🙋 SÍ, SIGO AQUÍ
+  </button>
+
+</div>
+
+</div>
+
+
+<!-- =========================================================
+     FORMULARIO INVISIBLE DE ENVÍO
+     ========================================================= -->
+
+<iframe
+  name="iframeEnvio"
+  id="iframeEnvio"
+  style="display:none;"
+></iframe>
+
+<form
+  id="formEnvio"
+  method="POST"
+  target="iframeEnvio"
+  style="display:none;"
+>
+
+<input type="hidden" name="idEnvio" id="fIdEnvio">
+<input type="hidden" name="idConfesion" id="fIdConfesion">
+<input type="hidden" name="confesion" id="fConfesion">
+<input type="hidden" name="tipo" id="fTipo">
+<input type="hidden" name="cambioUtilizado" id="fCambio">
+<input type="hidden" name="idConfesionDescartada" id="fIdDescartada">
+<input type="hidden" name="confesionDescartada" id="fConfesionDescartada">
+<input type="hidden" name="duracionSegundos" id="fDuracion">
+<input type="hidden" name="mimeType" id="fMimeType">
+<input type="hidden" name="videoBase64" id="fVideoBase64">
+
+</form>
+
+
+<script>
+
+/* ============================================================
+   CONFIGURACIÓN
    ============================================================ */
 
-const CARPETA_CONFESIONES_ID =
-  '1MNzMbbRx6_DWEvviMl5AtQLF_r7ctW_l';
+const API_URL =
+  'https://script.google.com/macros/s/AKfycbzGZxguZB-diYDtcI1q0Vsx0aTgd42Lvi31JQnr0o_42ckNY8qagSaOMrIsxmTQ4IJdug/exec';
 
-const HOJA_CONFESIONES = 'CONFESIONES';
-const HOJA_RESPUESTAS = 'RESPUESTAS';
+
+/*
+   TODAVÍA 5 SEGUNDOS PARA LA PRUEBA.
+
+   Cuando confirmemos Drive + RESPUESTAS:
+   cambiar a 45.
+*/
+
+const MAX_GRABACION = 5;
+
+const TIEMPO_INACTIVIDAD = 120000;
+
+const SEGUNDOS_AVISO = 10;
+
+const INTENTOS_CONFIRMACION = 15;
+
+const ESPERA_CONFIRMACION = 2000;
 
 
 /* ============================================================
-   GET
+   100 CONFESIONES
    ============================================================ */
 
-function doGet(e) {
+const confesiones = [
+
+{id:"C001",confesion:"¿Cuál fue tu primera impresión de la novia?",tipo:"🤫 Confiesa"},
+{id:"C002",confesion:"¿Cuál fue tu primera impresión del novio?",tipo:"🤫 Confiesa"},
+{id:"C003",confesion:"¿Qué pensaste la primera vez que viste a los novios juntos?",tipo:"🤫 Confiesa"},
+{id:"C004",confesion:"Confiesa algo de la novia que probablemente el novio no sepa.",tipo:"🔥 Sin filtro"},
+{id:"C005",confesion:"Confiesa algo del novio que probablemente la novia no sepa.",tipo:"🔥 Sin filtro"},
+{id:"C006",confesion:"Cuenta la anécdota más vergonzosa que recuerdes de alguno de los novios.",tipo:"🔥 Sin filtro"},
+{id:"C007",confesion:"¿Cuál es la locura más grande que hayas hecho con alguno de los novios?",tipo:"🤫 Confiesa"},
+{id:"C008",confesion:"Cuenta una historia de los novios que merezca quedar registrada para siempre.",tipo:"🤫 Confiesa"},
+{id:"C009",confesion:"¿Alguna vez pensaste que esta relación no llegaría al matrimonio? Cuenta por qué.",tipo:"🔥 Sin filtro"},
+{id:"C010",confesion:"¿Cuándo te diste cuenta de que estos dos iban en serio?",tipo:"🤫 Confiesa"},
+
+{id:"C011",confesion:"¿Quién crees que manda realmente en esta relación?",tipo:"😂 Humor"},
+{id:"C012",confesion:"¿Quién crees que gana más discusiones?",tipo:"😂 Humor"},
+{id:"C013",confesion:"¿Quién crees que pide perdón primero?",tipo:"😂 Humor"},
+{id:"C014",confesion:"¿Quién es más probable que diga “yo te dije”?",tipo:"😂 Humor"},
+{id:"C015",confesion:"¿Quién tiene más paciencia?",tipo:"😂 Humor"},
+{id:"C016",confesion:"¿Quién crees que es más mañoso?",tipo:"😂 Humor"},
+{id:"C017",confesion:"¿Quién demora más en arreglarse para salir?",tipo:"😂 Humor"},
+{id:"C018",confesion:"¿Quién crees que se queda dormido primero viendo una película?",tipo:"😂 Humor"},
+{id:"C019",confesion:"¿Quién se perdería primero durante un viaje?",tipo:"😂 Humor"},
+{id:"C020",confesion:"¿Quién compraría algo completamente innecesario sin avisar?",tipo:"😂 Humor"},
+
+{id:"C021",confesion:"¿Quién gastaría más plata en una compra impulsiva?",tipo:"😂 Humor"},
+{id:"C022",confesion:"¿Quién sobreviviría mejor una semana sin internet?",tipo:"😂 Humor"},
+{id:"C023",confesion:"¿Quién tendría más posibilidades de olvidar una fecha importante?",tipo:"😂 Humor"},
+{id:"C024",confesion:"¿Quién crees que ocupará más espacio en la cama?",tipo:"🔥 Sin filtro"},
+{id:"C025",confesion:"¿Quién se adueñará de las frazadas?",tipo:"😂 Humor"},
+{id:"C026",confesion:"¿Quién tiene más probabilidades de comerse el último pedazo sin preguntar?",tipo:"😂 Humor"},
+{id:"C027",confesion:"¿Quién crees que dejará cosas tiradas por la casa?",tipo:"😂 Humor"},
+{id:"C028",confesion:"¿Quién terminará haciendo más compras para la casa?",tipo:"😂 Humor"},
+{id:"C029",confesion:"¿Quién elegiría qué ver en Netflix durante una hora y finalmente no vería nada?",tipo:"😂 Humor"},
+{id:"C030",confesion:"Si los novios participaran en un reality, ¿quién duraría más?",tipo:"😂 Humor"},
+
+{id:"C031",confesion:"Imita a la novia.",tipo:"🎭 Reto"},
+{id:"C032",confesion:"Imita al novio.",tipo:"🎭 Reto"},
+{id:"C033",confesion:"Imita cómo crees que discuten los novios.",tipo:"🎭 Reto"},
+{id:"C034",confesion:"Imita cómo imaginas a los novios cuando tengan 80 años.",tipo:"🎭 Reto"},
+{id:"C035",confesion:"Describe a la novia usando solo tres palabras.",tipo:"🎭 Reto"},
+{id:"C036",confesion:"Describe al novio usando solo tres palabras.",tipo:"🎭 Reto"},
+{id:"C037",confesion:"Describe este matrimonio usando solo tres palabras.",tipo:"🎭 Reto"},
+{id:"C038",confesion:"Cuenta una anécdota de los novios como si fueras periodista de farándula.",tipo:"🎭 Reto"},
+{id:"C039",confesion:"Da un discurso matrimonial dramático de máximo 15 segundos.",tipo:"🎭 Reto"},
+{id:"C040",confesion:"Dedícales una canción y canta un pedacito.",tipo:"🎭 Reto"},
+
+{id:"C041",confesion:"¿Cómo imaginas a los novios en 5 años?",tipo:"🔮 Predicción"},
+{id:"C042",confesion:"¿Cómo imaginas a los novios en 20 años?",tipo:"🔮 Predicción"},
+{id:"C043",confesion:"¿Quién crees que tendrá más canas primero?",tipo:"🔮 Predicción"},
+{id:"C044",confesion:"¿Quién se convertirá primero en una persona mañosa de viejo?",tipo:"🔮 Predicción"},
+{id:"C045",confesion:"¿Cuál crees que será su discusión más absurda de casados?",tipo:"🔮 Predicción"},
+{id:"C046",confesion:"¿Qué crees que nunca cambiará entre ellos aunque pasen 30 años?",tipo:"🔮 Predicción"},
+{id:"C047",confesion:"¿Dónde imaginas que estarán celebrando su décimo aniversario?",tipo:"🔮 Predicción"},
+{id:"C048",confesion:"Predice qué estarán haciendo exactamente dentro de un año.",tipo:"🔮 Predicción"},
+{id:"C049",confesion:"¿Quién crees que será el más consentidor con sus futuras mascotas?",tipo:"🔮 Predicción"},
+{id:"C050",confesion:"Haz una predicción completamente absurda sobre su futuro.",tipo:"🔮 Predicción"},
+
+{id:"C051",confesion:"¿Cuál es tu recuerdo favorito con la novia?",tipo:"❤️ Recuerdo"},
+{id:"C052",confesion:"¿Cuál es tu recuerdo favorito con el novio?",tipo:"❤️ Recuerdo"},
+{id:"C053",confesion:"¿Cuál es tu recuerdo favorito con ambos?",tipo:"❤️ Recuerdo"},
+{id:"C054",confesion:"Cuenta un momento con alguno de ellos que todavía te haga reír.",tipo:"❤️ Recuerdo"},
+{id:"C055",confesion:"¿Qué recuerdo de esta boda quieres que los novios nunca olviden?",tipo:"❤️ Recuerdo"},
+{id:"C056",confesion:"¿Cuál ha sido el momento más divertido de esta boda hasta ahora?",tipo:"❤️ Recuerdo"},
+{id:"C057",confesion:"¿Cuál ha sido tu momento favorito de esta boda?",tipo:"❤️ Recuerdo"},
+{id:"C058",confesion:"¿Qué detalle de hoy te gustaría que los novios supieran que notaste?",tipo:"❤️ Recuerdo"},
+{id:"C059",confesion:"Cuenta algo bonito que alguno de los novios haya hecho por ti.",tipo:"❤️ Recuerdo"},
+{id:"C060",confesion:"¿Qué momento vivido con ellos guardarías para siempre?",tipo:"❤️ Recuerdo"},
+
+{id:"C061",confesion:"¿Qué es lo que más quieres de la novia?",tipo:"🥹 Bonita"},
+{id:"C062",confesion:"¿Qué es lo que más quieres del novio?",tipo:"🥹 Bonita"},
+{id:"C063",confesion:"¿Qué crees que hace especial su relación?",tipo:"🥹 Bonita"},
+{id:"C064",confesion:"¿Qué es lo que más admiras de ellos como pareja?",tipo:"🥹 Bonita"},
+{id:"C065",confesion:"¿Qué crees que aporta la novia a la vida del novio?",tipo:"🥹 Bonita"},
+{id:"C066",confesion:"¿Qué crees que aporta el novio a la vida de la novia?",tipo:"🥹 Bonita"},
+{id:"C067",confesion:"¿Qué esperas que nunca cambie entre ellos?",tipo:"🥹 Bonita"},
+{id:"C068",confesion:"¿Qué deseas para esta nueva etapa de sus vidas?",tipo:"🥹 Bonita"},
+{id:"C069",confesion:"Si pudieras regalarles algo que no se pueda comprar, ¿qué sería?",tipo:"🥹 Bonita"},
+{id:"C070",confesion:"Diles algo que quizás nunca les hayas dicho.",tipo:"🥹 Bonita"},
+
+{id:"C071",confesion:"Dales tu mejor consejo para el matrimonio.",tipo:"💍 Consejo"},
+{id:"C072",confesion:"Dales el peor consejo matrimonial que se te ocurra.",tipo:"😂 Humor"},
+{id:"C073",confesion:"¿Cuál crees que es el secreto para aguantar muchos años juntos?",tipo:"💍 Consejo"},
+{id:"C074",confesion:"¿Qué discusión matrimonial deberían aprender a evitar desde ahora?",tipo:"💍 Consejo"},
+{id:"C075",confesion:"Completa: “Un matrimonio feliz necesita mucho amor y mucho…”",tipo:"💍 Consejo"},
+{id:"C076",confesion:"¿Qué regla debería existir obligatoriamente en su matrimonio?",tipo:"💍 Consejo"},
+{id:"C077",confesion:"¿Qué tradición deberían crear como matrimonio?",tipo:"💍 Consejo"},
+{id:"C078",confesion:"Dales un consejo para cuando estén enojados el uno con el otro.",tipo:"💍 Consejo"},
+{id:"C079",confesion:"Dales un consejo para mantener viva la diversión después de muchos años.",tipo:"💍 Consejo"},
+{id:"C080",confesion:"Inventa uno de los “10 mandamientos” de este matrimonio.",tipo:"😂 Humor"},
+
+{id:"C081",confesion:"Completa: “Yo sabía que se iban a casar cuando…”",tipo:"🤫 Confiesa"},
+{id:"C082",confesion:"Completa: “Si tuviera que advertirle algo al novio sobre la novia sería…”",tipo:"🔥 Sin filtro"},
+{id:"C083",confesion:"Completa: “Si tuviera que advertirle algo a la novia sobre el novio sería…”",tipo:"🔥 Sin filtro"},
+{id:"C084",confesion:"Completa: “Lo más peligroso de dejar solos a estos dos es…”",tipo:"😂 Humor"},
+{id:"C085",confesion:"Completa: “Dentro de 20 años estos dos seguirán…”",tipo:"🔮 Predicción"},
+{id:"C086",confesion:"Completa: “Lo que jamás debería faltar en su casa es…”",tipo:"💍 Consejo"},
+{id:"C087",confesion:"Completa: “Después de conocerlos, puedo confirmar que…”",tipo:"🤫 Confiesa"},
+{id:"C088",confesion:"Completa: “Si su matrimonio fuera una película se llamaría…”",tipo:"😂 Humor"},
+{id:"C089",confesion:"Completa: “Si los novios fueran un meme sería…”",tipo:"😂 Humor"},
+{id:"C090",confesion:"Completa: “Lo que nadie te cuenta del matrimonio es…”",tipo:"🔥 Sin filtro"},
+
+{id:"C091",confesion:"Deja un mensaje para que los novios vean en su primer aniversario.",tipo:"💌 Cápsula"},
+{id:"C092",confesion:"Deja un mensaje para que los novios vean en su quinto aniversario.",tipo:"💌 Cápsula"},
+{id:"C093",confesion:"Deja un mensaje para que los novios vean en su décimo aniversario.",tipo:"💌 Cápsula"},
+{id:"C094",confesion:"Háblales directamente a los novios del futuro: ¿qué esperas que estén haciendo cuando vean esto?",tipo:"💌 Cápsula"},
+{id:"C095",confesion:"Recuérdales por qué decidieron celebrar este día rodeados de todas estas personas.",tipo:"💌 Cápsula"},
+{id:"C096",confesion:"Cuéntales algo de esta noche que quizás ellos no alcanzaron a ver.",tipo:"🤫 Confiesa"},
+{id:"C097",confesion:"¿Qué cahuín inocente de esta boda tienes para contarles? 👀",tipo:"🔥 Sin filtro"},
+{id:"C098",confesion:"Haz un brindis para los recién casados en máximo 15 segundos.",tipo:"🥂 Brindis"},
+{id:"C099",confesion:"Mira a cámara y deja el mensaje que quieras para los recién casados. Sin reglas.",tipo:"💌 Libre"},
+{id:"C100",confesion:"🎰 JACKPOT: di algo que quieras que los novios recuerden cuando vuelvan a ver este video dentro de muchos años.",tipo:"⭐ Jackpot"}
+
+];
+
+
+/* ============================================================
+   VARIABLES
+   ============================================================ */
+
+let confesionSeleccionada = null;
+let confesionDescartada = null;
+let cambioUtilizado = false;
+
+let girando = false;
+
+let streamCamara = null;
+let mediaRecorder = null;
+let fragmentosVideo = [];
+
+let videoBlob = null;
+let videoURL = null;
+
+let grabando = false;
+let segundosGrabacion = 0;
+let duracionFinal = 0;
+
+let intervaloCronometro = null;
+
+let temporizadorInactividad = null;
+let intervaloInactividad = null;
+
+let idEnvioActual = null;
+let enviando = false;
+
+
+/* ============================================================
+   ELEMENTOS
+   ============================================================ */
+
+const btnPlay = document.getElementById('btnPlay');
+
+const slotTipo = document.getElementById('slotTipo');
+const slotTexto = document.getElementById('slotTexto');
+
+const resultadoTipo = document.getElementById('resultadoTipo');
+const resultadoTexto = document.getElementById('resultadoTexto');
+
+const btnAceptar = document.getElementById('btnAceptar');
+const btnCambiar = document.getElementById('btnCambiar');
+
+const preguntaPreparar = document.getElementById('preguntaPreparar');
+
+const btnActivarCamara = document.getElementById('btnActivarCamara');
+
+const errorCamara = document.getElementById('errorCamara');
+
+const preguntaCamara = document.getElementById('preguntaCamara');
+
+const videoCamara = document.getElementById('videoCamara');
+
+const cronometro = document.getElementById('cronometro');
+
+const avisoTiempo = document.getElementById('avisoTiempo');
+
+const btnGrabar = document.getElementById('btnGrabar');
+const btnDetener = document.getElementById('btnDetener');
+
+const videoRevision = document.getElementById('videoRevision');
+
+const detalleErrorEnvio =
+  document.getElementById('detalleErrorEnvio');
+
+const estadoGuardado =
+  document.getElementById('estadoGuardado');
+
+const contadorFinal =
+  document.getElementById('contadorFinal');
+
+const modalInactividad =
+  document.getElementById('modalInactividad');
+
+const contadorInactividad =
+  document.getElementById('contadorInactividad');
+
+const formEnvio =
+  document.getElementById('formEnvio');
+
+
+formEnvio.action =
+  API_URL;
+
+
+/* ============================================================
+   PANTALLAS
+   ============================================================ */
+
+function mostrarPantalla(id) {
+
+  document
+    .querySelectorAll('.pantalla')
+    .forEach(function(pantalla) {
+
+      pantalla
+        .classList
+        .remove('activa');
+
+    });
+
+
+  document
+    .getElementById(id)
+    .classList
+    .add('activa');
+
+
+  reiniciarTemporizadorInactividad();
+
+}
+
+
+/* ============================================================
+   SORTEO
+   ============================================================ */
+
+function elegirConfesionAleatoria() {
+
+  let disponibles =
+    confesiones;
+
+
+  if (confesionDescartada) {
+
+    disponibles =
+      confesiones.filter(
+        function(item) {
+
+          return (
+            item.id !==
+            confesionDescartada.id
+          );
+
+        }
+      );
+
+  }
+
+
+  return disponibles[
+    Math.floor(
+      Math.random() *
+      disponibles.length
+    )
+  ];
+
+}
+
+
+function realizarSorteo() {
+
+  if (girando) {
+    return;
+  }
+
+
+  girando = true;
+
+  mostrarPantalla('sorteo');
+
+  let vueltas = 0;
+
+
+  function siguiente() {
+
+    const temporal =
+      elegirConfesionAleatoria();
+
+
+    slotTipo.textContent =
+      temporal.tipo;
+
+    slotTexto.textContent =
+      temporal.confesion;
+
+
+    vueltas++;
+
+
+    let demora = 70;
+
+    if (vueltas > 10) {
+      demora = 110;
+    }
+
+    if (vueltas > 17) {
+      demora = 180;
+    }
+
+    if (vueltas > 22) {
+      demora = 300;
+    }
+
+
+    if (vueltas >= 26) {
+
+      confesionSeleccionada =
+        elegirConfesionAleatoria();
+
+
+      resultadoTipo.textContent =
+        confesionSeleccionada.tipo;
+
+      resultadoTexto.textContent =
+        confesionSeleccionada.confesion;
+
+
+      btnCambiar.style.display =
+        cambioUtilizado
+          ? 'none'
+          : 'block';
+
+
+      girando = false;
+
+
+      setTimeout(
+        function() {
+
+          mostrarPantalla(
+            'resultado'
+          );
+
+        },
+        500
+      );
+
+
+      return;
+
+    }
+
+
+    setTimeout(
+      siguiente,
+      demora
+    );
+
+  }
+
+
+  siguiente();
+
+}
+
+
+/* ============================================================
+   PLAY
+   ============================================================ */
+
+btnPlay.addEventListener(
+  'click',
+  function() {
+
+    cambioUtilizado = false;
+
+    confesionDescartada = null;
+
+    confesionSeleccionada = null;
+
+    idEnvioActual = null;
+
+    realizarSorteo();
+
+  }
+);
+
+
+/* ============================================================
+   CAMBIO
+   ============================================================ */
+
+btnCambiar.addEventListener(
+  'click',
+  function() {
+
+    if (cambioUtilizado) {
+      return;
+    }
+
+
+    confesionDescartada =
+      confesionSeleccionada;
+
+
+    cambioUtilizado = true;
+
+
+    realizarSorteo();
+
+  }
+);
+
+
+/* ============================================================
+   ACEPTAR
+   ============================================================ */
+
+btnAceptar.addEventListener(
+  'click',
+  function() {
+
+    preguntaPreparar.textContent =
+      confesionSeleccionada.confesion;
+
+
+    errorCamara.innerHTML = '';
+
+
+    mostrarPantalla(
+      'prepararCamara'
+    );
+
+  }
+);
+
+
+/* ============================================================
+   CÁMARA
+   ============================================================ */
+
+async function activarCamara() {
+
+  errorCamara.innerHTML = '';
+
+  btnActivarCamara.disabled = true;
+
+  btnActivarCamara.textContent =
+    '⏳ ACTIVANDO...';
+
 
   try {
 
-    const accion =
-      String(
-        e &&
-        e.parameter &&
-        e.parameter.action
-          ? e.parameter.action
-          : ''
-      ).trim();
+    if (
+      !navigator.mediaDevices ||
+      !navigator.mediaDevices.getUserMedia
+    ) {
 
-
-    /* --------------------------------------------------------
-       CONSULTAR ESTADO DE UN ENVÍO
-       -------------------------------------------------------- */
-
-    if (accion === 'estado') {
-
-      const idEnvio =
-        String(
-          e.parameter.idEnvio || ''
-        ).trim();
-
-
-      const resultado =
-        consultarEstadoEnvio_(
-          idEnvio
-        );
-
-
-      return responderGet_(
-        e,
-        resultado
+      throw new Error(
+        'La cámara no está disponible.'
       );
 
     }
 
 
-    /* --------------------------------------------------------
-       PRUEBA GENERAL
-       -------------------------------------------------------- */
+    detenerCamara();
 
-    return responderGet_(
-      e,
-      {
-        ok: true,
-        mensaje:
-          'Backend del Confesionario funcionando'
-      }
+
+    streamCamara =
+      await navigator
+        .mediaDevices
+        .getUserMedia({
+
+          video: {
+            facingMode: 'user'
+          },
+
+          audio: true
+
+        });
+
+
+    videoCamara.srcObject =
+      streamCamara;
+
+
+    videoCamara.muted =
+      true;
+
+
+    await videoCamara.play();
+
+
+    preguntaCamara.textContent =
+      confesionSeleccionada.confesion;
+
+
+    prepararControlesGrabacion();
+
+
+    mostrarPantalla(
+      'camara'
     );
 
 
   } catch(error) {
 
-    return responderGet_(
-      e,
-      {
-        ok: false,
-        error:
-          error.message ||
-          String(error)
-      }
-    );
+    detenerCamara();
+
+
+    errorCamara.innerHTML =
+      '<div class="mensaje-error">' +
+      '🚫 <b>No pude activar la cámara.</b><br><br>' +
+      '<b>Error:</b> ' +
+      (error.name || 'Sin nombre') +
+      '<br><b>Detalle:</b> ' +
+      (error.message || 'Sin detalle') +
+      '</div>';
+
+  } finally {
+
+    btnActivarCamara.disabled = false;
+
+    btnActivarCamara.textContent =
+      '📹 ACTIVAR CÁMARA';
 
   }
 
 }
 
 
+btnActivarCamara.addEventListener(
+  'click',
+  activarCamara
+);
+
+
 /* ============================================================
-   RESPUESTA GET / JSONP
+   3, 2, 1
    ============================================================ */
 
-function responderGet_(e, objeto) {
+async function iniciarGrabacion() {
 
-  const callback =
-    limpiarCallback_(
-      e &&
-      e.parameter
-        ? e.parameter.callback
-        : ''
+  if (
+    !streamCamara ||
+    grabando
+  ) {
+    return;
+  }
+
+
+  btnGrabar.disabled = true;
+
+
+  for (
+    let numero = 3;
+    numero >= 1;
+    numero--
+  ) {
+
+    avisoTiempo.textContent =
+      numero;
+
+
+    await esperar(700);
+
+  }
+
+
+  avisoTiempo.textContent =
+    '🔴';
+
+
+  comenzarGrabacion();
+
+}
+
+
+/* ============================================================
+   GRABACIÓN
+   ============================================================ */
+
+function comenzarGrabacion() {
+
+  fragmentosVideo = [];
+
+  segundosGrabacion = 0;
+
+  duracionFinal = 0;
+
+
+  if (
+    typeof MediaRecorder ===
+    'undefined'
+  ) {
+
+    alert(
+      'Este navegador no permite grabar video.'
     );
 
+    btnGrabar.disabled = false;
 
-  if (callback) {
+    return;
 
-    return ContentService
-      .createTextOutput(
-        callback +
-        '(' +
-        JSON.stringify(objeto) +
-        ');'
-      )
-      .setMimeType(
-        ContentService.MimeType.JAVASCRIPT
+  }
+
+
+  let opciones = {};
+
+
+  if (
+    MediaRecorder.isTypeSupported(
+      'video/mp4'
+    )
+  ) {
+
+    opciones.mimeType =
+      'video/mp4';
+
+  }
+
+  else if (
+    MediaRecorder.isTypeSupported(
+      'video/webm;codecs=vp8,opus'
+    )
+  ) {
+
+    opciones.mimeType =
+      'video/webm;codecs=vp8,opus';
+
+  }
+
+  else if (
+    MediaRecorder.isTypeSupported(
+      'video/webm'
+    )
+  ) {
+
+    opciones.mimeType =
+      'video/webm';
+
+  }
+
+
+  opciones.videoBitsPerSecond =
+    700000;
+
+  opciones.audioBitsPerSecond =
+    64000;
+
+
+  try {
+
+    mediaRecorder =
+      new MediaRecorder(
+        streamCamara,
+        opciones
+      );
+
+  } catch(error) {
+
+    mediaRecorder =
+      new MediaRecorder(
+        streamCamara
       );
 
   }
 
 
-  return ContentService
-    .createTextOutput(
-      JSON.stringify(objeto)
-    )
-    .setMimeType(
-      ContentService.MimeType.JSON
+  mediaRecorder.ondataavailable =
+    function(evento) {
+
+      if (
+        evento.data &&
+        evento.data.size > 0
+      ) {
+
+        fragmentosVideo.push(
+          evento.data
+        );
+
+      }
+
+    };
+
+
+  mediaRecorder.onstop =
+    function() {
+
+      const tipo =
+        mediaRecorder.mimeType ||
+        (
+          fragmentosVideo[0]
+            ? fragmentosVideo[0].type
+            : 'video/mp4'
+        );
+
+
+      videoBlob =
+        new Blob(
+          fragmentosVideo,
+          {
+            type: tipo
+          }
+        );
+
+
+      if (videoURL) {
+
+        URL.revokeObjectURL(
+          videoURL
+        );
+
+      }
+
+
+      videoURL =
+        URL.createObjectURL(
+          videoBlob
+        );
+
+
+      videoRevision.src =
+        videoURL;
+
+
+      detenerCamara();
+
+
+      mostrarPantalla(
+        'revision'
+      );
+
+    };
+
+
+  mediaRecorder.start(
+    1000
+  );
+
+
+  grabando = true;
+
+
+  btnGrabar.style.display =
+    'none';
+
+  btnDetener.style.display =
+    'block';
+
+
+  iniciarCronometro();
+
+}
+
+
+/* ============================================================
+   CRONÓMETRO
+   ============================================================ */
+
+function iniciarCronometro() {
+
+  clearInterval(
+    intervaloCronometro
+  );
+
+
+  cronometro.textContent =
+    '00:00';
+
+
+  intervaloCronometro =
+    setInterval(
+      function() {
+
+        segundosGrabacion++;
+
+
+        cronometro.textContent =
+          '00:' +
+          String(
+            segundosGrabacion
+          ).padStart(
+            2,
+            '0'
+          );
+
+
+        const restantes =
+          MAX_GRABACION -
+          segundosGrabacion;
+
+
+        if (
+          restantes <= 5 &&
+          restantes > 0
+        ) {
+
+          avisoTiempo.textContent =
+            '⏳ ' +
+            restantes +
+            ' segundos';
+
+        }
+
+
+        if (
+          segundosGrabacion >=
+          MAX_GRABACION
+        ) {
+
+          detenerGrabacion();
+
+        }
+
+      },
+      1000
     );
 
 }
 
 
 /* ============================================================
-   LIMPIAR CALLBACK
+   DETENER
    ============================================================ */
 
-function limpiarCallback_(callback) {
+function detenerGrabacion() {
 
-  return String(
-    callback || ''
-  ).replace(
-    /[^a-zA-Z0-9_$\.]/g,
-    ''
+  if (!grabando) {
+    return;
+  }
+
+
+  grabando = false;
+
+
+  duracionFinal =
+    Math.max(
+      1,
+      Math.min(
+        segundosGrabacion,
+        MAX_GRABACION
+      )
+    );
+
+
+  clearInterval(
+    intervaloCronometro
+  );
+
+
+  intervaloCronometro = null;
+
+
+  if (
+    mediaRecorder &&
+    mediaRecorder.state !==
+      'inactive'
+  ) {
+
+    mediaRecorder.stop();
+
+  }
+
+
+  btnDetener.style.display =
+    'none';
+
+}
+
+
+btnGrabar.addEventListener(
+  'click',
+  iniciarGrabacion
+);
+
+
+btnDetener.addEventListener(
+  'click',
+  detenerGrabacion
+);
+
+
+/* ============================================================
+   CONTROLES
+   ============================================================ */
+
+function prepararControlesGrabacion() {
+
+  grabando = false;
+
+  segundosGrabacion = 0;
+
+  cronometro.textContent =
+    '00:00';
+
+  avisoTiempo.textContent = '';
+
+  btnGrabar.disabled = false;
+
+  btnGrabar.style.display =
+    'block';
+
+  btnDetener.style.display =
+    'none';
+
+}
+
+
+/* ============================================================
+   REPETIR
+   ============================================================ */
+
+document
+  .getElementById('btnRepetir')
+  .addEventListener(
+    'click',
+    function() {
+
+      limpiarSoloGrabacion();
+
+
+      preguntaPreparar.textContent =
+        confesionSeleccionada.confesion;
+
+
+      mostrarPantalla(
+        'prepararCamara'
+      );
+
+    }
+  );
+
+
+/* ============================================================
+   BASE64
+   ============================================================ */
+
+function blobABase64(blob) {
+
+  return new Promise(
+    function(resolve, reject) {
+
+      const lector =
+        new FileReader();
+
+
+      lector.onloadend =
+        function() {
+
+          const resultado =
+            String(
+              lector.result
+            );
+
+
+          const coma =
+            resultado.indexOf(',');
+
+
+          resolve(
+            coma >= 0
+              ? resultado.substring(
+                  coma + 1
+                )
+              : resultado
+          );
+
+        };
+
+
+      lector.onerror =
+        reject;
+
+
+      lector.readAsDataURL(
+        blob
+      );
+
+    }
   );
 
 }
 
 
 /* ============================================================
-   POST DE FORMULARIO
+   CREAR ID DE ENVÍO
    ============================================================ */
 
-function doPost(e) {
+function crearIdEnvio() {
+
+  if (
+    window.crypto &&
+    typeof window.crypto.randomUUID ===
+      'function'
+  ) {
+
+    return crypto.randomUUID();
+
+  }
+
+
+  return (
+    'ENV-' +
+    Date.now() +
+    '-' +
+    Math.random()
+      .toString(36)
+      .substring(2, 12)
+  );
+
+}
+
+
+/* ============================================================
+   ENVIAR POR FORMULARIO
+   ============================================================ */
+
+async function enviarConfesion() {
+
+  if (
+    !videoBlob ||
+    enviando
+  ) {
+    return;
+  }
+
+
+  enviando = true;
+
+
+  mostrarPantalla(
+    'guardando'
+  );
+
+
+  estadoGuardado.textContent =
+    'Preparando tu video...';
+
+
+  clearTimeout(
+    temporizadorInactividad
+  );
+
 
   try {
 
-    if (
-      !e ||
-      !e.parameter
-    ) {
+    /*
+       MUY IMPORTANTE:
+       si se reintenta, usamos el MISMO ID.
+    */
+
+    if (!idEnvioActual) {
+
+      idEnvioActual =
+        crearIdEnvio();
+
+    }
+
+
+    const videoBase64 =
+      await blobABase64(
+        videoBlob
+      );
+
+
+    document
+      .getElementById('fIdEnvio')
+      .value =
+        idEnvioActual;
+
+
+    document
+      .getElementById('fIdConfesion')
+      .value =
+        confesionSeleccionada.id;
+
+
+    document
+      .getElementById('fConfesion')
+      .value =
+        confesionSeleccionada.confesion;
+
+
+    document
+      .getElementById('fTipo')
+      .value =
+        confesionSeleccionada.tipo;
+
+
+    document
+      .getElementById('fCambio')
+      .value =
+        cambioUtilizado
+          ? 'SI'
+          : 'NO';
+
+
+    document
+      .getElementById('fIdDescartada')
+      .value =
+        confesionDescartada
+          ? confesionDescartada.id
+          : '';
+
+
+    document
+      .getElementById('fConfesionDescartada')
+      .value =
+        confesionDescartada
+          ? confesionDescartada.confesion
+          : '';
+
+
+    document
+      .getElementById('fDuracion')
+      .value =
+        duracionFinal;
+
+
+    document
+      .getElementById('fMimeType')
+      .value =
+        videoBlob.type ||
+        'video/mp4';
+
+
+    document
+      .getElementById('fVideoBase64')
+      .value =
+        videoBase64;
+
+
+    estadoGuardado.textContent =
+      'Enviando confesión...';
+
+
+    /*
+       ESTE es el POST real.
+       No usamos fetch.
+    */
+
+    formEnvio.submit();
+
+
+    /*
+       Esperamos un poco antes de empezar
+       a consultar Apps Script.
+    */
+
+    await esperar(
+      2000
+    );
+
+
+    estadoGuardado.textContent =
+      'Confirmando que llegó correctamente...';
+
+
+    const guardado =
+      await esperarConfirmacion(
+        idEnvioActual
+      );
+
+
+    if (!guardado) {
 
       throw new Error(
-        'No se recibieron parámetros.'
+        'Apps Script no confirmó el guardado. Tu video no se ha borrado; puedes reintentar.'
       );
 
     }
 
 
-    const datos = {
-
-      idEnvio:
-        String(
-          e.parameter.idEnvio || ''
-        ).trim(),
-
-      idConfesion:
-        String(
-          e.parameter.idConfesion || ''
-        ).trim(),
-
-      confesion:
-        String(
-          e.parameter.confesion || ''
-        ),
-
-      tipo:
-        String(
-          e.parameter.tipo || ''
-        ),
-
-      cambioUtilizado:
-        String(
-          e.parameter.cambioUtilizado || ''
-        ).toUpperCase() === 'SI',
-
-      idConfesionDescartada:
-        String(
-          e.parameter.idConfesionDescartada || ''
-        ),
-
-      confesionDescartada:
-        String(
-          e.parameter.confesionDescartada || ''
-        ),
-
-      duracionSegundos:
-        Number(
-          e.parameter.duracionSegundos || 0
-        ),
-
-      mimeType:
-        String(
-          e.parameter.mimeType ||
-          'video/mp4'
-        ),
-
-      videoBase64:
-        String(
-          e.parameter.videoBase64 || ''
-        )
-
-    };
-
-
-    const resultado =
-      guardarConfesion_(
-        datos
-      );
-
-
     /*
-       La respuesta se cargará dentro del iframe invisible.
-       No necesitamos leerla desde GitHub.
+       SOLO llegamos aquí cuando Apps Script
+       confirmó que ID_RESPUESTA existe.
     */
 
-    return HtmlService
-      .createHtmlOutput(
-        '<!DOCTYPE html>' +
-        '<html>' +
-        '<body>' +
-        '<h3>OK</h3>' +
-        '<p>' +
-        resultado.idEnvio +
-        '</p>' +
-        '</body>' +
-        '</html>'
-      );
+    mostrarConfirmacion();
 
 
   } catch(error) {
@@ -257,21 +1765,19 @@ function doPost(e) {
     );
 
 
-    return HtmlService
-      .createHtmlOutput(
-        '<!DOCTYPE html>' +
-        '<html>' +
-        '<body>' +
-        '<h3>ERROR</h3>' +
-        '<p>' +
-        escaparHtml_(
-          error.message ||
-          String(error)
-        ) +
-        '</p>' +
-        '</body>' +
-        '</html>'
-      );
+    detalleErrorEnvio.textContent =
+      error.message ||
+      'No fue posible confirmar el envío.';
+
+
+    mostrarPantalla(
+      'errorEnvio'
+    );
+
+
+  } finally {
+
+    enviando = false;
 
   }
 
@@ -279,576 +1785,658 @@ function doPost(e) {
 
 
 /* ============================================================
-   GUARDAR CONFESIÓN
+   CONSULTAR ESTADO MEDIANTE JSONP
    ============================================================ */
 
-function guardarConfesion_(datos) {
-
-  if (!datos.idEnvio) {
-
-    throw new Error(
-      'No se recibió ID_ENVIO.'
-    );
-
-  }
-
-
-  if (!datos.idConfesion) {
-
-    throw new Error(
-      'No se recibió ID_CONFESION.'
-    );
-
-  }
-
-
-  if (!datos.videoBase64) {
-
-    throw new Error(
-      'No se recibió el video.'
-    );
-
-  }
-
-
-  /*
-     Evitar duplicados si el usuario pulsa
-     REINTENTAR después de que realmente
-     ya se hubiese guardado.
-  */
-
-  const existente =
-    buscarRespuestaPorIdEnvio_(
-      datos.idEnvio
-    );
-
-
-  if (existente) {
-
-    return {
-
-      ok: true,
-      yaExistia: true,
-      idEnvio:
-        datos.idEnvio
-
-    };
-
-  }
-
-
-  /* ==========================================================
-     DRIVE
-     ========================================================== */
-
-  const carpeta =
-    DriveApp.getFolderById(
-      CARPETA_CONFESIONES_ID
-    );
-
-
-  const ahora =
-    new Date();
-
-
-  const zonaHoraria =
-    Session.getScriptTimeZone();
-
-
-  const fechaArchivo =
-    Utilities.formatDate(
-      ahora,
-      zonaHoraria,
-      'yyyyMMdd_HHmmss'
-    );
-
-
-  let mimeType =
-    datos.mimeType ||
-    'video/mp4';
-
-
-  /*
-     Algunos navegadores pueden enviar parámetros
-     adicionales en el MIME.
-  */
-
-  mimeType =
-    mimeType.split(';')[0];
-
-
-  let extension =
-    'mp4';
-
-
-  if (
-    mimeType
-      .toLowerCase()
-      .includes('webm')
-  ) {
-
-    extension =
-      'webm';
-
-  }
-
-
-  const nombreArchivo =
-    'CONF_' +
-    datos.idConfesion +
-    '_' +
-    fechaArchivo +
-    '_' +
-    datos.idEnvio.substring(
-      0,
-      8
-    ) +
-    '.' +
-    extension;
-
-
-  /* ==========================================================
-     DECODIFICAR BASE64
-     ========================================================== */
-
-  const bytes =
-    Utilities.base64Decode(
-      datos.videoBase64
-    );
-
-
-  const blob =
-    Utilities.newBlob(
-      bytes,
-      mimeType,
-      nombreArchivo
-    );
-
-
-  /* ==========================================================
-     CREAR ARCHIVO
-     ========================================================== */
-
-  const archivo =
-    carpeta.createFile(
-      blob
-    );
-
-
-  const idArchivo =
-    archivo.getId();
-
-
-  const urlArchivo =
-    archivo.getUrl();
-
-
-  /* ==========================================================
-     HOJA RESPUESTAS
-     ========================================================== */
-
-  const ss =
-    SpreadsheetApp
-      .getActiveSpreadsheet();
-
-
-  const hoja =
-    ss.getSheetByName(
-      HOJA_RESPUESTAS
-    );
-
-
-  if (!hoja) {
-
-    archivo.setTrashed(
-      true
-    );
-
-
-    throw new Error(
-      'No se encontró la hoja RESPUESTAS.'
-    );
-
-  }
-
-
-  const duracionSheets =
-    Number(
-      datos.duracionSegundos || 0
-    ) /
-    86400;
-
-
-  /*
-     IMPORTANTE:
-
-     ID_RESPUESTA será también nuestro ID_ENVIO.
-
-     Así no necesitamos agregar otra columna a tu
-     tabla RESPUESTAS.
-  */
-
-  hoja.appendRow([
-
-    datos.idEnvio,
-    // ID_RESPUESTA
-
-    ahora,
-    // FECHA_HORA
-
-    datos.idConfesion,
-    // ID_CONFESION
-
-    datos.confesion,
-    // CONFESION
-
-    datos.tipo,
-    // TIPO
-
-    datos.cambioUtilizado
-      ? 'SI'
-      : 'NO',
-    // CAMBIO_UTILIZADO
-
-    datos.idConfesionDescartada,
-    // ID_CONFESION_DESCARTADA
-
-    datos.confesionDescartada,
-    // CONFESION_DESCARTADA
-
-    'COMPLETADA',
-    // ESTADO
-
-    nombreArchivo,
-    // ARCHIVO
-
-    idArchivo,
-    // ID_ARCHIVO_DRIVE
-
-    urlArchivo,
-    // URL_ARCHIVO
-
-    duracionSheets,
-    // DURACION_VIDEO
-
-    ahora,
-    // FECHA_CARGA
-
-    'SI'
-    // VISIBLE
-
-  ]);
-
-
-  aumentarVecesSorteada_(
-    datos.idConfesion
-  );
-
-
-  SpreadsheetApp.flush();
-
-
-  return {
-
-    ok: true,
-
-    idEnvio:
-      datos.idEnvio,
-
-    nombreArchivo:
-      nombreArchivo,
-
-    idArchivo:
-      idArchivo,
-
-    urlArchivo:
-      urlArchivo
-
-  };
-
-}
-
-
-/* ============================================================
-   CONSULTAR ESTADO
-   ============================================================ */
-
-function consultarEstadoEnvio_(
+function consultarEstadoJSONP(
   idEnvio
 ) {
 
-  if (!idEnvio) {
-
-    return {
-
-      ok: false,
-
-      guardado: false,
-
-      error:
-        'No se recibió ID_ENVIO.'
-
-    };
-
-  }
-
-
-  const encontrado =
-    buscarRespuestaPorIdEnvio_(
-      idEnvio
-    );
-
-
-  if (!encontrado) {
-
-    return {
-
-      ok: true,
-
-      guardado: false,
-
-      idEnvio:
-        idEnvio
-
-    };
-
-  }
-
-
-  return {
-
-    ok: true,
-
-    guardado: true,
-
-    idEnvio:
-      idEnvio,
-
-    estado:
-      encontrado.estado,
-
-    archivo:
-      encontrado.archivo,
-
-    idArchivo:
-      encontrado.idArchivo
-
-  };
-
-}
-
-
-/* ============================================================
-   BUSCAR ID_ENVIO EN RESPUESTAS
-   ============================================================ */
-
-function buscarRespuestaPorIdEnvio_(
-  idEnvio
-) {
-
-  const ss =
-    SpreadsheetApp
-      .getActiveSpreadsheet();
-
-
-  const hoja =
-    ss.getSheetByName(
-      HOJA_RESPUESTAS
-    );
-
-
-  if (!hoja) {
-
-    throw new Error(
-      'No se encontró la hoja RESPUESTAS.'
-    );
-
-  }
-
-
-  const ultimaFila =
-    hoja.getLastRow();
-
-
-  if (ultimaFila < 2) {
-
-    return null;
-
-  }
-
-
-  /*
-     ID_RESPUESTA está en columna A.
-  */
-
-  const valores =
-    hoja
-      .getRange(
-        2,
-        1,
-        ultimaFila - 1,
-        15
-      )
-      .getValues();
-
-
-  for (
-    let i = valores.length - 1;
-    i >= 0;
-    i--
-  ) {
-
-    if (
-      String(
-        valores[i][0]
-      ).trim() ===
-      String(
-        idEnvio
-      ).trim()
-    ) {
-
-      return {
-
-        fila:
-          i + 2,
-
-        estado:
-          valores[i][8],
-
-        archivo:
-          valores[i][9],
-
-        idArchivo:
-          valores[i][10]
-
-      };
-
-    }
-
-  }
-
-
-  return null;
-
-}
-
-
-/* ============================================================
-   AUMENTAR VECES SORTEADA
-   ============================================================ */
-
-function aumentarVecesSorteada_(
-  idConfesion
-) {
-
-  const ss =
-    SpreadsheetApp
-      .getActiveSpreadsheet();
-
-
-  const hoja =
-    ss.getSheetByName(
-      HOJA_CONFESIONES
-    );
-
-
-  if (!hoja) {
-
-    return;
-
-  }
-
-
-  const ultimaFila =
-    hoja.getLastRow();
-
-
-  if (ultimaFila < 2) {
-
-    return;
-
-  }
-
-
-  const ids =
-    hoja
-      .getRange(
-        2,
-        1,
-        ultimaFila - 1,
-        1
-      )
-      .getValues();
-
-
-  for (
-    let i = 0;
-    i < ids.length;
-    i++
-  ) {
-
-    if (
-      String(
-        ids[i][0]
-      ).trim() ===
-      String(
-        idConfesion
-      ).trim()
-    ) {
-
-      const celda =
-        hoja.getRange(
-          i + 2,
-          5
+  return new Promise(
+    function(resolve, reject) {
+
+      const nombreCallback =
+        'estadoConfesion_' +
+        Date.now() +
+        '_' +
+        Math.floor(
+          Math.random() *
+          100000
         );
 
 
-      celda.setValue(
-        (
-          Number(
-            celda.getValue()
-          ) || 0
-        ) + 1
+      const script =
+        document.createElement(
+          'script'
+        );
+
+
+      let terminado =
+        false;
+
+
+      const timeout =
+        setTimeout(
+          function() {
+
+            limpiar();
+
+
+            reject(
+              new Error(
+                'Tiempo de espera agotado consultando Apps Script.'
+              )
+            );
+
+          },
+          8000
+        );
+
+
+      function limpiar() {
+
+        if (terminado) {
+          return;
+        }
+
+
+        terminado = true;
+
+
+        clearTimeout(
+          timeout
+        );
+
+
+        if (script.parentNode) {
+
+          script.parentNode
+            .removeChild(
+              script
+            );
+
+        }
+
+
+        try {
+
+          delete window[
+            nombreCallback
+          ];
+
+        } catch(e) {
+
+          window[
+            nombreCallback
+          ] = undefined;
+
+        }
+
+      }
+
+
+      window[
+        nombreCallback
+      ] =
+        function(datos) {
+
+          /*
+             Guardamos antes de limpiar.
+          */
+
+          const respuesta =
+            datos;
+
+
+          limpiar();
+
+
+          resolve(
+            respuesta
+          );
+
+        };
+
+
+      script.onerror =
+        function() {
+
+          limpiar();
+
+
+          reject(
+            new Error(
+              'No pude consultar el estado en Apps Script.'
+            )
+          );
+
+        };
+
+
+      script.src =
+        API_URL +
+        '?action=estado' +
+        '&idEnvio=' +
+        encodeURIComponent(
+          idEnvio
+        ) +
+        '&callback=' +
+        encodeURIComponent(
+          nombreCallback
+        ) +
+        '&nocache=' +
+        Date.now();
+
+
+      document.body.appendChild(
+        script
       );
 
-
-      break;
-
     }
-
-  }
+  );
 
 }
 
 
 /* ============================================================
-   ESCAPAR HTML
+   ESPERAR CONFIRMACIÓN
    ============================================================ */
 
-function escaparHtml_(texto) {
+async function esperarConfirmacion(
+  idEnvio
+) {
 
-  return String(
-    texto || ''
-  )
-    .replace(
-      /&/g,
-      '&amp;'
-    )
-    .replace(
-      /</g,
-      '&lt;'
-    )
-    .replace(
-      />/g,
-      '&gt;'
-    )
-    .replace(
-      /"/g,
-      '&quot;'
-    )
-    .replace(
-      /'/g,
-      '&#039;'
+  for (
+    let intento = 1;
+    intento <= INTENTOS_CONFIRMACION;
+    intento++
+  ) {
+
+    estadoGuardado.textContent =
+      'Confirmando guardado... ' +
+      intento +
+      '/' +
+      INTENTOS_CONFIRMACION;
+
+
+    try {
+
+      const respuesta =
+        await consultarEstadoJSONP(
+          idEnvio
+        );
+
+
+      if (
+        respuesta &&
+        respuesta.ok === true &&
+        respuesta.guardado === true
+      ) {
+
+        return true;
+
+      }
+
+    } catch(error) {
+
+      console.log(
+        'Intento ' +
+        intento +
+        ': ' +
+        error.message
+      );
+
+    }
+
+
+    await esperar(
+      ESPERA_CONFIRMACION
+    );
+
+  }
+
+
+  return false;
+
+}
+
+
+/* ============================================================
+   BOTONES ENVÍO
+   ============================================================ */
+
+document
+  .getElementById('btnEnviar')
+  .addEventListener(
+    'click',
+    enviarConfesion
+  );
+
+
+document
+  .getElementById('btnReintentar')
+  .addEventListener(
+    'click',
+    enviarConfesion
+  );
+
+
+/* ============================================================
+   CONFIRMACIÓN
+   ============================================================ */
+
+function mostrarConfirmacion() {
+
+  mostrarPantalla(
+    'final'
+  );
+
+
+  let segundos = 5;
+
+
+  contadorFinal.textContent =
+    segundos;
+
+
+  const intervalo =
+    setInterval(
+      function() {
+
+        segundos--;
+
+
+        contadorFinal.textContent =
+          segundos;
+
+
+        if (
+          segundos <= 0
+        ) {
+
+          clearInterval(
+            intervalo
+          );
+
+
+          reiniciarTodo();
+
+        }
+
+      },
+      1000
     );
 
 }
+
+
+/* ============================================================
+   ABANDONAR
+   ============================================================ */
+
+function abandonar() {
+
+  reiniciarTodo();
+
+}
+
+
+[
+  'btnAbandonarResultado',
+  'btnAbandonarCamara',
+  'btnAbandonarGrabacion',
+  'btnAbandonarRevision',
+  'btnAbandonarError'
+
+].forEach(
+  function(id) {
+
+    document
+      .getElementById(id)
+      .addEventListener(
+        'click',
+        abandonar
+      );
+
+  }
+);
+
+
+/* ============================================================
+   CÁMARA
+   ============================================================ */
+
+function detenerCamara() {
+
+  if (streamCamara) {
+
+    streamCamara
+      .getTracks()
+      .forEach(
+        function(track) {
+
+          track.stop();
+
+        }
+      );
+
+
+    streamCamara = null;
+
+  }
+
+
+  videoCamara.srcObject =
+    null;
+
+}
+
+
+/* ============================================================
+   LIMPIAR VIDEO
+   ============================================================ */
+
+function limpiarSoloGrabacion() {
+
+  detenerCamara();
+
+
+  clearInterval(
+    intervaloCronometro
+  );
+
+
+  intervaloCronometro = null;
+
+
+  if (
+    mediaRecorder &&
+    mediaRecorder.state !==
+      'inactive'
+  ) {
+
+    mediaRecorder.onstop = null;
+
+    mediaRecorder.stop();
+
+  }
+
+
+  mediaRecorder = null;
+
+  fragmentosVideo = [];
+
+  videoBlob = null;
+
+
+  if (videoURL) {
+
+    URL.revokeObjectURL(
+      videoURL
+    );
+
+
+    videoURL = null;
+
+  }
+
+
+  videoRevision.removeAttribute(
+    'src'
+  );
+
+
+  videoRevision.load();
+
+
+  prepararControlesGrabacion();
+
+}
+
+
+/* ============================================================
+   REINICIO
+   ============================================================ */
+
+function reiniciarTodo() {
+
+  limpiarSoloGrabacion();
+
+
+  confesionSeleccionada = null;
+
+  confesionDescartada = null;
+
+  cambioUtilizado = false;
+
+  girando = false;
+
+  idEnvioActual = null;
+
+  enviando = false;
+
+
+  /*
+     Limpiamos el Base64 que quedó en
+     el formulario invisible.
+  */
+
+  document
+    .getElementById('fVideoBase64')
+    .value = '';
+
+
+  cerrarAvisoInactividad();
+
+
+  mostrarPantalla(
+    'inicio'
+  );
+
+}
+
+
+/* ============================================================
+   INACTIVIDAD
+   ============================================================ */
+
+function reiniciarTemporizadorInactividad() {
+
+  clearTimeout(
+    temporizadorInactividad
+  );
+
+
+  if (
+    grabando ||
+    enviando
+  ) {
+
+    return;
+
+  }
+
+
+  const pantallaActiva =
+    document.querySelector(
+      '.pantalla.activa'
+    );
+
+
+  if (
+    pantallaActiva &&
+    (
+      pantallaActiva.id === 'guardando' ||
+      pantallaActiva.id === 'final'
+    )
+  ) {
+
+    return;
+
+  }
+
+
+  temporizadorInactividad =
+    setTimeout(
+      mostrarAvisoInactividad,
+      TIEMPO_INACTIVIDAD
+    );
+
+}
+
+
+function mostrarAvisoInactividad() {
+
+  if (
+    grabando ||
+    enviando
+  ) {
+
+    return;
+
+  }
+
+
+  modalInactividad.style.display =
+    'flex';
+
+
+  let segundos =
+    SEGUNDOS_AVISO;
+
+
+  contadorInactividad.textContent =
+    segundos;
+
+
+  clearInterval(
+    intervaloInactividad
+  );
+
+
+  intervaloInactividad =
+    setInterval(
+      function() {
+
+        segundos--;
+
+
+        contadorInactividad.textContent =
+          segundos;
+
+
+        if (
+          segundos <= 0
+        ) {
+
+          clearInterval(
+            intervaloInactividad
+          );
+
+
+          reiniciarTodo();
+
+        }
+
+      },
+      1000
+    );
+
+}
+
+
+function cerrarAvisoInactividad() {
+
+  modalInactividad.style.display =
+    'none';
+
+
+  clearInterval(
+    intervaloInactividad
+  );
+
+
+  intervaloInactividad = null;
+
+}
+
+
+document
+  .getElementById('btnSigoAqui')
+  .addEventListener(
+    'click',
+    function() {
+
+      cerrarAvisoInactividad();
+
+      reiniciarTemporizadorInactividad();
+
+    }
+  );
+
+
+[
+  'touchstart',
+  'click',
+  'keydown'
+
+].forEach(
+  function(evento) {
+
+    document.addEventListener(
+      evento,
+      function() {
+
+        if (
+          modalInactividad.style.display ===
+            'flex'
+        ) {
+
+          return;
+
+        }
+
+
+        reiniciarTemporizadorInactividad();
+
+      },
+      {
+        passive: true
+      }
+    );
+
+  }
+);
+
+
+/* ============================================================
+   ESPERAR
+   ============================================================ */
+
+function esperar(ms) {
+
+  return new Promise(
+    function(resolve) {
+
+      setTimeout(
+        resolve,
+        ms
+      );
+
+    }
+  );
+
+}
+
+
+/* ============================================================
+   INICIO
+   ============================================================ */
+
+reiniciarTemporizadorInactividad();
+
+</script>
+
+</body>
+
+</html>
