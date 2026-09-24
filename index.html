@@ -8,25 +8,33 @@
 
 <meta
   name="viewport"
-  content="width=device-width, initial-scale=1"
+  content="width=device-width, initial-scale=1, maximum-scale=1"
 >
 
-<title>Prueba POST - Confesionario</title>
+<title>Diagnóstico POST - El Confesionario</title>
 
 
 <style>
 
 * {
   box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
 }
+
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+}
+
 
 body {
 
-  margin: 0;
-
   min-height: 100vh;
 
-  padding: 30px 20px;
+  padding: 35px 20px;
 
   background:
     radial-gradient(
@@ -61,11 +69,18 @@ body {
 }
 
 
+.logo {
+
+  font-size: 70px;
+
+}
+
+
 h1 {
 
-  font-size: 38px;
+  margin: 10px 0;
 
-  margin-bottom: 10px;
+  font-size: 38px;
 
 }
 
@@ -74,9 +89,37 @@ h1 {
 
   opacity: .8;
 
+  font-size: 18px;
+
   line-height: 1.5;
 
   margin-bottom: 30px;
+
+}
+
+
+.tarjeta {
+
+  padding: 25px;
+
+  border-radius: 24px;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      .08
+    );
+
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      .15
+    );
 
 }
 
@@ -108,71 +151,47 @@ button {
 }
 
 
-button:disabled {
+button:active {
 
-  opacity: .4;
-
-}
-
-
-.tarjeta {
-
-  margin-top: 30px;
-
-  padding: 25px;
-
-  border-radius: 22px;
-
-  background:
-    rgba(
-      255,
-      255,
-      255,
-      .08
-    );
-
-  border:
-    1px solid
-    rgba(
-      255,
-      255,
-      255,
-      .15
-    );
+  transform: scale(.98);
 
 }
 
 
 #estado {
 
-  font-size: 19px;
+  min-height: 60px;
+
+  margin-top: 25px;
+
+  padding: 20px;
+
+  border-radius: 18px;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      .06
+    );
+
+  font-size: 17px;
 
   line-height: 1.5;
 
 }
 
 
-.exito {
-
-  color: #b7ffb7;
-
-}
-
-
-.error {
-
-  color: #ffb5b5;
-
-}
-
-
-.pequeno {
+.advertencia {
 
   margin-top: 25px;
 
-  opacity: .65;
+  opacity: .7;
 
   font-size: 14px;
+
+  line-height: 1.5;
 
 }
 
@@ -186,94 +205,102 @@ button:disabled {
 
 <div class="contenedor">
 
-  <div style="font-size:70px;">
+
+  <div class="logo">
     🧪
   </div>
 
 
   <h1>
-    Prueba de tamaño POST
+    Diagnóstico POST
   </h1>
 
 
   <p class="descripcion">
 
-    Esta página no graba videos
-    ni guarda nada en Drive.
+    Vamos a probar cuánto contenido
+    puede viajar desde GitHub Pages
+    hacia Apps Script.
 
     <br><br>
 
-    Solo comprobaremos qué tamaño
-    consigue llegar desde GitHub Pages
-    hasta Apps Script.
+    Esta prueba no utiliza cámara,
+    Drive ni Google Sheets.
 
   </p>
-
-
-  <button onclick="probar(100)">
-    PROBAR 100 KB
-  </button>
-
-
-  <button onclick="probar(500)">
-    PROBAR 500 KB
-  </button>
-
-
-  <button onclick="probar(1024)">
-    PROBAR 1 MB
-  </button>
-
-
-  <button onclick="probar(2048)">
-    PROBAR 2 MB
-  </button>
-
-
-  <button onclick="probar(4096)">
-    PROBAR 4 MB
-  </button>
 
 
   <div class="tarjeta">
 
-    <div id="estado">
-      Esperando prueba...
-    </div>
+
+    <button onclick="enviarPrueba(1)">
+      🧪 PROBAR 1 KB
+    </button>
+
+
+    <button onclick="enviarPrueba(5)">
+      🧪 PROBAR 5 KB
+    </button>
+
+
+    <button onclick="enviarPrueba(10)">
+      🧪 PROBAR 10 KB
+    </button>
+
+
+    <button onclick="enviarPrueba(25)">
+      🧪 PROBAR 25 KB
+    </button>
+
+
+    <button onclick="enviarPrueba(50)">
+      🧪 PROBAR 50 KB
+    </button>
+
+
+    <button onclick="enviarPrueba(100)">
+      🧪 PROBAR 100 KB
+    </button>
+
 
   </div>
 
 
-  <p class="pequeno">
+  <div id="estado">
 
-    Después de cada prueba revisa:
+    Esperando una prueba...
 
-    <br>
+  </div>
 
-    Apps Script → Ejecuciones
+
+  <p class="advertencia">
+
+    ⚠️ Esta vez no usamos iframe.
+
+    <br><br>
+
+    Al presionar un botón,
+    Safari saldrá de esta página
+    y navegará directamente hacia Apps Script.
+
+    <br><br>
+
+    Eso es intencional.
 
   </p>
+
 
 </div>
 
 
-<!--
-  El POST se carga en este iframe
-  para que el iPad no abandone
-  la página de diagnóstico.
--->
-
-<iframe
-  id="resultadoPost"
-  name="resultadoPost"
-  style="display:none;"
-></iframe>
-
+<!-- =========================================================
+     FORMULARIO NORMAL
+     SIN IFRAME
+     ========================================================= -->
 
 <form
   id="formPrueba"
   method="POST"
-  target="resultadoPost"
   style="display:none;"
 >
 
@@ -282,6 +309,7 @@ button:disabled {
     id="campoPrueba"
     name="prueba"
   >
+
 
   <input
     type="hidden"
@@ -293,6 +321,10 @@ button:disabled {
 
 
 <script>
+
+/* ============================================================
+   CONFIGURACIÓN
+   ============================================================ */
 
 const API_URL =
   'https://script.google.com/macros/s/AKfycbzGZxguZB-diYDtcI1q0Vsx0aTgd42Lvi31JQnr0o_42ckNY8qagSaOMrIsxmTQ4IJdug/exec';
@@ -322,29 +354,28 @@ const estado =
   );
 
 
-const iframe =
-  document.getElementById(
-    'resultadoPost'
-  );
-
-
 formulario.action =
   API_URL;
 
 
 /* ============================================================
-   CREAR CADENA
+   CREAR CARGA
    ============================================================ */
 
 function crearCarga(
-  cantidadCaracteres
+  cantidad
 ) {
 
   /*
-    Creamos bloques para no depender
-    de String.repeat() con una cadena
-    gigantesca de una sola vez.
+     Para esta prueba usamos solamente
+     la letra A.
+
+     Así:
+
+     1 carácter ≈ 1 byte.
   */
+
+  let resultado = '';
 
   const bloque =
     'A'.repeat(
@@ -352,170 +383,106 @@ function crearCarga(
     );
 
 
-  const bloques = [];
-
-
-  const cantidadBloques =
+  const bloquesCompletos =
     Math.floor(
-      cantidadCaracteres /
-      1024
+      cantidad / 1024
     );
 
 
   for (
     let i = 0;
-    i < cantidadBloques;
+    i < bloquesCompletos;
     i++
   ) {
 
-    bloques.push(
-      bloque
-    );
+    resultado += bloque;
 
   }
 
 
-  const restante =
-    cantidadCaracteres %
-    1024;
+  const resto =
+    cantidad % 1024;
 
 
-  if (restante > 0) {
+  if (resto > 0) {
 
-    bloques.push(
+    resultado +=
       'A'.repeat(
-        restante
-      )
-    );
+        resto
+      );
 
   }
 
 
-  return bloques.join('');
+  return resultado;
 
 }
 
 
 /* ============================================================
-   REALIZAR PRUEBA
+   ENVIAR PRUEBA
    ============================================================ */
 
-function probar(
+function enviarPrueba(
   kb
 ) {
 
-  estado.className = '';
+  try {
 
-  estado.innerHTML =
-    '⏳ Preparando ' +
-    kb +
-    ' KB...';
-
-
-  /*
-    Dejamos que Safari pinte primero
-    el mensaje antes de generar
-    la cadena.
-  */
-
-  setTimeout(
-    function() {
-
-      try {
-
-        const caracteres =
-          kb * 1024;
+    estado.innerHTML =
+      '⏳ Preparando <b>' +
+      kb +
+      ' KB</b>...';
 
 
-        const carga =
-          crearCarga(
-            caracteres
-          );
+    const cantidadCaracteres =
+      kb * 1024;
 
 
-        campoPrueba.value =
-          kb + ' KB';
+    const carga =
+      crearCarga(
+        cantidadCaracteres
+      );
 
 
-        campoCarga.value =
-          carga;
+    campoPrueba.value =
+      kb + ' KB';
 
 
-        estado.innerHTML =
-          '📤 Enviando ' +
-          kb +
-          ' KB a Apps Script...';
+    campoCarga.value =
+      carga;
 
+
+    estado.innerHTML =
+      '📤 Enviando <b>' +
+      kb +
+      ' KB</b> directamente a Apps Script...';
+
+
+    /*
+       Dejamos un instante para que
+       Safari alcance a mostrar el mensaje.
+    */
+
+    setTimeout(
+      function() {
 
         formulario.submit();
 
-
-        /*
-          Esto NO significa que Apps Script
-          lo haya recibido.
-
-          Solo significa que Safari ejecutó
-          submit().
-        */
-
-        setTimeout(
-          function() {
-
-            estado.innerHTML =
-              '🔎 POST enviado desde Safari.<br><br>' +
-              'Ahora revisa <b>Apps Script → Ejecuciones</b>.<br><br>' +
-              'Busca un <b>doPost</b> nuevo correspondiente a ' +
-              '<b>' +
-              kb +
-              ' KB</b>.';
-
-          },
-          1200
-        );
-
-
-      } catch(error) {
-
-        estado.className =
-          'error';
-
-
-        estado.textContent =
-          '❌ ' +
-          error.message;
-
-      }
-
-    },
-    100
-  );
-
-}
-
-
-/* ============================================================
-   IFRAME
-   ============================================================ */
-
-iframe.addEventListener(
-  'load',
-  function() {
-
-    /*
-      No intentamos leer el contenido
-      porque está en otro dominio.
-
-      El evento load solamente nos
-      indica que hubo una navegación
-      del iframe.
-    */
-
-    console.log(
-      'El iframe terminó una navegación.'
+      },
+      300
     );
 
+
+  } catch(error) {
+
+    estado.innerHTML =
+      '❌ Error en Safari:<br><br>' +
+      error.message;
+
   }
-);
+
+}
 
 </script>
 
