@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, maximum-scale=1"
+  >
+
+  <title>Prueba Cámara - Confesionario</title>
+
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #171118;
+      color: white;
+      font-family: -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+      text-align: center;
+    }
+
+    .contenedor {
+      width: 90%;
+      max-width: 650px;
+    }
+
+    h1 {
+      font-size: 38px;
+    }
+
+    button {
+      width: 100%;
+      padding: 20px;
+      margin-top: 20px;
+      border: none;
+      border-radius: 18px;
+      font-size: 20px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    video {
+      display: none;
+      width: 100%;
+      margin-top: 25px;
+      border-radius: 20px;
+      background: black;
+      transform: scaleX(-1);
+    }
+
+    #resultado {
+      margin-top: 25px;
+      padding: 18px;
+      border: 1px solid #705c72;
+      border-radius: 18px;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="contenedor">
+
+    <h1>🤫 EL CONFESIONARIO</h1>
+
+    <p>
+      Prueba de cámara desde GitHub Pages
+    </p>
+
+    <button onclick="activarCamara()">
+      📹 ACTIVAR CÁMARA + MICRÓFONO
+    </button>
+
+    <button onclick="detenerCamara()">
+      ⏹ DETENER
+    </button>
+
+    <div id="resultado">
+      Esperando prueba...
+    </div>
+
+    <video
+      id="video"
+      autoplay
+      muted
+      playsinline
+    ></video>
+
+  </div>
+
+
+<script>
+
+let stream = null;
+
+const video =
+  document.getElementById('video');
+
+const resultado =
+  document.getElementById('resultado');
+
+
+async function activarCamara() {
+
+  resultado.textContent =
+    '⏳ Solicitando cámara y micrófono...';
+
+  try {
+
+    stream =
+      await navigator.mediaDevices.getUserMedia({
+        video: {
+          facingMode: 'user'
+        },
+        audio: true
+      });
+
+
+    const camaras =
+      stream.getVideoTracks();
+
+    const microfonos =
+      stream.getAudioTracks();
+
+
+    resultado.textContent =
+      '✅ ¡FUNCIONA!\n\n' +
+      'Cámara: ' + camaras.length + '\n' +
+      'Micrófono: ' + microfonos.length + '\n' +
+      'Contexto seguro: ' + window.isSecureContext;
+
+
+    video.srcObject =
+      stream;
+
+    video.style.display =
+      'block';
+
+
+    await video.play();
+
+
+  } catch(error) {
+
+    resultado.textContent =
+      '❌ ERROR\n\n' +
+      'Nombre: ' + error.name + '\n' +
+      'Detalle: ' + error.message + '\n' +
+      'Contexto seguro: ' + window.isSecureContext;
+
+  }
+
+}
+
+
+function detenerCamara() {
+
+  if (stream) {
+
+    stream
+      .getTracks()
+      .forEach(track => track.stop());
+
+    stream = null;
+
+  }
+
+
+  video.srcObject =
+    null;
+
+  video.style.display =
+    'none';
+
+
+  resultado.textContent =
+    '⏹ Cámara y micrófono detenidos.';
+
+}
+
+</script>
+
+</body>
+</html>
