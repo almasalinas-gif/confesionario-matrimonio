@@ -220,12 +220,41 @@ video {
   font-size: 16px;
 }
 
+/* BOTÓN TEMPORAL PARA PROBAR POST */
+
+#btnPruebaPost {
+  position: fixed;
+  bottom: 15px;
+  left: 15px;
+  z-index: 99999;
+
+  width: auto;
+  max-width: none;
+
+  margin: 0;
+  padding: 12px 18px;
+
+  border-radius: 12px;
+
+  background: #d92525;
+  color: white;
+
+  font-size: 15px;
+  font-weight: 900;
+
+  box-shadow: 0 4px 15px rgba(0,0,0,.4);
+}
+
 </style>
 
 </head>
 
 <body>
 
+
+<!-- =========================================================
+     INICIO
+     ========================================================= -->
 
 <section id="inicio" class="pantalla activa">
 
@@ -253,6 +282,10 @@ video {
 </section>
 
 
+<!-- =========================================================
+     SORTEO
+     ========================================================= -->
+
 <section id="sorteo" class="pantalla">
 
 <div class="contenedor">
@@ -277,6 +310,10 @@ video {
 
 </section>
 
+
+<!-- =========================================================
+     RESULTADO
+     ========================================================= -->
 
 <section id="resultado" class="pantalla">
 
@@ -309,6 +346,10 @@ video {
 </section>
 
 
+<!-- =========================================================
+     PREPARAR CÁMARA
+     ========================================================= -->
+
 <section id="prepararCamara" class="pantalla">
 
 <div class="contenedor">
@@ -340,6 +381,10 @@ video {
 
 </section>
 
+
+<!-- =========================================================
+     CÁMARA
+     ========================================================= -->
 
 <section id="camara" class="pantalla">
 
@@ -383,6 +428,10 @@ video {
 </section>
 
 
+<!-- =========================================================
+     REVISIÓN
+     ========================================================= -->
+
 <section id="revision" class="pantalla">
 
 <div class="contenedor">
@@ -412,6 +461,10 @@ video {
 </section>
 
 
+<!-- =========================================================
+     GUARDANDO
+     ========================================================= -->
+
 <section id="guardando" class="pantalla">
 
 <div class="contenedor">
@@ -432,6 +485,10 @@ video {
 
 </section>
 
+
+<!-- =========================================================
+     ERROR ENVÍO
+     ========================================================= -->
 
 <section id="errorEnvio" class="pantalla">
 
@@ -461,6 +518,10 @@ video {
 
 </section>
 
+
+<!-- =========================================================
+     FINAL
+     ========================================================= -->
 
 <section id="final" class="pantalla">
 
@@ -492,6 +553,10 @@ video {
 </section>
 
 
+<!-- =========================================================
+     INACTIVIDAD
+     ========================================================= -->
+
 <div id="modalInactividad">
 
 <div class="modalCaja">
@@ -516,7 +581,7 @@ video {
 
 
 <!-- =========================================================
-     FORMULARIO INVISIBLE DE ENVÍO
+     FORMULARIO REAL INVISIBLE
      ========================================================= -->
 
 <iframe
@@ -537,11 +602,61 @@ video {
 <input type="hidden" name="confesion" id="fConfesion">
 <input type="hidden" name="tipo" id="fTipo">
 <input type="hidden" name="cambioUtilizado" id="fCambio">
-<input type="hidden" name="idConfesionDescartada" id="fIdDescartada">
-<input type="hidden" name="confesionDescartada" id="fConfesionDescartada">
-<input type="hidden" name="duracionSegundos" id="fDuracion">
-<input type="hidden" name="mimeType" id="fMimeType">
-<input type="hidden" name="videoBase64" id="fVideoBase64">
+
+<input
+  type="hidden"
+  name="idConfesionDescartada"
+  id="fIdDescartada"
+>
+
+<input
+  type="hidden"
+  name="confesionDescartada"
+  id="fConfesionDescartada"
+>
+
+<input
+  type="hidden"
+  name="duracionSegundos"
+  id="fDuracion"
+>
+
+<input
+  type="hidden"
+  name="mimeType"
+  id="fMimeType"
+>
+
+<input
+  type="hidden"
+  name="videoBase64"
+  id="fVideoBase64"
+>
+
+</form>
+
+
+<!-- =========================================================
+     PRUEBA POST TEMPORAL
+     ========================================================= -->
+
+<form
+  action="https://script.google.com/macros/s/AKfycbzGZxguZB-diYDtcI1q0Vsx0aTgd42Lvi31JQnr0o_42ckNY8qagSaOMrIsxmTQ4IJdug/exec"
+  method="POST"
+>
+
+  <input
+    type="hidden"
+    name="prueba"
+    value="HOLA_DESDE_GITHUB"
+  >
+
+  <button
+    id="btnPruebaPost"
+    type="submit"
+  >
+    🧪 PRUEBA POST
+  </button>
 
 </form>
 
@@ -557,10 +672,8 @@ const API_URL =
 
 
 /*
-   TODAVÍA 5 SEGUNDOS PARA LA PRUEBA.
-
-   Cuando confirmemos Drive + RESPUESTAS:
-   cambiar a 45.
+   SE MANTIENE EN 5 SEGUNDOS
+   HASTA SOLUCIONAR EL ENVÍO.
 */
 
 const MAX_GRABACION = 5;
@@ -575,7 +688,7 @@ const ESPERA_CONFIRMACION = 2000;
 
 
 /* ============================================================
-   100 CONFESIONES
+   CONFESIONES
    ============================================================ */
 
 const confesiones = [
@@ -727,35 +840,56 @@ let enviando = false;
    ELEMENTOS
    ============================================================ */
 
-const btnPlay = document.getElementById('btnPlay');
+const btnPlay =
+  document.getElementById('btnPlay');
 
-const slotTipo = document.getElementById('slotTipo');
-const slotTexto = document.getElementById('slotTexto');
+const slotTipo =
+  document.getElementById('slotTipo');
 
-const resultadoTipo = document.getElementById('resultadoTipo');
-const resultadoTexto = document.getElementById('resultadoTexto');
+const slotTexto =
+  document.getElementById('slotTexto');
 
-const btnAceptar = document.getElementById('btnAceptar');
-const btnCambiar = document.getElementById('btnCambiar');
+const resultadoTipo =
+  document.getElementById('resultadoTipo');
 
-const preguntaPreparar = document.getElementById('preguntaPreparar');
+const resultadoTexto =
+  document.getElementById('resultadoTexto');
 
-const btnActivarCamara = document.getElementById('btnActivarCamara');
+const btnAceptar =
+  document.getElementById('btnAceptar');
 
-const errorCamara = document.getElementById('errorCamara');
+const btnCambiar =
+  document.getElementById('btnCambiar');
 
-const preguntaCamara = document.getElementById('preguntaCamara');
+const preguntaPreparar =
+  document.getElementById('preguntaPreparar');
 
-const videoCamara = document.getElementById('videoCamara');
+const btnActivarCamara =
+  document.getElementById('btnActivarCamara');
 
-const cronometro = document.getElementById('cronometro');
+const errorCamara =
+  document.getElementById('errorCamara');
 
-const avisoTiempo = document.getElementById('avisoTiempo');
+const preguntaCamara =
+  document.getElementById('preguntaCamara');
 
-const btnGrabar = document.getElementById('btnGrabar');
-const btnDetener = document.getElementById('btnDetener');
+const videoCamara =
+  document.getElementById('videoCamara');
 
-const videoRevision = document.getElementById('videoRevision');
+const cronometro =
+  document.getElementById('cronometro');
+
+const avisoTiempo =
+  document.getElementById('avisoTiempo');
+
+const btnGrabar =
+  document.getElementById('btnGrabar');
+
+const btnDetener =
+  document.getElementById('btnDetener');
+
+const videoRevision =
+  document.getElementById('videoRevision');
 
 const detalleErrorEnvio =
   document.getElementById('detalleErrorEnvio');
@@ -776,8 +910,7 @@ const formEnvio =
   document.getElementById('formEnvio');
 
 
-formEnvio.action =
-  API_URL;
+formEnvio.action = API_URL;
 
 
 /* ============================================================
@@ -790,17 +923,14 @@ function mostrarPantalla(id) {
     .querySelectorAll('.pantalla')
     .forEach(function(pantalla) {
 
-      pantalla
-        .classList
-        .remove('activa');
+      pantalla.classList.remove('activa');
 
     });
 
 
   document
     .getElementById(id)
-    .classList
-    .add('activa');
+    .classList.add('activa');
 
 
   reiniciarTemporizadorInactividad();
@@ -814,8 +944,7 @@ function mostrarPantalla(id) {
 
 function elegirConfesionAleatoria() {
 
-  let disponibles =
-    confesiones;
+  let disponibles = confesiones;
 
 
   if (confesionDescartada) {
@@ -915,9 +1044,7 @@ function realizarSorteo() {
       setTimeout(
         function() {
 
-          mostrarPantalla(
-            'resultado'
-          );
+          mostrarPantalla('resultado');
 
         },
         500
@@ -951,11 +1078,8 @@ btnPlay.addEventListener(
   function() {
 
     cambioUtilizado = false;
-
     confesionDescartada = null;
-
     confesionSeleccionada = null;
-
     idEnvioActual = null;
 
     realizarSorteo();
@@ -980,9 +1104,7 @@ btnCambiar.addEventListener(
     confesionDescartada =
       confesionSeleccionada;
 
-
     cambioUtilizado = true;
-
 
     realizarSorteo();
 
@@ -1001,13 +1123,9 @@ btnAceptar.addEventListener(
     preguntaPreparar.textContent =
       confesionSeleccionada.confesion;
 
-
     errorCamara.innerHTML = '';
 
-
-    mostrarPantalla(
-      'prepararCamara'
-    );
+    mostrarPantalla('prepararCamara');
 
   }
 );
@@ -1061,10 +1179,7 @@ async function activarCamara() {
     videoCamara.srcObject =
       streamCamara;
 
-
-    videoCamara.muted =
-      true;
-
+    videoCamara.muted = true;
 
     await videoCamara.play();
 
@@ -1075,10 +1190,7 @@ async function activarCamara() {
 
     prepararControlesGrabacion();
 
-
-    mostrarPantalla(
-      'camara'
-    );
+    mostrarPantalla('camara');
 
 
   } catch(error) {
@@ -1114,7 +1226,7 @@ btnActivarCamara.addEventListener(
 
 
 /* ============================================================
-   3, 2, 1
+   CUENTA REGRESIVA
    ============================================================ */
 
 async function iniciarGrabacion() {
@@ -1138,7 +1250,6 @@ async function iniciarGrabacion() {
 
     avisoTiempo.textContent =
       numero;
-
 
     await esperar(700);
 
@@ -1187,9 +1298,7 @@ function comenzarGrabacion() {
 
 
   if (
-    MediaRecorder.isTypeSupported(
-      'video/mp4'
-    )
+    MediaRecorder.isTypeSupported('video/mp4')
   ) {
 
     opciones.mimeType =
@@ -1209,9 +1318,7 @@ function comenzarGrabacion() {
   }
 
   else if (
-    MediaRecorder.isTypeSupported(
-      'video/webm'
-    )
+    MediaRecorder.isTypeSupported('video/webm')
   ) {
 
     opciones.mimeType =
@@ -1238,9 +1345,7 @@ function comenzarGrabacion() {
   } catch(error) {
 
     mediaRecorder =
-      new MediaRecorder(
-        streamCamara
-      );
+      new MediaRecorder(streamCamara);
 
   }
 
@@ -1285,17 +1390,13 @@ function comenzarGrabacion() {
 
       if (videoURL) {
 
-        URL.revokeObjectURL(
-          videoURL
-        );
+        URL.revokeObjectURL(videoURL);
 
       }
 
 
       videoURL =
-        URL.createObjectURL(
-          videoBlob
-        );
+        URL.createObjectURL(videoBlob);
 
 
       videoRevision.src =
@@ -1304,28 +1405,18 @@ function comenzarGrabacion() {
 
       detenerCamara();
 
-
-      mostrarPantalla(
-        'revision'
-      );
+      mostrarPantalla('revision');
 
     };
 
 
-  mediaRecorder.start(
-    1000
-  );
-
+  mediaRecorder.start(1000);
 
   grabando = true;
 
+  btnGrabar.style.display = 'none';
 
-  btnGrabar.style.display =
-    'none';
-
-  btnDetener.style.display =
-    'block';
-
+  btnDetener.style.display = 'block';
 
   iniciarCronometro();
 
@@ -1338,9 +1429,7 @@ function comenzarGrabacion() {
 
 function iniciarCronometro() {
 
-  clearInterval(
-    intervaloCronometro
-  );
+  clearInterval(intervaloCronometro);
 
 
   cronometro.textContent =
@@ -1356,12 +1445,8 @@ function iniciarCronometro() {
 
         cronometro.textContent =
           '00:' +
-          String(
-            segundosGrabacion
-          ).padStart(
-            2,
-            '0'
-          );
+          String(segundosGrabacion)
+            .padStart(2, '0');
 
 
         const restantes =
@@ -1399,7 +1484,7 @@ function iniciarCronometro() {
 
 
 /* ============================================================
-   DETENER
+   DETENER GRABACIÓN
    ============================================================ */
 
 function detenerGrabacion() {
@@ -1422,18 +1507,14 @@ function detenerGrabacion() {
     );
 
 
-  clearInterval(
-    intervaloCronometro
-  );
-
+  clearInterval(intervaloCronometro);
 
   intervaloCronometro = null;
 
 
   if (
     mediaRecorder &&
-    mediaRecorder.state !==
-      'inactive'
+    mediaRecorder.state !== 'inactive'
   ) {
 
     mediaRecorder.stop();
@@ -1441,8 +1522,7 @@ function detenerGrabacion() {
   }
 
 
-  btnDetener.style.display =
-    'none';
+  btnDetener.style.display = 'none';
 
 }
 
@@ -1460,7 +1540,7 @@ btnDetener.addEventListener(
 
 
 /* ============================================================
-   CONTROLES
+   PREPARAR CONTROLES
    ============================================================ */
 
 function prepararControlesGrabacion() {
@@ -1502,16 +1582,14 @@ document
         confesionSeleccionada.confesion;
 
 
-      mostrarPantalla(
-        'prepararCamara'
-      );
+      mostrarPantalla('prepararCamara');
 
     }
   );
 
 
 /* ============================================================
-   BASE64
+   BLOB A BASE64
    ============================================================ */
 
 function blobABase64(blob) {
@@ -1527,9 +1605,7 @@ function blobABase64(blob) {
         function() {
 
           const resultado =
-            String(
-              lector.result
-            );
+            String(lector.result);
 
 
           const coma =
@@ -1538,9 +1614,7 @@ function blobABase64(blob) {
 
           resolve(
             coma >= 0
-              ? resultado.substring(
-                  coma + 1
-                )
+              ? resultado.substring(coma + 1)
               : resultado
           );
 
@@ -1551,9 +1625,7 @@ function blobABase64(blob) {
         reject;
 
 
-      lector.readAsDataURL(
-        blob
-      );
+      lector.readAsDataURL(blob);
 
     }
   );
@@ -1562,7 +1634,7 @@ function blobABase64(blob) {
 
 
 /* ============================================================
-   CREAR ID DE ENVÍO
+   ID ENVÍO
    ============================================================ */
 
 function crearIdEnvio() {
@@ -1591,7 +1663,7 @@ function crearIdEnvio() {
 
 
 /* ============================================================
-   ENVIAR POR FORMULARIO
+   ENVÍO REAL
    ============================================================ */
 
 async function enviarConfesion() {
@@ -1606,10 +1678,7 @@ async function enviarConfesion() {
 
   enviando = true;
 
-
-  mostrarPantalla(
-    'guardando'
-  );
+  mostrarPantalla('guardando');
 
 
   estadoGuardado.textContent =
@@ -1623,11 +1692,6 @@ async function enviarConfesion() {
 
   try {
 
-    /*
-       MUY IMPORTANTE:
-       si se reintenta, usamos el MISMO ID.
-    */
-
     if (!idEnvioActual) {
 
       idEnvioActual =
@@ -1637,9 +1701,7 @@ async function enviarConfesion() {
 
 
     const videoBase64 =
-      await blobABase64(
-        videoBlob
-      );
+      await blobABase64(videoBlob);
 
 
     document
@@ -1713,22 +1775,10 @@ async function enviarConfesion() {
       'Enviando confesión...';
 
 
-    /*
-       ESTE es el POST real.
-       No usamos fetch.
-    */
-
     formEnvio.submit();
 
 
-    /*
-       Esperamos un poco antes de empezar
-       a consultar Apps Script.
-    */
-
-    await esperar(
-      2000
-    );
+    await esperar(2000);
 
 
     estadoGuardado.textContent =
@@ -1750,19 +1800,12 @@ async function enviarConfesion() {
     }
 
 
-    /*
-       SOLO llegamos aquí cuando Apps Script
-       confirmó que ID_RESPUESTA existe.
-    */
-
     mostrarConfirmacion();
 
 
   } catch(error) {
 
-    console.error(
-      error
-    );
+    console.error(error);
 
 
     detalleErrorEnvio.textContent =
@@ -1770,9 +1813,7 @@ async function enviarConfesion() {
       'No fue posible confirmar el envío.';
 
 
-    mostrarPantalla(
-      'errorEnvio'
-    );
+    mostrarPantalla('errorEnvio');
 
 
   } finally {
@@ -1785,7 +1826,7 @@ async function enviarConfesion() {
 
 
 /* ============================================================
-   CONSULTAR ESTADO MEDIANTE JSONP
+   JSONP ESTADO
    ============================================================ */
 
 function consultarEstadoJSONP(
@@ -1806,13 +1847,10 @@ function consultarEstadoJSONP(
 
 
       const script =
-        document.createElement(
-          'script'
-        );
+        document.createElement('script');
 
 
-      let terminado =
-        false;
+      let terminado = false;
 
 
       const timeout =
@@ -1820,7 +1858,6 @@ function consultarEstadoJSONP(
           function() {
 
             limpiar();
-
 
             reject(
               new Error(
@@ -1842,58 +1879,40 @@ function consultarEstadoJSONP(
 
         terminado = true;
 
-
-        clearTimeout(
-          timeout
-        );
+        clearTimeout(timeout);
 
 
         if (script.parentNode) {
 
           script.parentNode
-            .removeChild(
-              script
-            );
+            .removeChild(script);
 
         }
 
 
         try {
 
-          delete window[
-            nombreCallback
-          ];
+          delete window[nombreCallback];
 
         } catch(e) {
 
-          window[
-            nombreCallback
-          ] = undefined;
+          window[nombreCallback] =
+            undefined;
 
         }
 
       }
 
 
-      window[
-        nombreCallback
-      ] =
+      window[nombreCallback] =
         function(datos) {
-
-          /*
-             Guardamos antes de limpiar.
-          */
 
           const respuesta =
             datos;
 
-
           limpiar();
 
-
-          resolve(
-            respuesta
-          );
+          resolve(respuesta);
 
         };
 
@@ -1902,7 +1921,6 @@ function consultarEstadoJSONP(
         function() {
 
           limpiar();
-
 
           reject(
             new Error(
@@ -1917,20 +1935,14 @@ function consultarEstadoJSONP(
         API_URL +
         '?action=estado' +
         '&idEnvio=' +
-        encodeURIComponent(
-          idEnvio
-        ) +
+        encodeURIComponent(idEnvio) +
         '&callback=' +
-        encodeURIComponent(
-          nombreCallback
-        ) +
+        encodeURIComponent(nombreCallback) +
         '&nocache=' +
         Date.now();
 
 
-      document.body.appendChild(
-        script
-      );
+      document.body.appendChild(script);
 
     }
   );
@@ -2027,9 +2039,7 @@ document
 
 function mostrarConfirmacion() {
 
-  mostrarPantalla(
-    'final'
-  );
+  mostrarPantalla('final');
 
 
   let segundos = 5;
@@ -2045,19 +2055,13 @@ function mostrarConfirmacion() {
 
         segundos--;
 
-
         contadorFinal.textContent =
           segundos;
 
 
-        if (
-          segundos <= 0
-        ) {
+        if (segundos <= 0) {
 
-          clearInterval(
-            intervalo
-          );
-
+          clearInterval(intervalo);
 
           reiniciarTodo();
 
@@ -2103,7 +2107,7 @@ function abandonar() {
 
 
 /* ============================================================
-   CÁMARA
+   DETENER CÁMARA
    ============================================================ */
 
 function detenerCamara() {
@@ -2126,14 +2130,13 @@ function detenerCamara() {
   }
 
 
-  videoCamara.srcObject =
-    null;
+  videoCamara.srcObject = null;
 
 }
 
 
 /* ============================================================
-   LIMPIAR VIDEO
+   LIMPIAR GRABACIÓN
    ============================================================ */
 
 function limpiarSoloGrabacion() {
@@ -2151,8 +2154,7 @@ function limpiarSoloGrabacion() {
 
   if (
     mediaRecorder &&
-    mediaRecorder.state !==
-      'inactive'
+    mediaRecorder.state !== 'inactive'
   ) {
 
     mediaRecorder.onstop = null;
@@ -2171,20 +2173,14 @@ function limpiarSoloGrabacion() {
 
   if (videoURL) {
 
-    URL.revokeObjectURL(
-      videoURL
-    );
-
+    URL.revokeObjectURL(videoURL);
 
     videoURL = null;
 
   }
 
 
-  videoRevision.removeAttribute(
-    'src'
-  );
-
+  videoRevision.removeAttribute('src');
 
   videoRevision.load();
 
@@ -2195,7 +2191,7 @@ function limpiarSoloGrabacion() {
 
 
 /* ============================================================
-   REINICIO
+   REINICIAR TODO
    ============================================================ */
 
 function reiniciarTodo() {
@@ -2204,7 +2200,6 @@ function reiniciarTodo() {
 
 
   confesionSeleccionada = null;
-
   confesionDescartada = null;
 
   cambioUtilizado = false;
@@ -2216,11 +2211,6 @@ function reiniciarTodo() {
   enviando = false;
 
 
-  /*
-     Limpiamos el Base64 que quedó en
-     el formulario invisible.
-  */
-
   document
     .getElementById('fVideoBase64')
     .value = '';
@@ -2228,10 +2218,7 @@ function reiniciarTodo() {
 
   cerrarAvisoInactividad();
 
-
-  mostrarPantalla(
-    'inicio'
-  );
+  mostrarPantalla('inicio');
 
 }
 
@@ -2320,19 +2307,15 @@ function mostrarAvisoInactividad() {
 
         segundos--;
 
-
         contadorInactividad.textContent =
           segundos;
 
 
-        if (
-          segundos <= 0
-        ) {
+        if (segundos <= 0) {
 
           clearInterval(
             intervaloInactividad
           );
-
 
           reiniciarTodo();
 
@@ -2389,7 +2372,7 @@ document
 
         if (
           modalInactividad.style.display ===
-            'flex'
+          'flex'
         ) {
 
           return;
@@ -2418,10 +2401,7 @@ function esperar(ms) {
   return new Promise(
     function(resolve) {
 
-      setTimeout(
-        resolve,
-        ms
-      );
+      setTimeout(resolve, ms);
 
     }
   );
@@ -2438,5 +2418,4 @@ reiniciarTemporizadorInactividad();
 </script>
 
 </body>
-
 </html>
