@@ -1,7 +1,9 @@
 <!DOCTYPE html>
+
 <html lang="es">
 
 <head>
+
 <meta charset="UTF-8">
 
 <meta
@@ -11,43 +13,62 @@
 
 <title>El Confesionario 🤫</title>
 
+
 <style>
+
 * {
   box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
 }
 
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
   min-height: 100%;
 }
 
 body {
+
   min-height: 100vh;
+
   background:
     radial-gradient(
       circle at top,
-      #472748 0%,
-      #271627 45%,
+      #482949 0%,
+      #281628 45%,
       #100b11 100%
     );
+
   color: white;
+
   font-family:
     -apple-system,
     BlinkMacSystemFont,
     "Segoe UI",
     Arial,
     sans-serif;
+
   text-align: center;
+
   overflow-x: hidden;
+
 }
 
 .pantalla {
+
   display: none;
+
   min-height: 100vh;
-  padding: 40px 24px;
+
+  padding:
+    40px
+    24px;
+
   align-items: center;
+
   justify-content: center;
+
 }
 
 .pantalla.activa {
@@ -55,508 +76,777 @@ body {
 }
 
 .contenedor {
+
   width: 100%;
+
   max-width: 760px;
+
   margin: auto;
+
 }
 
 h1 {
-  font-size: clamp(40px, 8vw, 70px);
-  margin: 0 0 20px;
+
+  font-size:
+    clamp(
+      40px,
+      8vw,
+      70px
+    );
+
+  margin:
+    0
+    0
+    20px;
+
 }
 
 h2 {
-  font-size: clamp(30px, 6vw, 46px);
+
+  font-size:
+    clamp(
+      30px,
+      6vw,
+      46px
+    );
+
 }
 
 p {
+
   font-size: 20px;
+
   line-height: 1.5;
+
 }
 
 .subtitulo {
-  opacity: 0.82;
+
+  opacity: .82;
+
   margin-bottom: 35px;
+
 }
 
 button {
+
   display: block;
+
   width: 100%;
+
   max-width: 560px;
-  margin: 15px auto;
-  padding: 20px 24px;
+
+  margin:
+    15px
+    auto;
+
+  padding:
+    20px
+    24px;
+
   border: 0;
+
   border-radius: 20px;
+
   font-size: 21px;
+
   font-weight: 800;
+
   cursor: pointer;
+
+  touch-action: manipulation;
+
 }
 
 button:disabled {
-  opacity: 0.45;
+  opacity: .45;
 }
 
 .principal {
+
   background: #f2d58b;
+
   color: #251625;
+
 }
 
 .secundario {
+
   background: #513750;
+
   color: white;
+
 }
 
 .peligro {
+
   background: #682d3b;
+
   color: white;
+
 }
 
 .tarjeta {
+
   padding: 30px;
-  border: 1px solid rgba(255,255,255,.18);
+
+  border:
+    1px solid
+    rgba(255,255,255,.18);
+
   border-radius: 26px;
-  background: rgba(255,255,255,.07);
-  backdrop-filter: blur(12px);
-  margin: 25px 0;
+
+  background:
+    rgba(255,255,255,.07);
+
+  backdrop-filter:
+    blur(12px);
+
+  margin:
+    25px
+    0;
+
 }
 
 .tipo {
+
   font-size: 18px;
+
   opacity: .75;
+
   margin-bottom: 15px;
+
 }
 
 .pregunta {
-  font-size: clamp(27px, 5vw, 42px);
+
+  font-size:
+    clamp(
+      27px,
+      5vw,
+      42px
+    );
+
   font-weight: 800;
+
   line-height: 1.25;
+
 }
 
 .slot {
+
   min-height: 230px;
+
   display: flex;
+
   align-items: center;
+
   justify-content: center;
+
 }
 
 video {
+
   width: 100%;
+
   max-height: 58vh;
+
   border-radius: 25px;
+
   background: black;
+
 }
 
 #videoCamara {
-  transform: scaleX(-1);
+
+  transform:
+    scaleX(-1);
+
 }
 
 .cronometro {
+
   font-size: 32px;
+
   font-weight: 900;
+
   margin: 18px;
+
 }
 
 .avisoTiempo {
-  min-height: 32px;
+
+  min-height: 34px;
+
   font-size: 22px;
+
   font-weight: 800;
+
 }
 
 .mensaje-error {
+
   margin-top: 20px;
+
   padding: 20px;
+
   border-radius: 18px;
-  background: rgba(150,40,60,.25);
+
+  background:
+    rgba(150,40,60,.25);
+
   line-height: 1.5;
+
 }
 
 .spinner {
+
   width: 60px;
+
   height: 60px;
-  margin: 30px auto;
-  border: 7px solid rgba(255,255,255,.18);
-  border-top-color: white;
+
+  margin:
+    30px
+    auto;
+
+  border:
+    7px solid
+    rgba(255,255,255,.18);
+
+  border-top-color:
+    white;
+
   border-radius: 50%;
-  animation: girar 1s linear infinite;
+
+  animation:
+    girar 1s linear infinite;
+
 }
 
 @keyframes girar {
+
   to {
-    transform: rotate(360deg);
+    transform:
+      rotate(360deg);
   }
+
 }
 
 #modalInactividad {
+
   display: none;
+
   position: fixed;
+
   inset: 0;
+
   z-index: 999;
-  background: rgba(0,0,0,.82);
+
+  background:
+    rgba(0,0,0,.84);
+
   align-items: center;
+
   justify-content: center;
+
   padding: 25px;
+
 }
 
 .modalCaja {
+
   width: 100%;
+
   max-width: 520px;
+
   background: #2b1c2b;
+
   border-radius: 26px;
+
   padding: 35px;
+
 }
 
 #contadorInactividad {
+
   font-size: 52px;
+
   font-weight: 900;
+
 }
 
 .pequeno {
+
   opacity: .75;
+
   font-size: 16px;
+
 }
+
 </style>
 
 </head>
 
+
 <body>
 
-<!-- INICIO -->
 
-<section id="inicio" class="pantalla activa">
-  <div class="contenedor">
+<!-- =========================================================
+     INICIO
+     ========================================================= -->
 
-    <div style="font-size:80px;">🤫</div>
+<section
+  id="inicio"
+  class="pantalla activa"
+>
 
-    <h1>EL CONFESIONARIO</h1>
+<div class="contenedor">
 
-    <p class="subtitulo">
-      Lo que se diga aquí... queda entre nosotros 😈
-    </p>
-
-    <button
-      id="btnPlay"
-      class="principal"
-      disabled
-    >
-      🎰 PLAY
-    </button>
-
-    <div
-      id="estadoCarga"
-      class="pequeno"
-    >
-      ⏳ Cargando confesiones...
-    </div>
-
+  <div style="font-size:80px;">
+    🤫
   </div>
+
+  <h1>
+    EL CONFESIONARIO
+  </h1>
+
+  <p class="subtitulo">
+    Lo que se diga aquí...
+    queda entre nosotros 😈
+  </p>
+
+  <button
+    id="btnPlay"
+    class="principal"
+  >
+    🎰 PLAY
+  </button>
+
+  <div class="pequeno">
+    😈 100 confesiones esperando
+  </div>
+
+</div>
+
 </section>
 
 
-<!-- SORTEO -->
+<!-- =========================================================
+     SORTEO
+     ========================================================= -->
 
-<section id="sorteo" class="pantalla">
-  <div class="contenedor">
+<section
+  id="sorteo"
+  class="pantalla"
+>
 
-    <h2>🎰 TU CONFESIÓN ES...</h2>
+<div class="contenedor">
 
-    <div class="tarjeta slot">
-      <div>
+  <h2>
+    🎰 TU CONFESIÓN ES...
+  </h2>
 
-        <div
-          id="slotTipo"
-          class="tipo"
-        ></div>
+  <div class="tarjeta slot">
 
-        <div
-          id="slotTexto"
-          class="pregunta"
-        >
-          😈
-        </div>
-
-      </div>
-    </div>
-
-  </div>
-</section>
-
-
-<!-- RESULTADO -->
-
-<section id="resultado" class="pantalla">
-  <div class="contenedor">
-
-    <h2>😈 TE TOCÓ</h2>
-
-    <div class="tarjeta">
+    <div>
 
       <div
-        id="resultadoTipo"
+        id="slotTipo"
         class="tipo"
       ></div>
 
       <div
-        id="resultadoTexto"
+        id="slotTexto"
         class="pregunta"
-      ></div>
+      >
+        😈
+      </div>
 
     </div>
 
-    <button
-      id="btnAceptar"
-      class="principal"
-    >
-      😈 ACEPTO
-    </button>
-
-    <button
-      id="btnCambiar"
-      class="secundario"
-    >
-      🔄 CAMBIAR CONFESIÓN
-    </button>
-
-    <button
-      id="btnAbandonarResultado"
-      class="peligro"
-    >
-      🚪 ME ARREPIENTO
-    </button>
-
   </div>
+
+</div>
+
 </section>
 
 
-<!-- PREPARAR CÁMARA -->
+<!-- =========================================================
+     RESULTADO
+     ========================================================= -->
 
-<section id="prepararCamara" class="pantalla">
-  <div class="contenedor">
+<section
+  id="resultado"
+  class="pantalla"
+>
 
-    <h2>📹 ES HORA DE CONFESAR</h2>
+<div class="contenedor">
 
-    <div class="tarjeta">
-      <div
-        id="preguntaPreparar"
-        class="pregunta"
-      ></div>
-    </div>
+  <h2>
+    😈 TE TOCÓ
+  </h2>
 
-    <p>
-      Cuando estés listo, activa la cámara.
-    </p>
-
-    <button
-      id="btnActivarCamara"
-      class="principal"
-    >
-      📹 ACTIVAR CÁMARA
-    </button>
-
-    <button
-      id="btnAbandonarCamara"
-      class="peligro"
-    >
-      🚪 ABANDONAR
-    </button>
-
-    <div id="errorCamara"></div>
-
-  </div>
-</section>
-
-
-<!-- CÁMARA -->
-
-<section id="camara" class="pantalla">
-  <div class="contenedor">
+  <div class="tarjeta">
 
     <div
-      id="preguntaCamara"
+      id="resultadoTipo"
+      class="tipo"
+    ></div>
+
+    <div
+      id="resultadoTexto"
       class="pregunta"
     ></div>
 
-    <br>
+  </div>
 
-    <video
-      id="videoCamara"
-      autoplay
-      muted
-      playsinline
-    ></video>
+
+  <button
+    id="btnAceptar"
+    class="principal"
+  >
+    😈 ACEPTO
+  </button>
+
+
+  <button
+    id="btnCambiar"
+    class="secundario"
+  >
+    🔄 CAMBIAR CONFESIÓN
+  </button>
+
+
+  <button
+    id="btnAbandonarResultado"
+    class="peligro"
+  >
+    🚪 ME ARREPIENTO
+  </button>
+
+</div>
+
+</section>
+
+
+<!-- =========================================================
+     PREPARAR CÁMARA
+     ========================================================= -->
+
+<section
+  id="prepararCamara"
+  class="pantalla"
+>
+
+<div class="contenedor">
+
+  <h2>
+    📹 ES HORA DE CONFESAR
+  </h2>
+
+
+  <div class="tarjeta">
 
     <div
-      id="cronometro"
-      class="cronometro"
-    >
-      00:00
-    </div>
-
-    <div
-      id="avisoTiempo"
-      class="avisoTiempo"
+      id="preguntaPreparar"
+      class="pregunta"
     ></div>
 
-    <button
-      id="btnGrabar"
-      class="principal"
-    >
-      🔴 GRABAR
-    </button>
-
-    <button
-      id="btnDetener"
-      class="principal"
-      style="display:none;"
-    >
-      ⏹ DETENER
-    </button>
-
-    <button
-      id="btnAbandonarGrabacion"
-      class="peligro"
-    >
-      🚪 ABANDONAR
-    </button>
-
   </div>
+
+
+  <p>
+    Cuando estés listo,
+    activa la cámara.
+  </p>
+
+
+  <button
+    id="btnActivarCamara"
+    class="principal"
+  >
+    📹 ACTIVAR CÁMARA
+  </button>
+
+
+  <button
+    id="btnAbandonarCamara"
+    class="peligro"
+  >
+    🚪 ABANDONAR
+  </button>
+
+
+  <div id="errorCamara"></div>
+
+</div>
+
 </section>
 
 
-<!-- REVISIÓN -->
+<!-- =========================================================
+     CÁMARA
+     ========================================================= -->
 
-<section id="revision" class="pantalla">
-  <div class="contenedor">
+<section
+  id="camara"
+  class="pantalla"
+>
 
-    <h2>👀 REVISA TU CONFESIÓN</h2>
+<div class="contenedor">
 
-    <video
-      id="videoRevision"
-      controls
-      playsinline
-    ></video>
+  <div
+    id="preguntaCamara"
+    class="pregunta"
+  ></div>
 
-    <button
-      id="btnEnviar"
-      class="principal"
-    >
-      🤐 ENVIAR CONFESIÓN
-    </button>
+  <br>
 
-    <button
-      id="btnRepetir"
-      class="secundario"
-    >
-      🔄 REPETIR VIDEO
-    </button>
 
-    <button
-      id="btnAbandonarRevision"
-      class="peligro"
-    >
-      🚪 ABANDONAR
-    </button>
+  <video
+    id="videoCamara"
+    autoplay
+    muted
+    playsinline
+  ></video>
 
+
+  <div
+    id="cronometro"
+    class="cronometro"
+  >
+    00:00
   </div>
+
+
+  <div
+    id="avisoTiempo"
+    class="avisoTiempo"
+  ></div>
+
+
+  <button
+    id="btnGrabar"
+    class="principal"
+  >
+    🔴 GRABAR
+  </button>
+
+
+  <button
+    id="btnDetener"
+    class="principal"
+    style="display:none;"
+  >
+    ⏹ DETENER
+  </button>
+
+
+  <button
+    id="btnAbandonarGrabacion"
+    class="peligro"
+  >
+    🚪 ABANDONAR
+  </button>
+
+</div>
+
 </section>
 
 
-<!-- GUARDANDO -->
+<!-- =========================================================
+     REVISIÓN
+     ========================================================= -->
 
-<section id="guardando" class="pantalla">
-  <div class="contenedor">
+<section
+  id="revision"
+  class="pantalla"
+>
 
-    <h2>🤐 GUARDANDO TU CONFESIÓN...</h2>
+<div class="contenedor">
 
-    <div class="spinner"></div>
+  <h2>
+    👀 REVISA TU CONFESIÓN
+  </h2>
 
-    <p>No cierres esta pantalla.</p>
 
-  </div>
+  <video
+    id="videoRevision"
+    controls
+    playsinline
+  ></video>
+
+
+  <button
+    id="btnEnviar"
+    class="principal"
+  >
+    🤐 ENVIAR CONFESIÓN
+  </button>
+
+
+  <button
+    id="btnRepetir"
+    class="secundario"
+  >
+    🔄 REPETIR VIDEO
+  </button>
+
+
+  <button
+    id="btnAbandonarRevision"
+    class="peligro"
+  >
+    🚪 ABANDONAR
+  </button>
+
+</div>
+
 </section>
 
 
-<!-- ERROR ENVÍO -->
+<!-- =========================================================
+     GUARDANDO
+     ========================================================= -->
 
-<section id="errorEnvio" class="pantalla">
-  <div class="contenedor">
+<section
+  id="guardando"
+  class="pantalla"
+>
 
-    <h2>😵 ALGO SALIÓ MAL</h2>
+<div class="contenedor">
 
-    <p>
-      Tu video sigue aquí.
-      No se ha perdido.
-    </p>
+  <h2>
+    🤐 GUARDANDO TU CONFESIÓN...
+  </h2>
 
-    <div
-      id="detalleErrorEnvio"
-      class="mensaje-error"
-    ></div>
+  <div class="spinner"></div>
 
-    <button
-      id="btnReintentar"
-      class="principal"
-    >
-      🔄 REINTENTAR ENVÍO
-    </button>
+  <p>
+    No cierres esta pantalla.
+  </p>
 
-    <button
-      id="btnAbandonarError"
-      class="peligro"
-    >
-      🚪 ABANDONAR
-    </button>
+</div>
 
-  </div>
 </section>
 
 
-<!-- FINAL -->
+<!-- =========================================================
+     ERROR
+     ========================================================= -->
 
-<section id="final" class="pantalla">
-  <div class="contenedor">
+<section
+  id="errorEnvio"
+  class="pantalla"
+>
 
-    <div style="font-size:90px;">🤫</div>
+<div class="contenedor">
 
-    <h1>CONFESIÓN GUARDADA</h1>
+  <h2>
+    😵 ALGO SALIÓ MAL
+  </h2>
 
-    <p>
-      Tu secreto está a salvo 😈
-    </p>
+  <p>
+    Tu video sigue aquí.
+    Puedes volver a intentarlo.
+  </p>
 
-    <p class="pequeno">
-      Preparando el confesionario para la siguiente víctima...
-      <br><br>
-      <strong id="contadorFinal">5</strong>
-    </p>
 
-  </div>
+  <div
+    id="detalleErrorEnvio"
+    class="mensaje-error"
+  ></div>
+
+
+  <button
+    id="btnReintentar"
+    class="principal"
+  >
+    🔄 REINTENTAR ENVÍO
+  </button>
+
+
+  <button
+    id="btnAbandonarError"
+    class="peligro"
+  >
+    🚪 ABANDONAR
+  </button>
+
+</div>
+
 </section>
 
 
-<!-- INACTIVIDAD -->
+<!-- =========================================================
+     FINAL
+     ========================================================= -->
+
+<section
+  id="final"
+  class="pantalla"
+>
+
+<div class="contenedor">
+
+  <div style="font-size:90px;">
+    🤫
+  </div>
+
+  <h1>
+    CONFESIÓN ENVIADA
+  </h1>
+
+  <p>
+    Tu secreto está a salvo 😈
+  </p>
+
+  <p class="pequeno">
+
+    Preparando el Confesionario
+    para la siguiente víctima...
+
+    <br><br>
+
+    <strong id="contadorFinal">
+      5
+    </strong>
+
+  </p>
+
+</div>
+
+</section>
+
+
+<!-- =========================================================
+     MODAL INACTIVIDAD
+     ========================================================= -->
 
 <div id="modalInactividad">
 
-  <div class="modalCaja">
+<div class="modalCaja">
 
-    <h2>👀 ¿SIGUES AHÍ?</h2>
+  <h2>
+    👀 ¿SIGUES AHÍ?
+  </h2>
 
-    <p>
-      El Confesionario se reiniciará en:
-    </p>
+  <p>
+    El Confesionario se reiniciará en:
+  </p>
 
-    <div id="contadorInactividad">
-      10
-    </div>
-
-    <button
-      id="btnSigoAqui"
-      class="principal"
-    >
-      🙋 SÍ, SIGO AQUÍ
-    </button>
-
+  <div id="contadorInactividad">
+    10
   </div>
+
+  <button
+    id="btnSigoAqui"
+    class="principal"
+  >
+    🙋 SÍ, SIGO AQUÍ
+  </button>
+
+</div>
 
 </div>
 
@@ -570,22 +860,149 @@ video {
 const API_URL =
   'https://script.google.com/macros/s/AKfycbzGZxguZB-diYDtcI1q0Vsx0aTgd42Lvi31JQnr0o_42ckNY8qagSaOMrIsxmTQ4IJdug/exec';
 
+
 /*
-  Lo dejamos en 5 segundos para probar.
-  Después lo cambiaremos a 45.
+   PRUEBA:
+   5 segundos.
+
+   Cuando todo guarde correctamente:
+   cambiar 5 por 45.
 */
+
 const MAX_GRABACION = 5;
 
-const TIEMPO_INACTIVIDAD = 120000;
 
-const SEGUNDOS_AVISO = 10;
+const TIEMPO_INACTIVIDAD =
+  120000;
+
+
+const SEGUNDOS_AVISO =
+  10;
+
+
+/* ============================================================
+   LAS 100 CONFESIONES ESTÁN AQUÍ
+   NO SE CONSULTA APPS SCRIPT
+   ============================================================ */
+
+const confesiones = [
+
+{id:"C001",confesion:"¿Cuál fue tu primera impresión de la novia?",tipo:"🤫 Confiesa"},
+{id:"C002",confesion:"¿Cuál fue tu primera impresión del novio?",tipo:"🤫 Confiesa"},
+{id:"C003",confesion:"¿Qué pensaste la primera vez que viste a los novios juntos?",tipo:"🤫 Confiesa"},
+{id:"C004",confesion:"Confiesa algo de la novia que probablemente el novio no sepa.",tipo:"🔥 Sin filtro"},
+{id:"C005",confesion:"Confiesa algo del novio que probablemente la novia no sepa.",tipo:"🔥 Sin filtro"},
+{id:"C006",confesion:"Cuenta la anécdota más vergonzosa que recuerdes de alguno de los novios.",tipo:"🔥 Sin filtro"},
+{id:"C007",confesion:"¿Cuál es la locura más grande que hayas hecho con alguno de los novios?",tipo:"🤫 Confiesa"},
+{id:"C008",confesion:"Cuenta una historia de los novios que merezca quedar registrada para siempre.",tipo:"🤫 Confiesa"},
+{id:"C009",confesion:"¿Alguna vez pensaste que esta relación no llegaría al matrimonio? Cuenta por qué.",tipo:"🔥 Sin filtro"},
+{id:"C010",confesion:"¿Cuándo te diste cuenta de que estos dos iban en serio?",tipo:"🤫 Confiesa"},
+
+{id:"C011",confesion:"¿Quién crees que manda realmente en esta relación?",tipo:"😂 Humor"},
+{id:"C012",confesion:"¿Quién crees que gana más discusiones?",tipo:"😂 Humor"},
+{id:"C013",confesion:"¿Quién crees que pide perdón primero?",tipo:"😂 Humor"},
+{id:"C014",confesion:"¿Quién es más probable que diga “yo te dije”?",tipo:"😂 Humor"},
+{id:"C015",confesion:"¿Quién tiene más paciencia?",tipo:"😂 Humor"},
+{id:"C016",confesion:"¿Quién crees que es más mañoso?",tipo:"😂 Humor"},
+{id:"C017",confesion:"¿Quién demora más en arreglarse para salir?",tipo:"😂 Humor"},
+{id:"C018",confesion:"¿Quién crees que se queda dormido primero viendo una película?",tipo:"😂 Humor"},
+{id:"C019",confesion:"¿Quién se perdería primero durante un viaje?",tipo:"😂 Humor"},
+{id:"C020",confesion:"¿Quién compraría algo completamente innecesario sin avisar?",tipo:"😂 Humor"},
+
+{id:"C021",confesion:"¿Quién gastaría más plata en una compra impulsiva?",tipo:"😂 Humor"},
+{id:"C022",confesion:"¿Quién sobreviviría mejor una semana sin internet?",tipo:"😂 Humor"},
+{id:"C023",confesion:"¿Quién tendría más posibilidades de olvidar una fecha importante?",tipo:"😂 Humor"},
+{id:"C024",confesion:"¿Quién crees que ocupará más espacio en la cama?",tipo:"🔥 Sin filtro"},
+{id:"C025",confesion:"¿Quién se adueñará de las frazadas?",tipo:"😂 Humor"},
+{id:"C026",confesion:"¿Quién tiene más probabilidades de comerse el último pedazo sin preguntar?",tipo:"😂 Humor"},
+{id:"C027",confesion:"¿Quién crees que dejará cosas tiradas por la casa?",tipo:"😂 Humor"},
+{id:"C028",confesion:"¿Quién terminará haciendo más compras para la casa?",tipo:"😂 Humor"},
+{id:"C029",confesion:"¿Quién elegiría qué ver en Netflix durante una hora y finalmente no vería nada?",tipo:"😂 Humor"},
+{id:"C030",confesion:"Si los novios participaran en un reality, ¿quién duraría más?",tipo:"😂 Humor"},
+
+{id:"C031",confesion:"Imita a la novia.",tipo:"🎭 Reto"},
+{id:"C032",confesion:"Imita al novio.",tipo:"🎭 Reto"},
+{id:"C033",confesion:"Imita cómo crees que discuten los novios.",tipo:"🎭 Reto"},
+{id:"C034",confesion:"Imita cómo imaginas a los novios cuando tengan 80 años.",tipo:"🎭 Reto"},
+{id:"C035",confesion:"Describe a la novia usando solo tres palabras.",tipo:"🎭 Reto"},
+{id:"C036",confesion:"Describe al novio usando solo tres palabras.",tipo:"🎭 Reto"},
+{id:"C037",confesion:"Describe este matrimonio usando solo tres palabras.",tipo:"🎭 Reto"},
+{id:"C038",confesion:"Cuenta una anécdota de los novios como si fueras periodista de farándula.",tipo:"🎭 Reto"},
+{id:"C039",confesion:"Da un discurso matrimonial dramático de máximo 15 segundos.",tipo:"🎭 Reto"},
+{id:"C040",confesion:"Dedícales una canción y canta un pedacito.",tipo:"🎭 Reto"},
+
+{id:"C041",confesion:"¿Cómo imaginas a los novios en 5 años?",tipo:"🔮 Predicción"},
+{id:"C042",confesion:"¿Cómo imaginas a los novios en 20 años?",tipo:"🔮 Predicción"},
+{id:"C043",confesion:"¿Quién crees que tendrá más canas primero?",tipo:"🔮 Predicción"},
+{id:"C044",confesion:"¿Quién se convertirá primero en una persona mañosa de viejo?",tipo:"🔮 Predicción"},
+{id:"C045",confesion:"¿Cuál crees que será su discusión más absurda de casados?",tipo:"🔮 Predicción"},
+{id:"C046",confesion:"¿Qué crees que nunca cambiará entre ellos aunque pasen 30 años?",tipo:"🔮 Predicción"},
+{id:"C047",confesion:"¿Dónde imaginas que estarán celebrando su décimo aniversario?",tipo:"🔮 Predicción"},
+{id:"C048",confesion:"Predice qué estarán haciendo exactamente dentro de un año.",tipo:"🔮 Predicción"},
+{id:"C049",confesion:"¿Quién crees que será el más consentidor con sus futuras mascotas?",tipo:"🔮 Predicción"},
+{id:"C050",confesion:"Haz una predicción completamente absurda sobre su futuro.",tipo:"🔮 Predicción"},
+
+{id:"C051",confesion:"¿Cuál es tu recuerdo favorito con la novia?",tipo:"❤️ Recuerdo"},
+{id:"C052",confesion:"¿Cuál es tu recuerdo favorito con el novio?",tipo:"❤️ Recuerdo"},
+{id:"C053",confesion:"¿Cuál es tu recuerdo favorito con ambos?",tipo:"❤️ Recuerdo"},
+{id:"C054",confesion:"Cuenta un momento con alguno de ellos que todavía te haga reír.",tipo:"❤️ Recuerdo"},
+{id:"C055",confesion:"¿Qué recuerdo de esta boda quieres que los novios nunca olviden?",tipo:"❤️ Recuerdo"},
+{id:"C056",confesion:"¿Cuál ha sido el momento más divertido de esta boda hasta ahora?",tipo:"❤️ Recuerdo"},
+{id:"C057",confesion:"¿Cuál ha sido tu momento favorito de esta boda?",tipo:"❤️ Recuerdo"},
+{id:"C058",confesion:"¿Qué detalle de hoy te gustaría que los novios supieran que notaste?",tipo:"❤️ Recuerdo"},
+{id:"C059",confesion:"Cuenta algo bonito que alguno de los novios haya hecho por ti.",tipo:"❤️ Recuerdo"},
+{id:"C060",confesion:"¿Qué momento vivido con ellos guardarías para siempre?",tipo:"❤️ Recuerdo"},
+
+{id:"C061",confesion:"¿Qué es lo que más quieres de la novia?",tipo:"🥹 Bonita"},
+{id:"C062",confesion:"¿Qué es lo que más quieres del novio?",tipo:"🥹 Bonita"},
+{id:"C063",confesion:"¿Qué crees que hace especial su relación?",tipo:"🥹 Bonita"},
+{id:"C064",confesion:"¿Qué es lo que más admiras de ellos como pareja?",tipo:"🥹 Bonita"},
+{id:"C065",confesion:"¿Qué crees que aporta la novia a la vida del novio?",tipo:"🥹 Bonita"},
+{id:"C066",confesion:"¿Qué crees que aporta el novio a la vida de la novia?",tipo:"🥹 Bonita"},
+{id:"C067",confesion:"¿Qué esperas que nunca cambie entre ellos?",tipo:"🥹 Bonita"},
+{id:"C068",confesion:"¿Qué deseas para esta nueva etapa de sus vidas?",tipo:"🥹 Bonita"},
+{id:"C069",confesion:"Si pudieras regalarles algo que no se pueda comprar, ¿qué sería?",tipo:"🥹 Bonita"},
+{id:"C070",confesion:"Diles algo que quizás nunca les hayas dicho.",tipo:"🥹 Bonita"},
+
+{id:"C071",confesion:"Dales tu mejor consejo para el matrimonio.",tipo:"💍 Consejo"},
+{id:"C072",confesion:"Dales el peor consejo matrimonial que se te ocurra.",tipo:"😂 Humor"},
+{id:"C073",confesion:"¿Cuál crees que es el secreto para aguantar muchos años juntos?",tipo:"💍 Consejo"},
+{id:"C074",confesion:"¿Qué discusión matrimonial deberían aprender a evitar desde ahora?",tipo:"💍 Consejo"},
+{id:"C075",confesion:"Completa: “Un matrimonio feliz necesita mucho amor y mucho…”",tipo:"💍 Consejo"},
+{id:"C076",confesion:"¿Qué regla debería existir obligatoriamente en su matrimonio?",tipo:"💍 Consejo"},
+{id:"C077",confesion:"¿Qué tradición deberían crear como matrimonio?",tipo:"💍 Consejo"},
+{id:"C078",confesion:"Dales un consejo para cuando estén enojados el uno con el otro.",tipo:"💍 Consejo"},
+{id:"C079",confesion:"Dales un consejo para mantener viva la diversión después de muchos años.",tipo:"💍 Consejo"},
+{id:"C080",confesion:"Inventa uno de los “10 mandamientos” de este matrimonio.",tipo:"😂 Humor"},
+
+{id:"C081",confesion:"Completa: “Yo sabía que se iban a casar cuando…”",tipo:"🤫 Confiesa"},
+{id:"C082",confesion:"Completa: “Si tuviera que advertirle algo al novio sobre la novia sería…”",tipo:"🔥 Sin filtro"},
+{id:"C083",confesion:"Completa: “Si tuviera que advertirle algo a la novia sobre el novio sería…”",tipo:"🔥 Sin filtro"},
+{id:"C084",confesion:"Completa: “Lo más peligroso de dejar solos a estos dos es…”",tipo:"😂 Humor"},
+{id:"C085",confesion:"Completa: “Dentro de 20 años estos dos seguirán…”",tipo:"🔮 Predicción"},
+{id:"C086",confesion:"Completa: “Lo que jamás debería faltar en su casa es…”",tipo:"💍 Consejo"},
+{id:"C087",confesion:"Completa: “Después de conocerlos, puedo confirmar que…”",tipo:"🤫 Confiesa"},
+{id:"C088",confesion:"Completa: “Si su matrimonio fuera una película se llamaría…”",tipo:"😂 Humor"},
+{id:"C089",confesion:"Completa: “Si los novios fueran un meme sería…”",tipo:"😂 Humor"},
+{id:"C090",confesion:"Completa: “Lo que nadie te cuenta del matrimonio es…”",tipo:"🔥 Sin filtro"},
+
+{id:"C091",confesion:"Deja un mensaje para que los novios vean en su primer aniversario.",tipo:"💌 Cápsula"},
+{id:"C092",confesion:"Deja un mensaje para que los novios vean en su quinto aniversario.",tipo:"💌 Cápsula"},
+{id:"C093",confesion:"Deja un mensaje para que los novios vean en su décimo aniversario.",tipo:"💌 Cápsula"},
+{id:"C094",confesion:"Háblales directamente a los novios del futuro: ¿qué esperas que estén haciendo cuando vean esto?",tipo:"💌 Cápsula"},
+{id:"C095",confesion:"Recuérdales por qué decidieron celebrar este día rodeados de todas estas personas.",tipo:"💌 Cápsula"},
+{id:"C096",confesion:"Cuéntales algo de esta noche que quizás ellos no alcanzaron a ver.",tipo:"🤫 Confiesa"},
+{id:"C097",confesion:"¿Qué cahuín inocente de esta boda tienes para contarles? 👀",tipo:"🔥 Sin filtro"},
+{id:"C098",confesion:"Haz un brindis para los recién casados en máximo 15 segundos.",tipo:"🥂 Brindis"},
+{id:"C099",confesion:"Mira a cámara y deja el mensaje que quieras para los recién casados. Sin reglas.",tipo:"💌 Libre"},
+{id:"C100",confesion:"🎰 JACKPOT: di algo que quieras que los novios recuerden cuando vuelvan a ver este video dentro de muchos años.",tipo:"⭐ Jackpot"}
+
+];
 
 
 /* ============================================================
    VARIABLES
    ============================================================ */
-
-let confesiones = [];
 
 let confesionSeleccionada = null;
 
@@ -623,93 +1040,140 @@ let intervaloInactividad = null;
    ============================================================ */
 
 const btnPlay =
-  document.getElementById('btnPlay');
-
-const estadoCarga =
-  document.getElementById('estadoCarga');
+  document.getElementById(
+    'btnPlay'
+  );
 
 const slotTipo =
-  document.getElementById('slotTipo');
+  document.getElementById(
+    'slotTipo'
+  );
 
 const slotTexto =
-  document.getElementById('slotTexto');
+  document.getElementById(
+    'slotTexto'
+  );
 
 const resultadoTipo =
-  document.getElementById('resultadoTipo');
+  document.getElementById(
+    'resultadoTipo'
+  );
 
 const resultadoTexto =
-  document.getElementById('resultadoTexto');
+  document.getElementById(
+    'resultadoTexto'
+  );
 
 const btnAceptar =
-  document.getElementById('btnAceptar');
+  document.getElementById(
+    'btnAceptar'
+  );
 
 const btnCambiar =
-  document.getElementById('btnCambiar');
+  document.getElementById(
+    'btnCambiar'
+  );
 
 const preguntaPreparar =
-  document.getElementById('preguntaPreparar');
+  document.getElementById(
+    'preguntaPreparar'
+  );
 
 const btnActivarCamara =
-  document.getElementById('btnActivarCamara');
+  document.getElementById(
+    'btnActivarCamara'
+  );
 
 const errorCamara =
-  document.getElementById('errorCamara');
+  document.getElementById(
+    'errorCamara'
+  );
 
 const preguntaCamara =
-  document.getElementById('preguntaCamara');
+  document.getElementById(
+    'preguntaCamara'
+  );
 
 const videoCamara =
-  document.getElementById('videoCamara');
+  document.getElementById(
+    'videoCamara'
+  );
 
 const cronometro =
-  document.getElementById('cronometro');
+  document.getElementById(
+    'cronometro'
+  );
 
 const avisoTiempo =
-  document.getElementById('avisoTiempo');
+  document.getElementById(
+    'avisoTiempo'
+  );
 
 const btnGrabar =
-  document.getElementById('btnGrabar');
+  document.getElementById(
+    'btnGrabar'
+  );
 
 const btnDetener =
-  document.getElementById('btnDetener');
+  document.getElementById(
+    'btnDetener'
+  );
 
 const videoRevision =
-  document.getElementById('videoRevision');
+  document.getElementById(
+    'videoRevision'
+  );
 
 const detalleErrorEnvio =
-  document.getElementById('detalleErrorEnvio');
+  document.getElementById(
+    'detalleErrorEnvio'
+  );
 
 const contadorFinal =
-  document.getElementById('contadorFinal');
+  document.getElementById(
+    'contadorFinal'
+  );
 
 const modalInactividad =
-  document.getElementById('modalInactividad');
+  document.getElementById(
+    'modalInactividad'
+  );
 
 const contadorInactividad =
-  document.getElementById('contadorInactividad');
-
-const btnSigoAqui =
-  document.getElementById('btnSigoAqui');
+  document.getElementById(
+    'contadorInactividad'
+  );
 
 
 /* ============================================================
-   PANTALLAS
+   CAMBIO DE PANTALLA
    ============================================================ */
 
 function mostrarPantalla(id) {
 
   document
-    .querySelectorAll('.pantalla')
-    .forEach(function(pantalla) {
+    .querySelectorAll(
+      '.pantalla'
+    )
+    .forEach(
+      function(pantalla) {
 
-      pantalla.classList.remove('activa');
+        pantalla
+          .classList
+          .remove(
+            'activa'
+          );
 
-    });
+      }
+    );
 
 
   document
     .getElementById(id)
-    .classList.add('activa');
+    .classList
+    .add(
+      'activa'
+    );
 
 
   reiniciarTemporizadorInactividad();
@@ -718,188 +1182,20 @@ function mostrarPantalla(id) {
 
 
 /* ============================================================
-   CARGA JSONP
-
-   IMPORTANTE:
-   Ya comprobamos manualmente que Apps Script responde:
-   prueba({"ok":true,...})
-   ============================================================ */
-
-function cargarConfesiones() {
-
-  btnPlay.disabled = true;
-
-  estadoCarga.textContent =
-    '⏳ Cargando confesiones...';
-
-
-  /*
-    Creamos una función global FIJA.
-
-    Apps Script devolverá:
-    recibirConfesiones({...});
-  */
-
-  window.recibirConfesiones =
-    function(datos) {
-
-      console.log(
-        'Respuesta recibida:',
-        datos
-      );
-
-
-      if (!datos) {
-
-        estadoCarga.textContent =
-          '❌ El servidor respondió sin datos.';
-
-        return;
-
-      }
-
-
-      if (!datos.ok) {
-
-        estadoCarga.textContent =
-          '❌ ' +
-          (
-            datos.error ||
-            'Error al leer las confesiones.'
-          );
-
-        return;
-
-      }
-
-
-      if (
-        !Array.isArray(datos.confesiones)
-      ) {
-
-        estadoCarga.textContent =
-          '❌ La respuesta no contiene una lista válida.';
-
-        return;
-
-      }
-
-
-      if (
-        datos.confesiones.length === 0
-      ) {
-
-        estadoCarga.textContent =
-          '❌ No hay confesiones activas.';
-
-        return;
-
-      }
-
-
-      confesiones =
-        datos.confesiones;
-
-
-      btnPlay.disabled =
-        false;
-
-
-      estadoCarga.textContent =
-        '😈 Confesionario listo · ' +
-        confesiones.length +
-        ' confesiones';
-
-  };
-
-
-  /*
-    Eliminamos una solicitud anterior,
-    si existiera.
-  */
-
-  const anterior =
-    document.getElementById(
-      'cargaConfesionesJSONP'
-    );
-
-
-  if (anterior) {
-
-    anterior.remove();
-
-  }
-
-
-  /*
-    Creamos <script src="...">
-
-    Esto NO usa fetch.
-  */
-
-  const script =
-    document.createElement('script');
-
-
-  script.id =
-    'cargaConfesionesJSONP';
-
-
-  script.async =
-    true;
-
-
-  script.src =
-    API_URL +
-    '?callback=recibirConfesiones' +
-    '&nocache=' +
-    Date.now();
-
-
-  script.onerror =
-    function() {
-
-      console.error(
-        'Falló la carga del script JSONP.'
-      );
-
-
-      estadoCarga.innerHTML =
-        '❌ No pude conectar con Apps Script.<br>' +
-        'Error JSONP.';
-
-  };
-
-
-  document.body.appendChild(
-    script
-  );
-
-}
-
-
-/* ============================================================
-   CONFESIÓN ALEATORIA
+   ELEGIR CONFESIÓN
    ============================================================ */
 
 function elegirConfesionAleatoria() {
-
-  if (
-    confesiones.length === 0
-  ) {
-
-    return null;
-
-  }
-
 
   let disponibles =
     confesiones;
 
 
-  if (confesionDescartada) {
+  if (
+    confesionDescartada
+  ) {
 
-    const filtradas =
+    disponibles =
       confesiones.filter(
         function(item) {
 
@@ -911,16 +1207,6 @@ function elegirConfesionAleatoria() {
         }
       );
 
-
-    if (
-      filtradas.length > 0
-    ) {
-
-      disponibles =
-        filtradas;
-
-    }
-
   }
 
 
@@ -931,7 +1217,9 @@ function elegirConfesionAleatoria() {
     );
 
 
-  return disponibles[indice];
+  return disponibles[
+    indice
+  ];
 
 }
 
@@ -942,17 +1230,15 @@ function elegirConfesionAleatoria() {
 
 function realizarSorteo() {
 
-  if (
-    girando ||
-    confesiones.length === 0
-  ) {
+  if (girando) {
 
     return;
 
   }
 
 
-  girando = true;
+  girando =
+    true;
 
 
   mostrarPantalla(
@@ -960,22 +1246,14 @@ function realizarSorteo() {
   );
 
 
-  let vueltas = 0;
+  let vueltas =
+    0;
 
 
   function siguiente() {
 
     const temporal =
       elegirConfesionAleatoria();
-
-
-    if (!temporal) {
-
-      girando = false;
-
-      return;
-
-    }
 
 
     slotTipo.textContent =
@@ -989,25 +1267,43 @@ function realizarSorteo() {
     vueltas++;
 
 
-    let demora = 70;
+    let demora =
+      70;
 
 
-    if (vueltas > 10) {
-      demora = 110;
+    if (
+      vueltas > 10
+    ) {
+
+      demora =
+        110;
+
     }
 
 
-    if (vueltas > 17) {
-      demora = 180;
+    if (
+      vueltas > 17
+    ) {
+
+      demora =
+        180;
+
     }
 
 
-    if (vueltas > 22) {
-      demora = 300;
+    if (
+      vueltas > 22
+    ) {
+
+      demora =
+        300;
+
     }
 
 
-    if (vueltas >= 26) {
+    if (
+      vueltas >= 26
+    ) {
 
       confesionSeleccionada =
         elegirConfesionAleatoria();
@@ -1027,7 +1323,8 @@ function realizarSorteo() {
           : 'block';
 
 
-      girando = false;
+      girando =
+        false;
 
 
       setTimeout(
@@ -1068,11 +1365,14 @@ btnPlay.addEventListener(
   'click',
   function() {
 
-    cambioUtilizado = false;
+    cambioUtilizado =
+      false;
 
-    confesionDescartada = null;
+    confesionDescartada =
+      null;
 
-    confesionSeleccionada = null;
+    confesionSeleccionada =
+      null;
 
     realizarSorteo();
 
@@ -1081,15 +1381,19 @@ btnPlay.addEventListener(
 
 
 /* ============================================================
-   CAMBIAR CONFESIÓN
+   CAMBIO
    ============================================================ */
 
 btnCambiar.addEventListener(
   'click',
   function() {
 
-    if (cambioUtilizado) {
+    if (
+      cambioUtilizado
+    ) {
+
       return;
+
     }
 
 
@@ -1097,7 +1401,8 @@ btnCambiar.addEventListener(
       confesionSeleccionada;
 
 
-    cambioUtilizado = true;
+    cambioUtilizado =
+      true;
 
 
     realizarSorteo();
@@ -1118,7 +1423,8 @@ btnAceptar.addEventListener(
       confesionSeleccionada.confesion;
 
 
-    errorCamara.innerHTML = '';
+    errorCamara.innerHTML =
+      '';
 
 
     mostrarPantalla(
@@ -1130,14 +1436,18 @@ btnAceptar.addEventListener(
 
 
 /* ============================================================
-   ACTIVAR CÁMARA
+   CÁMARA
    ============================================================ */
 
 async function activarCamara() {
 
-  errorCamara.innerHTML = '';
+  errorCamara.innerHTML =
+    '';
 
-  btnActivarCamara.disabled = true;
+
+  btnActivarCamara.disabled =
+    true;
+
 
   btnActivarCamara.textContent =
     '⏳ ACTIVANDO...';
@@ -1151,7 +1461,7 @@ async function activarCamara() {
     ) {
 
       throw new Error(
-        'Este navegador no permite acceder a la cámara.'
+        'La cámara no está disponible.'
       );
 
     }
@@ -1161,22 +1471,27 @@ async function activarCamara() {
 
 
     streamCamara =
-      await navigator.mediaDevices.getUserMedia({
+      await navigator
+        .mediaDevices
+        .getUserMedia({
 
-        video: {
-          facingMode: 'user'
-        },
+          video: {
+            facingMode:
+              'user'
+          },
 
-        audio: true
+          audio:
+            true
 
-      });
+        });
 
 
     videoCamara.srcObject =
       streamCamara;
 
 
-    videoCamara.muted = true;
+    videoCamara.muted =
+      true;
 
 
     await videoCamara.play();
@@ -1196,9 +1511,6 @@ async function activarCamara() {
 
   } catch(error) {
 
-    console.error(error);
-
-
     detenerCamara();
 
 
@@ -1206,15 +1518,22 @@ async function activarCamara() {
       '<div class="mensaje-error">' +
       '🚫 <b>No pude activar la cámara.</b><br><br>' +
       '<b>Error:</b> ' +
-      (error.name || 'Sin nombre') +
-      '<br>' +
-      '<b>Detalle:</b> ' +
-      (error.message || 'Sin detalle') +
+      (
+        error.name ||
+        'Sin nombre'
+      ) +
+      '<br><b>Detalle:</b> ' +
+      (
+        error.message ||
+        'Sin detalle'
+      ) +
       '</div>';
 
   } finally {
 
-    btnActivarCamara.disabled = false;
+    btnActivarCamara.disabled =
+      false;
+
 
     btnActivarCamara.textContent =
       '📹 ACTIVAR CÁMARA';
@@ -1231,7 +1550,7 @@ btnActivarCamara.addEventListener(
 
 
 /* ============================================================
-   INICIAR GRABACIÓN
+   3 - 2 - 1
    ============================================================ */
 
 async function iniciarGrabacion() {
@@ -1246,7 +1565,8 @@ async function iniciarGrabacion() {
   }
 
 
-  btnGrabar.disabled = true;
+  btnGrabar.disabled =
+    true;
 
 
   for (
@@ -1259,7 +1579,9 @@ async function iniciarGrabacion() {
       numero;
 
 
-    await esperar(700);
+    await esperar(
+      700
+    );
 
   }
 
@@ -1274,19 +1596,39 @@ async function iniciarGrabacion() {
 
 
 /* ============================================================
-   MEDIA RECORDER
+   GRABACIÓN
    ============================================================ */
 
 function comenzarGrabacion() {
 
-  fragmentosVideo = [];
-
-  segundosGrabacion = 0;
-
-  duracionFinal = 0;
+  fragmentosVideo =
+    [];
 
 
-  let opciones = {};
+  segundosGrabacion =
+    0;
+
+
+  duracionFinal =
+    0;
+
+
+  let opciones =
+    {};
+
+
+  if (
+    typeof MediaRecorder ===
+    'undefined'
+  ) {
+
+    alert(
+      'Este navegador no permite grabar video.'
+    );
+
+    return;
+
+  }
 
 
   if (
@@ -1382,12 +1724,15 @@ function comenzarGrabacion() {
         new Blob(
           fragmentosVideo,
           {
-            type: tipo
+            type:
+              tipo
           }
         );
 
 
-      if (videoURL) {
+      if (
+        videoURL
+      ) {
 
         URL.revokeObjectURL(
           videoURL
@@ -1416,10 +1761,13 @@ function comenzarGrabacion() {
     };
 
 
-  mediaRecorder.start(1000);
+  mediaRecorder.start(
+    1000
+  );
 
 
-  grabando = true;
+  grabando =
+    true;
 
 
   btnGrabar.style.display =
@@ -1502,23 +1850,31 @@ function iniciarCronometro() {
 
 
 /* ============================================================
-   DETENER GRABACIÓN
+   DETENER
    ============================================================ */
 
 function detenerGrabacion() {
 
-  if (!grabando) {
+  if (
+    !grabando
+  ) {
+
     return;
+
   }
 
 
-  grabando = false;
+  grabando =
+    false;
 
 
   duracionFinal =
-    Math.min(
-      segundosGrabacion,
-      MAX_GRABACION
+    Math.max(
+      1,
+      Math.min(
+        segundosGrabacion,
+        MAX_GRABACION
+      )
     );
 
 
@@ -1527,12 +1883,14 @@ function detenerGrabacion() {
   );
 
 
-  intervaloCronometro = null;
+  intervaloCronometro =
+    null;
 
 
   if (
     mediaRecorder &&
-    mediaRecorder.state !== 'inactive'
+    mediaRecorder.state !==
+      'inactive'
   ) {
 
     mediaRecorder.stop();
@@ -1564,19 +1922,29 @@ btnDetener.addEventListener(
 
 function prepararControlesGrabacion() {
 
-  grabando = false;
+  grabando =
+    false;
 
-  segundosGrabacion = 0;
+
+  segundosGrabacion =
+    0;
+
 
   cronometro.textContent =
     '00:00';
 
-  avisoTiempo.textContent = '';
 
-  btnGrabar.disabled = false;
+  avisoTiempo.textContent =
+    '';
+
+
+  btnGrabar.disabled =
+    false;
+
 
   btnGrabar.style.display =
     'block';
+
 
   btnDetener.style.display =
     'none';
@@ -1585,11 +1953,13 @@ function prepararControlesGrabacion() {
 
 
 /* ============================================================
-   REPETIR VIDEO
+   REPETIR
    ============================================================ */
 
 document
-  .getElementById('btnRepetir')
+  .getElementById(
+    'btnRepetir'
+  )
   .addEventListener(
     'click',
     function() {
@@ -1610,18 +1980,73 @@ document
 
 
 /* ============================================================
-   ENVIAR
+   VIDEO -> BASE64
+   ============================================================ */
 
-   Lo mantenemos por ahora para probar los 5 segundos.
-   Si Safari bloquea específicamente este POST,
-   ya sabremos que la lectura quedó solucionada y
-   atacaremos únicamente el envío.
+function blobABase64(blob) {
+
+  return new Promise(
+    function(
+      resolve,
+      reject
+    ) {
+
+      const lector =
+        new FileReader();
+
+
+      lector.onloadend =
+        function() {
+
+          const resultado =
+            String(
+              lector.result
+            );
+
+
+          const coma =
+            resultado.indexOf(
+              ','
+            );
+
+
+          resolve(
+            coma >= 0
+              ? resultado.substring(
+                  coma + 1
+                )
+              : resultado
+          );
+
+        };
+
+
+      lector.onerror =
+        reject;
+
+
+      lector.readAsDataURL(
+        blob
+      );
+
+    }
+  );
+
+}
+
+
+/* ============================================================
+   ENVIAR
    ============================================================ */
 
 async function enviarConfesion() {
 
-  if (!videoBlob) {
+  if (
+    !videoBlob
+  ) {
+
     return;
+
   }
 
 
@@ -1680,38 +2105,50 @@ async function enviarConfesion() {
     };
 
 
-    const respuesta =
-      await fetch(
-        API_URL,
-        {
-          method: 'POST',
+    /*
+       IMPORTANTE:
 
-          headers: {
-            'Content-Type':
-              'text/plain;charset=utf-8'
-          },
+       Apps Script sí ejecutará doPost().
+       Usamos no-cors porque no necesitamos leer
+       directamente la respuesta redirigida de
+       Content Service desde GitHub.
+    */
 
-          body:
-            JSON.stringify(datos)
-        }
-      );
+    await fetch(
+      API_URL,
+      {
+
+        method:
+          'POST',
+
+        mode:
+          'no-cors',
+
+        headers: {
+
+          'Content-Type':
+            'text/plain;charset=utf-8'
+
+        },
+
+        body:
+          JSON.stringify(
+            datos
+          )
+
+      }
+    );
 
 
-    const resultado =
-      await respuesta.json();
+    /*
+       Damos unos segundos al servidor para
+       terminar el guardado antes de mostrar
+       la confirmación.
+    */
 
-
-    if (!resultado.ok) {
-
-      throw new Error(
-        resultado.error ||
-        'No fue posible guardar la confesión.'
-      );
-
-    }
-
-
-    limpiarSoloGrabacion();
+    await esperar(
+      4000
+    );
 
 
     mostrarConfirmacion();
@@ -1719,7 +2156,9 @@ async function enviarConfesion() {
 
   } catch(error) {
 
-    console.error(error);
+    console.error(
+      error
+    );
 
 
     detalleErrorEnvio.textContent =
@@ -1730,7 +2169,7 @@ async function enviarConfesion() {
       ) +
       (
         error.message ||
-        'Error desconocido'
+        'No fue posible enviar el video.'
       );
 
 
@@ -1743,71 +2182,28 @@ async function enviarConfesion() {
 }
 
 
-document
-  .getElementById('btnEnviar')
-  .addEventListener(
-    'click',
-    enviarConfesion
-  );
-
-
-document
-  .getElementById('btnReintentar')
-  .addEventListener(
-    'click',
-    enviarConfesion
-  );
-
-
 /* ============================================================
-   BASE64
+   BOTONES ENVÍO
    ============================================================ */
 
-function blobABase64(blob) {
-
-  return new Promise(
-    function(resolve, reject) {
-
-      const lector =
-        new FileReader();
-
-
-      lector.onloadend =
-        function() {
-
-          const resultado =
-            String(
-              lector.result
-            );
-
-
-          const coma =
-            resultado.indexOf(',');
-
-
-          resolve(
-            coma >= 0
-              ? resultado.substring(
-                  coma + 1
-                )
-              : resultado
-          );
-
-        };
-
-
-      lector.onerror =
-        reject;
-
-
-      lector.readAsDataURL(
-        blob
-      );
-
-    }
+document
+  .getElementById(
+    'btnEnviar'
+  )
+  .addEventListener(
+    'click',
+    enviarConfesion
   );
 
-}
+
+document
+  .getElementById(
+    'btnReintentar'
+  )
+  .addEventListener(
+    'click',
+    enviarConfesion
+  );
 
 
 /* ============================================================
@@ -1821,7 +2217,8 @@ function mostrarConfirmacion() {
   );
 
 
-  let segundos = 5;
+  let segundos =
+    5;
 
 
   contadorFinal.textContent =
@@ -1897,7 +2294,9 @@ function abandonar() {
 
 function detenerCamara() {
 
-  if (streamCamara) {
+  if (
+    streamCamara
+  ) {
 
     streamCamara
       .getTracks()
@@ -1910,12 +2309,14 @@ function detenerCamara() {
       );
 
 
-    streamCamara = null;
+    streamCamara =
+      null;
 
   }
 
 
-  videoCamara.srcObject = null;
+  videoCamara.srcObject =
+    null;
 
 }
 
@@ -1934,35 +2335,48 @@ function limpiarSoloGrabacion() {
   );
 
 
-  intervaloCronometro = null;
+  intervaloCronometro =
+    null;
 
 
   if (
     mediaRecorder &&
-    mediaRecorder.state !== 'inactive'
+    mediaRecorder.state !==
+      'inactive'
   ) {
 
-    mediaRecorder.onstop = null;
+    mediaRecorder.onstop =
+      null;
+
 
     mediaRecorder.stop();
 
   }
 
 
-  mediaRecorder = null;
-
-  fragmentosVideo = [];
-
-  videoBlob = null;
+  mediaRecorder =
+    null;
 
 
-  if (videoURL) {
+  fragmentosVideo =
+    [];
+
+
+  videoBlob =
+    null;
+
+
+  if (
+    videoURL
+  ) {
 
     URL.revokeObjectURL(
       videoURL
     );
 
-    videoURL = null;
+
+    videoURL =
+      null;
 
   }
 
@@ -1989,13 +2403,20 @@ function reiniciarTodo() {
   limpiarSoloGrabacion();
 
 
-  confesionSeleccionada = null;
+  confesionSeleccionada =
+    null;
 
-  confesionDescartada = null;
 
-  cambioUtilizado = false;
+  confesionDescartada =
+    null;
 
-  girando = false;
+
+  cambioUtilizado =
+    false;
+
+
+  girando =
+    false;
 
 
   cerrarAvisoInactividad();
@@ -2019,8 +2440,12 @@ function reiniciarTemporizadorInactividad() {
   );
 
 
-  if (grabando) {
+  if (
+    grabando
+  ) {
+
     return;
+
   }
 
 
@@ -2033,8 +2458,11 @@ function reiniciarTemporizadorInactividad() {
   if (
     pantallaActiva &&
     (
-      pantallaActiva.id === 'guardando' ||
-      pantallaActiva.id === 'final'
+      pantallaActiva.id ===
+        'guardando' ||
+
+      pantallaActiva.id ===
+        'final'
     )
   ) {
 
@@ -2054,8 +2482,12 @@ function reiniciarTemporizadorInactividad() {
 
 function mostrarAvisoInactividad() {
 
-  if (grabando) {
+  if (
+    grabando
+  ) {
+
     return;
+
   }
 
 
@@ -2118,21 +2550,27 @@ function cerrarAvisoInactividad() {
   );
 
 
-  intervaloInactividad = null;
+  intervaloInactividad =
+    null;
 
 }
 
 
-btnSigoAqui.addEventListener(
-  'click',
-  function() {
+document
+  .getElementById(
+    'btnSigoAqui'
+  )
+  .addEventListener(
+    'click',
+    function() {
 
-    cerrarAvisoInactividad();
+      cerrarAvisoInactividad();
 
-    reiniciarTemporizadorInactividad();
 
-  }
-);
+      reiniciarTemporizadorInactividad();
+
+    }
+  );
 
 
 [
@@ -2149,7 +2587,7 @@ btnSigoAqui.addEventListener(
 
         if (
           modalInactividad.style.display ===
-          'flex'
+            'flex'
         ) {
 
           return;
@@ -2161,7 +2599,8 @@ btnSigoAqui.addEventListener(
 
       },
       {
-        passive: true
+        passive:
+          true
       }
     );
 
@@ -2170,7 +2609,7 @@ btnSigoAqui.addEventListener(
 
 
 /* ============================================================
-   ESPERA
+   ESPERAR
    ============================================================ */
 
 function esperar(ms) {
@@ -2190,14 +2629,13 @@ function esperar(ms) {
 
 
 /* ============================================================
-   ARRANQUE
+   INICIO
    ============================================================ */
-
-cargarConfesiones();
 
 reiniciarTemporizadorInactividad();
 
 </script>
 
 </body>
+
 </html>
