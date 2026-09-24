@@ -13,6 +13,7 @@
 
 <title>El Confesionario 🤫</title>
 
+
 <style>
 
 * {
@@ -38,7 +39,7 @@ body {
       #100b11 100%
     );
 
-  color: #fff;
+  color: white;
 
   font-family:
     -apple-system,
@@ -250,7 +251,7 @@ video {
 
   border-radius: 25px;
 
-  background: #000;
+  background: black;
 
 }
 
@@ -375,7 +376,7 @@ video {
 
 .pequeno {
 
-  opacity: .7;
+  opacity: .72;
 
   font-size: 16px;
 
@@ -389,9 +390,9 @@ video {
 <body>
 
 
-<!-- =====================================================
+<!-- ============================================================
      INICIO
-     ===================================================== -->
+     ============================================================ -->
 
 <section
   id="inicio"
@@ -400,9 +401,7 @@ video {
 
 <div class="contenedor">
 
-  <div
-    style="font-size:80px;"
-  >
+  <div style="font-size:80px;">
     🤫
   </div>
 
@@ -418,6 +417,7 @@ video {
   <button
     id="btnPlay"
     class="principal"
+    disabled
   >
     🎰 PLAY
   </button>
@@ -434,9 +434,9 @@ video {
 </section>
 
 
-<!-- =====================================================
+<!-- ============================================================
      SORTEO
-     ===================================================== -->
+     ============================================================ -->
 
 <section
   id="sorteo"
@@ -449,9 +449,7 @@ video {
     🎰 TU CONFESIÓN ES...
   </h2>
 
-  <div
-    class="tarjeta slot"
-  >
+  <div class="tarjeta slot">
 
     <div>
 
@@ -476,9 +474,9 @@ video {
 </section>
 
 
-<!-- =====================================================
+<!-- ============================================================
      RESULTADO
-     ===================================================== -->
+     ============================================================ -->
 
 <section
   id="resultado"
@@ -531,9 +529,9 @@ video {
 </section>
 
 
-<!-- =====================================================
+<!-- ============================================================
      PREPARAR CÁMARA
-     ===================================================== -->
+     ============================================================ -->
 
 <section
   id="prepararCamara"
@@ -574,18 +572,16 @@ video {
     🚪 ABANDONAR
   </button>
 
-  <div
-    id="errorCamara"
-  ></div>
+  <div id="errorCamara"></div>
 
 </div>
 
 </section>
 
 
-<!-- =====================================================
+<!-- ============================================================
      CÁMARA
-     ===================================================== -->
+     ============================================================ -->
 
 <section
   id="camara"
@@ -645,9 +641,9 @@ video {
 </section>
 
 
-<!-- =====================================================
+<!-- ============================================================
      REVISIÓN
-     ===================================================== -->
+     ============================================================ -->
 
 <section
   id="revision"
@@ -692,9 +688,9 @@ video {
 </section>
 
 
-<!-- =====================================================
+<!-- ============================================================
      GUARDANDO
-     ===================================================== -->
+     ============================================================ -->
 
 <section
   id="guardando"
@@ -718,9 +714,9 @@ video {
 </section>
 
 
-<!-- =====================================================
+<!-- ============================================================
      ERROR ENVÍO
-     ===================================================== -->
+     ============================================================ -->
 
 <section
   id="errorEnvio"
@@ -762,9 +758,9 @@ video {
 </section>
 
 
-<!-- =====================================================
+<!-- ============================================================
      FINAL
-     ===================================================== -->
+     ============================================================ -->
 
 <section
   id="final"
@@ -773,9 +769,7 @@ video {
 
 <div class="contenedor">
 
-  <div
-    style="font-size:90px;"
-  >
+  <div style="font-size:90px;">
     🤫
   </div>
 
@@ -794,9 +788,7 @@ video {
 
     <br><br>
 
-    <strong
-      id="contadorFinal"
-    >
+    <strong id="contadorFinal">
       5
     </strong>
 
@@ -807,9 +799,9 @@ video {
 </section>
 
 
-<!-- =====================================================
-     INACTIVIDAD
-     ===================================================== -->
+<!-- ============================================================
+     MODAL INACTIVIDAD
+     ============================================================ -->
 
 <div id="modalInactividad">
 
@@ -850,12 +842,11 @@ const API_URL =
 
 
 /*
-  PARA LA PRIMERA PRUEBA:
-  dejamos 5 segundos.
+  PRUEBA INICIAL:
+  máximo 5 segundos.
 
-  Cuando confirmemos que el video llega
-  correctamente a Drive y RESPUESTAS,
-  cambiaremos esto a 45.
+  Cuando comprobemos que Drive y RESPUESTAS
+  funcionan correctamente, lo cambiaremos a 45.
 */
 
 const MAX_GRABACION = 5;
@@ -909,82 +900,119 @@ let intervaloInactividad = null;
    ============================================================ */
 
 const btnPlay =
-  document.getElementById('btnPlay');
+  document.getElementById(
+    'btnPlay'
+  );
 
 const estadoCarga =
-  document.getElementById('estadoCarga');
+  document.getElementById(
+    'estadoCarga'
+  );
 
 const slotTipo =
-  document.getElementById('slotTipo');
+  document.getElementById(
+    'slotTipo'
+  );
 
 const slotTexto =
-  document.getElementById('slotTexto');
+  document.getElementById(
+    'slotTexto'
+  );
 
 const resultadoTipo =
-  document.getElementById('resultadoTipo');
+  document.getElementById(
+    'resultadoTipo'
+  );
 
 const resultadoTexto =
-  document.getElementById('resultadoTexto');
+  document.getElementById(
+    'resultadoTexto'
+  );
 
 const btnAceptar =
-  document.getElementById('btnAceptar');
+  document.getElementById(
+    'btnAceptar'
+  );
 
 const btnCambiar =
-  document.getElementById('btnCambiar');
+  document.getElementById(
+    'btnCambiar'
+  );
 
 const preguntaPreparar =
-  document.getElementById('preguntaPreparar');
+  document.getElementById(
+    'preguntaPreparar'
+  );
 
 const btnActivarCamara =
-  document.getElementById('btnActivarCamara');
+  document.getElementById(
+    'btnActivarCamara'
+  );
 
 const errorCamara =
-  document.getElementById('errorCamara');
+  document.getElementById(
+    'errorCamara'
+  );
 
 const preguntaCamara =
-  document.getElementById('preguntaCamara');
+  document.getElementById(
+    'preguntaCamara'
+  );
 
 const videoCamara =
-  document.getElementById('videoCamara');
+  document.getElementById(
+    'videoCamara'
+  );
 
 const cronometro =
-  document.getElementById('cronometro');
+  document.getElementById(
+    'cronometro'
+  );
 
 const avisoTiempo =
-  document.getElementById('avisoTiempo');
+  document.getElementById(
+    'avisoTiempo'
+  );
 
 const btnGrabar =
-  document.getElementById('btnGrabar');
+  document.getElementById(
+    'btnGrabar'
+  );
 
 const btnDetener =
-  document.getElementById('btnDetener');
+  document.getElementById(
+    'btnDetener'
+  );
 
 const videoRevision =
-  document.getElementById('videoRevision');
-
-const btnEnviar =
-  document.getElementById('btnEnviar');
-
-const btnRepetir =
-  document.getElementById('btnRepetir');
+  document.getElementById(
+    'videoRevision'
+  );
 
 const detalleErrorEnvio =
-  document.getElementById('detalleErrorEnvio');
-
-const btnReintentar =
-  document.getElementById('btnReintentar');
+  document.getElementById(
+    'detalleErrorEnvio'
+  );
 
 const contadorFinal =
-  document.getElementById('contadorFinal');
+  document.getElementById(
+    'contadorFinal'
+  );
 
 const modalInactividad =
-  document.getElementById('modalInactividad');
+  document.getElementById(
+    'modalInactividad'
+  );
 
 const contadorInactividad =
-  document.getElementById('contadorInactividad');
+  document.getElementById(
+    'contadorInactividad'
+  );
 
 const btnSigoAqui =
-  document.getElementById('btnSigoAqui');
+  document.getElementById(
+    'btnSigoAqui'
+  );
 
 
 /* ============================================================
@@ -994,20 +1022,28 @@ const btnSigoAqui =
 function mostrarPantalla(id) {
 
   document
-    .querySelectorAll('.pantalla')
-    .forEach(function(pantalla) {
+    .querySelectorAll(
+      '.pantalla'
+    )
+    .forEach(
+      function(pantalla) {
 
-      pantalla
-        .classList
-        .remove('activa');
+        pantalla
+          .classList
+          .remove(
+            'activa'
+          );
 
-    });
+      }
+    );
 
 
   document
     .getElementById(id)
     .classList
-    .add('activa');
+    .add(
+      'activa'
+    );
 
 
   reiniciarTemporizadorInactividad();
@@ -1016,83 +1052,228 @@ function mostrarPantalla(id) {
 
 
 /* ============================================================
-   CARGAR CONFESIONES
+   CARGAR CONFESIONES CON JSONP
    ============================================================ */
 
-async function cargarConfesiones() {
+function cargarConfesiones() {
 
-  btnPlay.disabled = true;
+  btnPlay.disabled =
+    true;
+
 
   estadoCarga.textContent =
     'Cargando confesiones...';
 
 
-  try {
+  const callback =
+    'recibirConfesiones_' +
+    Date.now();
 
-    const respuesta =
-      await fetch(
-        API_URL,
-        {
-          method: 'GET',
-          cache: 'no-store'
+
+  let terminado =
+    false;
+
+
+  const script =
+    document.createElement(
+      'script'
+    );
+
+
+  script.id =
+    'jsonpConfesiones';
+
+
+  function limpiar() {
+
+    const elemento =
+      document.getElementById(
+        'jsonpConfesiones'
+      );
+
+
+    if (elemento) {
+
+      elemento.remove();
+
+    }
+
+
+    setTimeout(
+      function() {
+
+        try {
+
+          delete window[
+            callback
+          ];
+
+        } catch(error) {
+
+          window[
+            callback
+          ] = undefined;
+
         }
-      );
 
-
-    const datos =
-      await respuesta.json();
-
-
-    if (!datos.ok) {
-
-      throw new Error(
-        datos.error ||
-        'No fue posible cargar las confesiones.'
-      );
-
-    }
-
-
-    confesiones =
-      datos.confesiones ||
-      [];
-
-
-    if (
-      confesiones.length === 0
-    ) {
-
-      throw new Error(
-        'No existen confesiones activas.'
-      );
-
-    }
-
-
-    estadoCarga.textContent =
-      '😈 Confesionario listo';
-
-
-    btnPlay.disabled =
-      false;
-
-
-  } catch(error) {
-
-    console.error(error);
-
-
-    estadoCarga.innerHTML =
-      '❌ No pude cargar las confesiones.<br>' +
-      error.message;
+      },
+      1000
+    );
 
   }
+
+
+  const timeout =
+    setTimeout(
+      function() {
+
+        if (terminado) {
+          return;
+        }
+
+
+        terminado =
+          true;
+
+
+        limpiar();
+
+
+        estadoCarga.innerHTML =
+          '❌ No pude cargar las confesiones.<br>' +
+          'El servidor tardó demasiado en responder.';
+
+      },
+      15000
+    );
+
+
+  window[callback] =
+    function(datos) {
+
+      if (terminado) {
+        return;
+      }
+
+
+      terminado =
+        true;
+
+
+      clearTimeout(
+        timeout
+      );
+
+
+      try {
+
+        if (
+          !datos ||
+          !datos.ok
+        ) {
+
+          throw new Error(
+            datos &&
+            datos.error
+              ? datos.error
+              : 'No fue posible cargar las confesiones.'
+          );
+
+        }
+
+
+        confesiones =
+          datos.confesiones ||
+          [];
+
+
+        if (
+          confesiones.length === 0
+        ) {
+
+          throw new Error(
+            'No existen confesiones activas.'
+          );
+
+        }
+
+
+        estadoCarga.textContent =
+          '😈 Confesionario listo';
+
+
+        btnPlay.disabled =
+          false;
+
+
+      } catch(error) {
+
+        console.error(
+          error
+        );
+
+
+        estadoCarga.innerHTML =
+          '❌ No pude cargar las confesiones.<br>' +
+          (
+            error.message ||
+            'Error desconocido'
+          );
+
+      }
+
+
+      limpiar();
+
+  };
+
+
+  script.onerror =
+    function() {
+
+      if (terminado) {
+        return;
+      }
+
+
+      terminado =
+        true;
+
+
+      clearTimeout(
+        timeout
+      );
+
+
+      limpiar();
+
+
+      estadoCarga.innerHTML =
+        '❌ No pude cargar las confesiones.<br>' +
+        'No fue posible conectar con el servidor.';
+
+  };
+
+
+  script.src =
+    API_URL +
+    '?callback=' +
+    encodeURIComponent(
+      callback
+    ) +
+    '&t=' +
+    Date.now();
+
+
+  document.body.appendChild(
+    script
+  );
 
 }
 
 
 /* ============================================================
-   SORTEO
+   CONFESIÓN ALEATORIA
    ============================================================ */
 
 function elegirConfesionAleatoria() {
@@ -1146,10 +1327,16 @@ function elegirConfesionAleatoria() {
     );
 
 
-  return disponibles[indice];
+  return disponibles[
+    indice
+  ];
 
 }
 
+
+/* ============================================================
+   SORTEO
+   ============================================================ */
 
 function realizarSorteo() {
 
@@ -1183,7 +1370,12 @@ function realizarSorteo() {
 
 
     if (!temporal) {
+
+      girando =
+        false;
+
       return;
+
     }
 
 
@@ -1202,20 +1394,39 @@ function realizarSorteo() {
       70;
 
 
-    if (vueltas > 10) {
-      demora = 110;
-    }
+    if (
+      vueltas > 10
+    ) {
 
-    if (vueltas > 17) {
-      demora = 180;
-    }
+      demora =
+        110;
 
-    if (vueltas > 22) {
-      demora = 300;
     }
 
 
-    if (vueltas >= 26) {
+    if (
+      vueltas > 17
+    ) {
+
+      demora =
+        180;
+
+    }
+
+
+    if (
+      vueltas > 22
+    ) {
+
+      demora =
+        300;
+
+    }
+
+
+    if (
+      vueltas >= 26
+    ) {
 
       confesionSeleccionada =
         elegirConfesionAleatoria();
@@ -1280,11 +1491,14 @@ btnPlay.addEventListener(
     cambioUtilizado =
       false;
 
+
     confesionDescartada =
       null;
 
+
     confesionSeleccionada =
       null;
+
 
     realizarSorteo();
 
@@ -1359,6 +1573,18 @@ async function activarCamara() {
 
   try {
 
+    if (
+      !navigator.mediaDevices ||
+      !navigator.mediaDevices.getUserMedia
+    ) {
+
+      throw new Error(
+        'La cámara no está disponible en este navegador.'
+      );
+
+    }
+
+
     detenerCamara();
 
 
@@ -1407,7 +1633,9 @@ async function activarCamara() {
 
   } catch(error) {
 
-    console.error(error);
+    console.error(
+      error
+    );
 
 
     detenerCamara();
@@ -1417,10 +1645,16 @@ async function activarCamara() {
       '<div class="mensaje-error">' +
       '🚫 <b>No pude activar la cámara.</b><br><br>' +
       '<b>Error:</b> ' +
-      (error.name || 'Sin nombre') +
+      (
+        error.name ||
+        'Sin nombre'
+      ) +
       '<br>' +
       '<b>Detalle:</b> ' +
-      (error.message || 'Sin detalle') +
+      (
+        error.message ||
+        'Sin detalle'
+      ) +
       '</div>';
 
   } finally {
@@ -1490,19 +1724,25 @@ async function iniciarGrabacion() {
 
 
 /* ============================================================
-   GRABACIÓN
+   COMENZAR GRABACIÓN
    ============================================================ */
 
 function comenzarGrabacion() {
 
-  fragmentosVideo = [];
-
-  segundosGrabacion = 0;
-
-  duracionFinal = 0;
+  fragmentosVideo =
+    [];
 
 
-  let opciones = {};
+  segundosGrabacion =
+    0;
+
+
+  duracionFinal =
+    0;
+
+
+  let opciones =
+    {};
 
 
   if (
@@ -1548,6 +1788,7 @@ function comenzarGrabacion() {
   opciones.videoBitsPerSecond =
     700000;
 
+
   opciones.audioBitsPerSecond =
     64000;
 
@@ -1592,7 +1833,11 @@ function comenzarGrabacion() {
 
       const tipo =
         mediaRecorder.mimeType ||
-        fragmentosVideo[0]?.type ||
+        (
+          fragmentosVideo[0]
+            ? fragmentosVideo[0].type
+            : ''
+        ) ||
         'video/mp4';
 
 
@@ -1605,7 +1850,9 @@ function comenzarGrabacion() {
         );
 
 
-      if (videoURL) {
+      if (
+        videoURL
+      ) {
 
         URL.revokeObjectURL(
           videoURL
@@ -1729,7 +1976,9 @@ function iniciarCronometro() {
 function detenerGrabacion() {
 
   if (!grabando) {
+
     return;
+
   }
 
 
@@ -1771,7 +2020,7 @@ function detenerGrabacion() {
 
 
 /* ============================================================
-   CONTROLES
+   CONTROLES GRABACIÓN
    ============================================================ */
 
 btnGrabar.addEventListener(
@@ -1791,20 +2040,26 @@ function prepararControlesGrabacion() {
   grabando =
     false;
 
+
   segundosGrabacion =
     0;
+
 
   cronometro.textContent =
     '00:00';
 
+
   avisoTiempo.textContent =
     '';
+
 
   btnGrabar.disabled =
     false;
 
+
   btnGrabar.style.display =
     'block';
+
 
   btnDetener.style.display =
     'none';
@@ -1816,33 +2071,41 @@ function prepararControlesGrabacion() {
    REPETIR
    ============================================================ */
 
-btnRepetir.addEventListener(
-  'click',
-  function() {
+document
+  .getElementById(
+    'btnRepetir'
+  )
+  .addEventListener(
+    'click',
+    function() {
 
-    limpiarSoloGrabacion();
+      limpiarSoloGrabacion();
 
 
-    preguntaPreparar.textContent =
-      confesionSeleccionada.confesion;
+      preguntaPreparar.textContent =
+        confesionSeleccionada.confesion;
 
 
-    mostrarPantalla(
-      'prepararCamara'
-    );
+      mostrarPantalla(
+        'prepararCamara'
+      );
 
-  }
-);
+    }
+  );
 
 
 /* ============================================================
-   ENVIAR
+   ENVIAR VIDEO
    ============================================================ */
 
 async function enviarConfesion() {
 
-  if (!videoBlob) {
+  if (
+    !videoBlob
+  ) {
+
     return;
+
   }
 
 
@@ -1901,22 +2164,19 @@ async function enviarConfesion() {
     };
 
 
-    /*
-      text/plain evita que el navegador
-      necesite realizar una solicitud
-      OPTIONS previa.
-    */
-
     const respuesta =
       await fetch(
         API_URL,
         {
 
-          method: 'POST',
+          method:
+            'POST',
 
           headers: {
+
             'Content-Type':
               'text/plain;charset=utf-8'
+
           },
 
           body:
@@ -1932,7 +2192,9 @@ async function enviarConfesion() {
       await respuesta.json();
 
 
-    if (!resultado.ok) {
+    if (
+      !resultado.ok
+    ) {
 
       throw new Error(
         resultado.error ||
@@ -1950,7 +2212,9 @@ async function enviarConfesion() {
 
   } catch(error) {
 
-    console.error(error);
+    console.error(
+      error
+    );
 
 
     detalleErrorEnvio.textContent =
@@ -1967,26 +2231,37 @@ async function enviarConfesion() {
 }
 
 
-btnEnviar.addEventListener(
-  'click',
-  enviarConfesion
-);
+document
+  .getElementById(
+    'btnEnviar'
+  )
+  .addEventListener(
+    'click',
+    enviarConfesion
+  );
 
 
-btnReintentar.addEventListener(
-  'click',
-  enviarConfesion
-);
+document
+  .getElementById(
+    'btnReintentar'
+  )
+  .addEventListener(
+    'click',
+    enviarConfesion
+  );
 
 
 /* ============================================================
-   BASE64
+   BLOB -> BASE64
    ============================================================ */
 
 function blobABase64(blob) {
 
   return new Promise(
-    function(resolve, reject) {
+    function(
+      resolve,
+      reject
+    ) {
 
       const lector =
         new FileReader();
@@ -2033,7 +2308,7 @@ function blobABase64(blob) {
 
 
 /* ============================================================
-   FINAL
+   CONFIRMACIÓN
    ============================================================ */
 
 function mostrarConfirmacion() {
@@ -2115,7 +2390,7 @@ function abandonar() {
 
 
 /* ============================================================
-   LIMPIEZA
+   DETENER CÁMARA
    ============================================================ */
 
 function detenerCamara() {
@@ -2146,6 +2421,10 @@ function detenerCamara() {
 
 }
 
+
+/* ============================================================
+   LIMPIAR GRABACIÓN
+   ============================================================ */
 
 function limpiarSoloGrabacion() {
 
@@ -2215,6 +2494,10 @@ function limpiarSoloGrabacion() {
 
 }
 
+
+/* ============================================================
+   REINICIO TOTAL
+   ============================================================ */
 
 function reiniciarTodo() {
 
@@ -2299,8 +2582,12 @@ function reiniciarTemporizadorInactividad() {
 
 function mostrarAvisoInactividad() {
 
-  if (grabando) {
+  if (
+    grabando
+  ) {
+
     return;
+
   }
 
 
@@ -2417,7 +2704,7 @@ btnSigoAqui.addEventListener(
 
 
 /* ============================================================
-   UTILIDAD
+   ESPERAR
    ============================================================ */
 
 function esperar(ms) {
