@@ -1,321 +1,633 @@
 <!DOCTYPE html>
-
 <html lang="es">
 
 <head>
-
 <meta charset="UTF-8">
 
 <meta
   name="viewport"
-  content="width=device-width, initial-scale=1, maximum-scale=1"
+  content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
 >
 
-<title>Diagnóstico POST - El Confesionario</title>
-
+<title>El Confesionario</title>
 
 <style>
-
 * {
   box-sizing: border-box;
   -webkit-tap-highlight-color: transparent;
 }
 
-
 html,
 body {
   margin: 0;
-  padding: 0;
+  width: 100%;
   min-height: 100%;
 }
 
-
 body {
-
   min-height: 100vh;
-
-  padding: 35px 20px;
-
   background:
-    radial-gradient(
-      circle at top,
-      #482949 0%,
-      #281628 45%,
-      #100b11 100%
-    );
-
+    radial-gradient(circle at top, #59305b 0%, #2c192e 42%, #100b11 100%);
   color: white;
-
   font-family:
     -apple-system,
     BlinkMacSystemFont,
     "Segoe UI",
     Arial,
     sans-serif;
-
   text-align: center;
-
+  overflow-x: hidden;
 }
 
+.pantalla {
+  display: none;
+  min-height: 100vh;
+  width: 100%;
+  padding: 35px 22px;
+  align-items: center;
+  justify-content: center;
+}
+
+.pantalla.activa {
+  display: flex;
+}
 
 .contenedor {
-
   width: 100%;
-
-  max-width: 650px;
-
+  max-width: 720px;
   margin: auto;
-
 }
-
 
 .logo {
-
-  font-size: 70px;
-
+  font-size: 82px;
+  margin-bottom: 5px;
 }
-
 
 h1 {
-
-  margin: 10px 0;
-
-  font-size: 38px;
-
+  margin: 8px 0 15px;
+  font-size: clamp(36px, 8vw, 58px);
+  line-height: 1;
 }
 
+h2 {
+  font-size: clamp(27px, 6vw, 40px);
+  margin: 10px 0 20px;
+}
 
-.descripcion {
-
-  opacity: .8;
-
-  font-size: 18px;
-
+.subtitulo {
+  font-size: 20px;
   line-height: 1.5;
-
-  margin-bottom: 30px;
-
+  opacity: .85;
+  margin: 15px auto 30px;
+  max-width: 600px;
 }
-
 
 .tarjeta {
-
-  padding: 25px;
-
-  border-radius: 24px;
-
-  background:
-    rgba(
-      255,
-      255,
-      255,
-      .08
-    );
-
-  border:
-    1px solid
-    rgba(
-      255,
-      255,
-      255,
-      .15
-    );
-
+  width: 100%;
+  padding: 28px;
+  border-radius: 28px;
+  background: rgba(255,255,255,.09);
+  border: 1px solid rgba(255,255,255,.16);
+  box-shadow: 0 20px 50px rgba(0,0,0,.25);
 }
 
+.confesion {
+  min-height: 180px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.tipo {
+  color: #f2d58b;
+  font-size: 20px;
+  font-weight: 900;
+  margin-bottom: 15px;
+}
+
+.texto-confesion {
+  font-size: clamp(24px, 5vw, 34px);
+  line-height: 1.25;
+  font-weight: 800;
+}
+
+.codigo {
+  margin-top: 16px;
+  opacity: .55;
+  font-size: 14px;
+}
 
 button {
-
-  display: block;
-
   width: 100%;
-
-  margin: 14px 0;
-
-  padding: 20px;
-
   border: 0;
-
   border-radius: 18px;
-
-  background: #f2d58b;
-
-  color: #251625;
-
+  padding: 20px 18px;
+  margin: 9px 0;
   font-size: 20px;
-
   font-weight: 900;
-
   cursor: pointer;
-
+  font-family: inherit;
 }
 
+.btn-principal {
+  background: #f2d58b;
+  color: #251625;
+}
+
+.btn-secundario {
+  background: rgba(255,255,255,.13);
+  color: white;
+  border: 1px solid rgba(255,255,255,.18);
+}
+
+.btn-peligro {
+  background: rgba(180,55,70,.25);
+  color: white;
+  border: 1px solid rgba(255,120,130,.25);
+}
 
 button:active {
-
   transform: scale(.98);
-
 }
 
-
-#estado {
-
-  min-height: 60px;
-
-  margin-top: 25px;
-
-  padding: 20px;
-
-  border-radius: 18px;
-
-  background:
-    rgba(
-      255,
-      255,
-      255,
-      .06
-    );
-
-  font-size: 17px;
-
-  line-height: 1.5;
-
+button:disabled {
+  opacity: .4;
 }
 
+.botones {
+  margin-top: 22px;
+}
 
-.advertencia {
+video {
+  width: 100%;
+  max-height: 60vh;
+  border-radius: 24px;
+  background: black;
+  object-fit: cover;
+}
 
+#videoCamara {
+  transform: scaleX(-1);
+}
+
+.contador-grande {
+  font-size: clamp(100px, 30vw, 190px);
+  font-weight: 1000;
+  line-height: 1;
+  color: #f2d58b;
+  text-shadow: 0 10px 40px rgba(0,0,0,.4);
+}
+
+.grabando {
+  color: #ff7777;
+  font-size: 21px;
+  font-weight: 900;
+  margin: 18px 0 8px;
+}
+
+.tiempo {
+  font-size: 54px;
+  font-weight: 900;
+  margin: 5px 0 15px;
+}
+
+.aviso-tiempo {
+  min-height: 28px;
+  color: #ffd5d5;
+  font-weight: 800;
+}
+
+.cargando {
+  width: 65px;
+  height: 65px;
+  border: 7px solid rgba(255,255,255,.15);
+  border-top-color: #f2d58b;
+  border-radius: 50%;
+  margin: 30px auto;
+  animation: girar .8s linear infinite;
+}
+
+@keyframes girar {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+#modalInactividad {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(0,0,0,.82);
+  align-items: center;
+  justify-content: center;
+  padding: 25px;
+}
+
+#modalInactividad.visible {
+  display: flex;
+}
+
+.modal-caja {
+  width: 100%;
+  max-width: 520px;
+  padding: 32px;
+  border-radius: 28px;
+  background: #342036;
+  border: 1px solid rgba(255,255,255,.18);
+}
+
+#cuentaInactividad {
+  font-size: 55px;
+  font-weight: 1000;
+  color: #f2d58b;
+  margin: 15px;
+}
+
+.nota-prueba {
   margin-top: 25px;
-
-  opacity: .7;
-
   font-size: 14px;
-
-  line-height: 1.5;
-
+  opacity: .55;
 }
-
 </style>
-
 </head>
-
 
 <body>
 
+<!-- =========================================================
+     INICIO
+     ========================================================= -->
 
-<div class="contenedor">
+<section id="inicio" class="pantalla activa">
+  <div class="contenedor">
 
+    <div class="logo">🤫</div>
 
-  <div class="logo">
-    🧪
-  </div>
+    <h1>EL CONFESIONARIO</h1>
 
+    <p class="subtitulo">
+      Entra bajo tu propio riesgo.
+      <br>
+      Lo que se dice aquí... queda grabado. 😈
+    </p>
 
-  <h1>
-    Diagnóstico POST
-  </h1>
-
-
-  <p class="descripcion">
-
-    Vamos a probar cuánto contenido
-    puede viajar desde GitHub Pages
-    hacia Apps Script.
-
-    <br><br>
-
-    Esta prueba no utiliza cámara,
-    Drive ni Google Sheets.
-
-  </p>
-
-
-  <div class="tarjeta">
-
-
-    <button onclick="enviarPrueba(1)">
-      🧪 PROBAR 1 KB
+    <button
+      class="btn-principal"
+      onclick="comenzarSorteo()"
+    >
+      🎰 PLAY
     </button>
 
-
-    <button onclick="enviarPrueba(5)">
-      🧪 PROBAR 5 KB
-    </button>
-
-
-    <button onclick="enviarPrueba(10)">
-      🧪 PROBAR 10 KB
-    </button>
-
-
-    <button onclick="enviarPrueba(25)">
-      🧪 PROBAR 25 KB
-    </button>
-
-
-    <button onclick="enviarPrueba(50)">
-      🧪 PROBAR 50 KB
-    </button>
-
-
-    <button onclick="enviarPrueba(100)">
-      🧪 PROBAR 100 KB
-    </button>
-
+    <p class="nota-prueba">
+      Prueba técnica: grabación máxima 5 segundos.
+    </p>
 
   </div>
+</section>
 
 
-  <div id="estado">
+<!-- =========================================================
+     SORTEO
+     ========================================================= -->
 
-    Esperando una prueba...
+<section id="sorteo" class="pantalla">
+  <div class="contenedor">
+
+    <h2>🎰 EL CONFESIONARIO DECIDE...</h2>
+
+    <div class="tarjeta confesion">
+
+      <div
+        id="slotTipo"
+        class="tipo"
+      >
+        😈
+      </div>
+
+      <div
+        id="slotTexto"
+        class="texto-confesion"
+      >
+        Preparando tu destino...
+      </div>
+
+    </div>
 
   </div>
+</section>
 
 
-  <p class="advertencia">
+<!-- =========================================================
+     RESULTADO
+     ========================================================= -->
 
-    ⚠️ Esta vez no usamos iframe.
+<section id="resultado" class="pantalla">
+  <div class="contenedor">
 
-    <br><br>
+    <h2>😈 TE TOCÓ...</h2>
 
-    Al presionar un botón,
-    Safari saldrá de esta página
-    y navegará directamente hacia Apps Script.
+    <div class="tarjeta confesion">
 
-    <br><br>
+      <div
+        id="resultadoTipo"
+        class="tipo"
+      ></div>
 
-    Eso es intencional.
+      <div
+        id="resultadoTexto"
+        class="texto-confesion"
+      ></div>
 
-  </p>
+      <div
+        id="resultadoCodigo"
+        class="codigo"
+      ></div>
 
+    </div>
+
+    <div class="botones">
+
+      <button
+        class="btn-principal"
+        onclick="aceptarConfesion()"
+      >
+        😈 ACEPTO EL RETO
+      </button>
+
+      <button
+        id="btnCambiar"
+        class="btn-secundario"
+        onclick="cambiarConfesion()"
+      >
+        🔄 CAMBIAR UNA VEZ
+      </button>
+
+      <button
+        class="btn-peligro"
+        onclick="abandonar()"
+      >
+        🚪 ME ARREPIENTO
+      </button>
+
+    </div>
+
+  </div>
+</section>
+
+
+<!-- =========================================================
+     PREPARAR CÁMARA
+     ========================================================= -->
+
+<section id="prepararCamara" class="pantalla">
+  <div class="contenedor">
+
+    <div class="logo">📹</div>
+
+    <h2>PREPARA TU CONFESIÓN</h2>
+
+    <div class="tarjeta">
+
+      <div
+        id="confesionCamara"
+        class="texto-confesion"
+      ></div>
+
+    </div>
+
+    <p class="subtitulo">
+      Cuando estés listo, activa la cámara.
+      Safari te pedirá permiso para usar
+      cámara y micrófono.
+    </p>
+
+    <button
+      class="btn-principal"
+      onclick="activarCamara()"
+    >
+      📹 ACTIVAR CÁMARA
+    </button>
+
+    <button
+      class="btn-peligro"
+      onclick="abandonar()"
+    >
+      🚪 ABANDONAR
+    </button>
+
+  </div>
+</section>
+
+
+<!-- =========================================================
+     CÁMARA
+     ========================================================= -->
+
+<section id="camara" class="pantalla">
+  <div class="contenedor">
+
+    <video
+      id="videoCamara"
+      autoplay
+      muted
+      playsinline
+    ></video>
+
+    <div id="estadoCamara">
+
+      <p class="subtitulo">
+        Ponte cómodo frente a cámara.
+      </p>
+
+      <button
+        class="btn-principal"
+        onclick="iniciarCuentaRegresiva()"
+      >
+        🔴 EMPEZAR A GRABAR
+      </button>
+
+      <button
+        class="btn-peligro"
+        onclick="abandonar()"
+      >
+        🚪 ABANDONAR
+      </button>
+
+    </div>
+
+
+    <div
+      id="cuentaRegresiva"
+      style="display:none;"
+    >
+      <div
+        id="numeroCuenta"
+        class="contador-grande"
+      >
+        3
+      </div>
+    </div>
+
+
+    <div
+      id="panelGrabacion"
+      style="display:none;"
+    >
+
+      <div class="grabando">
+        🔴 GRABANDO
+      </div>
+
+      <div
+        id="tiempoGrabacion"
+        class="tiempo"
+      >
+        0:05
+      </div>
+
+      <div
+        id="avisoTiempo"
+        class="aviso-tiempo"
+      ></div>
+
+      <button
+        class="btn-principal"
+        onclick="detenerGrabacion()"
+      >
+        ⏹ TERMINAR AHORA
+      </button>
+
+    </div>
+
+  </div>
+</section>
+
+
+<!-- =========================================================
+     REVISIÓN
+     ========================================================= -->
+
+<section id="revision" class="pantalla">
+  <div class="contenedor">
+
+    <h2>👀 REVISA TU CONFESIÓN</h2>
+
+    <video
+      id="videoRevision"
+      controls
+      playsinline
+    ></video>
+
+    <div class="botones">
+
+      <button
+        class="btn-secundario"
+        onclick="repetirGrabacion()"
+      >
+        🔄 REPETIR VIDEO
+      </button>
+
+      <button
+        class="btn-principal"
+        onclick="enviarConfesion()"
+      >
+        🤐 ENVIAR CONFESIÓN
+      </button>
+
+      <button
+        class="btn-peligro"
+        onclick="abandonar()"
+      >
+        🚪 ABANDONAR
+      </button>
+
+    </div>
+
+  </div>
+</section>
+
+
+<!-- =========================================================
+     PREPARANDO ENVÍO
+     ========================================================= -->
+
+<section id="guardando" class="pantalla">
+  <div class="contenedor">
+
+    <div class="logo">🤫</div>
+
+    <h2>GUARDANDO TU CONFESIÓN...</h2>
+
+    <div class="cargando"></div>
+
+    <p class="subtitulo">
+      No cierres esta pantalla.
+    </p>
+
+  </div>
+</section>
+
+
+<!-- =========================================================
+     MODAL INACTIVIDAD
+     ========================================================= -->
+
+<div id="modalInactividad">
+
+  <div class="modal-caja">
+
+    <div style="font-size:65px;">
+      👀
+    </div>
+
+    <h2>
+      ¿SIGUES AHÍ?
+    </h2>
+
+    <p>
+      El Confesionario se reiniciará en:
+    </p>
+
+    <div id="cuentaInactividad">
+      10
+    </div>
+
+    <button
+      class="btn-principal"
+      onclick="continuarSesion()"
+    >
+      😈 SÍ, SIGO AQUÍ
+    </button>
+
+  </div>
 
 </div>
 
 
 <!-- =========================================================
-     FORMULARIO NORMAL
-     SIN IFRAME
+     FORMULARIO POST NORMAL
+
+     IMPORTANTE:
+     NO TIENE TARGET.
+     NO HAY IFRAME.
      ========================================================= -->
 
 <form
-  id="formPrueba"
+  id="formEnvio"
   method="POST"
   style="display:none;"
 >
 
-  <input
-    type="hidden"
-    id="campoPrueba"
-    name="prueba"
-  >
-
-
-  <input
-    type="hidden"
-    id="campoCarga"
-    name="carga"
-  >
+  <input type="hidden" name="idEnvio" id="fIdEnvio">
+  <input type="hidden" name="idConfesion" id="fIdConfesion">
+  <input type="hidden" name="confesion" id="fConfesion">
+  <input type="hidden" name="tipo" id="fTipo">
+  <input type="hidden" name="cambioUtilizado" id="fCambio">
+  <input type="hidden" name="idConfesionDescartada" id="fIdDescartada">
+  <input type="hidden" name="confesionDescartada" id="fDescartada">
+  <input type="hidden" name="duracionSegundos" id="fDuracion">
+  <input type="hidden" name="mimeType" id="fMime">
+  <input type="hidden" name="videoBase64" id="fVideo">
 
 </form>
 
@@ -330,138 +642,974 @@ const API_URL =
   'https://script.google.com/macros/s/AKfycbzGZxguZB-diYDtcI1q0Vsx0aTgd42Lvi31JQnr0o_42ckNY8qagSaOMrIsxmTQ4IJdug/exec';
 
 
-const formulario =
-  document.getElementById(
-    'formPrueba'
-  );
+/*
+   IMPORTANTE:
 
+   Durante esta prueba se mantiene
+   en 5 segundos.
 
-const campoPrueba =
-  document.getElementById(
-    'campoPrueba'
-  );
+   Cuando comprobemos Drive + RESPUESTAS,
+   lo cambiaremos a 45.
+*/
 
+const MAX_GRABACION = 5;
 
-const campoCarga =
-  document.getElementById(
-    'campoCarga'
-  );
+const TIEMPO_INACTIVIDAD =
+  2 * 60 * 1000;
 
-
-const estado =
-  document.getElementById(
-    'estado'
-  );
-
-
-formulario.action =
-  API_URL;
+const CUENTA_INACTIVIDAD =
+  10;
 
 
 /* ============================================================
-   CREAR CARGA
+   CONFESIONES
    ============================================================ */
 
-function crearCarga(
-  cantidad
-) {
+const confesiones = [
 
-  /*
-     Para esta prueba usamos solamente
-     la letra A.
+{id:"C001",texto:"¿Cuál fue tu primera impresión de la novia?",tipo:"🤫 Confiesa"},
+{id:"C002",texto:"¿Cuál fue tu primera impresión del novio?",tipo:"🤫 Confiesa"},
+{id:"C003",texto:"¿Qué pensaste la primera vez que viste a los novios juntos?",tipo:"🤫 Confiesa"},
+{id:"C004",texto:"Confiesa algo de la novia que probablemente el novio no sepa.",tipo:"🔥 Sin filtro"},
+{id:"C005",texto:"Confiesa algo del novio que probablemente la novia no sepa.",tipo:"🔥 Sin filtro"},
+{id:"C006",texto:"Cuenta la anécdota más vergonzosa que recuerdes de alguno de los novios.",tipo:"🔥 Sin filtro"},
+{id:"C007",texto:"¿Cuál es la locura más grande que hayas hecho con alguno de los novios?",tipo:"🤫 Confiesa"},
+{id:"C008",texto:"Cuenta una historia de los novios que merezca quedar registrada para siempre.",tipo:"🤫 Confiesa"},
+{id:"C009",texto:"¿Alguna vez pensaste que esta relación no llegaría al matrimonio? Cuenta por qué.",tipo:"🔥 Sin filtro"},
+{id:"C010",texto:"¿Cuándo te diste cuenta de que estos dos iban en serio?",tipo:"🤫 Confiesa"},
+{id:"C011",texto:"¿Quién crees que manda realmente en esta relación?",tipo:"😂 Humor"},
+{id:"C012",texto:"¿Quién crees que gana más discusiones?",tipo:"😂 Humor"},
+{id:"C013",texto:"¿Quién crees que pide perdón primero?",tipo:"😂 Humor"},
+{id:"C014",texto:"¿Quién es más probable que diga “yo te dije”?",tipo:"😂 Humor"},
+{id:"C015",texto:"¿Quién tiene más paciencia?",tipo:"😂 Humor"},
+{id:"C016",texto:"¿Quién crees que es más mañoso?",tipo:"😂 Humor"},
+{id:"C017",texto:"¿Quién demora más en arreglarse para salir?",tipo:"😂 Humor"},
+{id:"C018",texto:"¿Quién crees que se queda dormido primero viendo una película?",tipo:"😂 Humor"},
+{id:"C019",texto:"¿Quién se perdería primero durante un viaje?",tipo:"😂 Humor"},
+{id:"C020",texto:"¿Quién compraría algo completamente innecesario sin avisar?",tipo:"😂 Humor"},
+{id:"C021",texto:"¿Quién gastaría más plata en una compra impulsiva?",tipo:"😂 Humor"},
+{id:"C022",texto:"¿Quién sobreviviría mejor una semana sin internet?",tipo:"😂 Humor"},
+{id:"C023",texto:"¿Quién tendría más posibilidades de olvidar una fecha importante?",tipo:"😂 Humor"},
+{id:"C024",texto:"¿Quién crees que ocupará más espacio en la cama?",tipo:"🔥 Sin filtro"},
+{id:"C025",texto:"¿Quién se adueñará de las frazadas?",tipo:"😂 Humor"},
+{id:"C026",texto:"¿Quién tiene más probabilidades de comerse el último pedazo sin preguntar?",tipo:"😂 Humor"},
+{id:"C027",texto:"¿Quién crees que dejará cosas tiradas por la casa?",tipo:"😂 Humor"},
+{id:"C028",texto:"¿Quién terminará haciendo más compras para la casa?",tipo:"😂 Humor"},
+{id:"C029",texto:"¿Quién elegiría qué ver en Netflix durante una hora y finalmente no vería nada?",tipo:"😂 Humor"},
+{id:"C030",texto:"Si los novios participaran en un reality, ¿quién duraría más?",tipo:"😂 Humor"},
+{id:"C031",texto:"Imita a la novia.",tipo:"🎭 Reto"},
+{id:"C032",texto:"Imita al novio.",tipo:"🎭 Reto"},
+{id:"C033",texto:"Imita cómo crees que discuten los novios.",tipo:"🎭 Reto"},
+{id:"C034",texto:"Imita cómo imaginas a los novios cuando tengan 80 años.",tipo:"🎭 Reto"},
+{id:"C035",texto:"Describe a la novia usando solo tres palabras.",tipo:"🎭 Reto"},
+{id:"C036",texto:"Describe al novio usando solo tres palabras.",tipo:"🎭 Reto"},
+{id:"C037",texto:"Describe este matrimonio usando solo tres palabras.",tipo:"🎭 Reto"},
+{id:"C038",texto:"Cuenta una anécdota de los novios como si fueras periodista de farándula.",tipo:"🎭 Reto"},
+{id:"C039",texto:"Da un discurso matrimonial dramático de máximo 15 segundos.",tipo:"🎭 Reto"},
+{id:"C040",texto:"Dedícales una canción y canta un pedacito.",tipo:"🎭 Reto"},
+{id:"C041",texto:"¿Cómo imaginas a los novios en 5 años?",tipo:"🔮 Predicción"},
+{id:"C042",texto:"¿Cómo imaginas a los novios en 20 años?",tipo:"🔮 Predicción"},
+{id:"C043",texto:"¿Quién crees que tendrá más canas primero?",tipo:"🔮 Predicción"},
+{id:"C044",texto:"¿Quién se convertirá primero en una persona mañosa de viejo?",tipo:"🔮 Predicción"},
+{id:"C045",texto:"¿Cuál crees que será su discusión más absurda de casados?",tipo:"🔮 Predicción"},
+{id:"C046",texto:"¿Qué crees que nunca cambiará entre ellos aunque pasen 30 años?",tipo:"🔮 Predicción"},
+{id:"C047",texto:"¿Dónde imaginas que estarán celebrando su décimo aniversario?",tipo:"🔮 Predicción"},
+{id:"C048",texto:"Predice qué estarán haciendo exactamente dentro de un año.",tipo:"🔮 Predicción"},
+{id:"C049",texto:"¿Quién crees que será el más consentidor con sus futuras mascotas?",tipo:"🔮 Predicción"},
+{id:"C050",texto:"Haz una predicción completamente absurda sobre su futuro.",tipo:"🔮 Predicción"},
+{id:"C051",texto:"¿Cuál es tu recuerdo favorito con la novia?",tipo:"❤️ Recuerdo"},
+{id:"C052",texto:"¿Cuál es tu recuerdo favorito con el novio?",tipo:"❤️ Recuerdo"},
+{id:"C053",texto:"¿Cuál es tu recuerdo favorito con ambos?",tipo:"❤️ Recuerdo"},
+{id:"C054",texto:"Cuenta un momento con alguno de ellos que todavía te haga reír.",tipo:"❤️ Recuerdo"},
+{id:"C055",texto:"¿Qué recuerdo de esta boda quieres que los novios nunca olviden?",tipo:"❤️ Recuerdo"},
+{id:"C056",texto:"¿Cuál ha sido el momento más divertido de esta boda hasta ahora?",tipo:"❤️ Recuerdo"},
+{id:"C057",texto:"¿Cuál ha sido tu momento favorito de esta boda?",tipo:"❤️ Recuerdo"},
+{id:"C058",texto:"¿Qué detalle de hoy te gustaría que los novios supieran que notaste?",tipo:"❤️ Recuerdo"},
+{id:"C059",texto:"Cuenta algo bonito que alguno de los novios haya hecho por ti.",tipo:"❤️ Recuerdo"},
+{id:"C060",texto:"¿Qué momento vivido con ellos guardarías para siempre?",tipo:"❤️ Recuerdo"},
+{id:"C061",texto:"¿Qué es lo que más quieres de la novia?",tipo:"🥹 Bonita"},
+{id:"C062",texto:"¿Qué es lo que más quieres del novio?",tipo:"🥹 Bonita"},
+{id:"C063",texto:"¿Qué crees que hace especial su relación?",tipo:"🥹 Bonita"},
+{id:"C064",texto:"¿Qué es lo que más admiras de ellos como pareja?",tipo:"🥹 Bonita"},
+{id:"C065",texto:"¿Qué crees que aporta la novia a la vida del novio?",tipo:"🥹 Bonita"},
+{id:"C066",texto:"¿Qué crees que aporta el novio a la vida de la novia?",tipo:"🥹 Bonita"},
+{id:"C067",texto:"¿Qué esperas que nunca cambie entre ellos?",tipo:"🥹 Bonita"},
+{id:"C068",texto:"¿Qué deseas para esta nueva etapa de sus vidas?",tipo:"🥹 Bonita"},
+{id:"C069",texto:"Si pudieras regalarles algo que no se pueda comprar, ¿qué sería?",tipo:"🥹 Bonita"},
+{id:"C070",texto:"Diles algo que quizás nunca les hayas dicho.",tipo:"🥹 Bonita"},
+{id:"C071",texto:"Dales tu mejor consejo para el matrimonio.",tipo:"💍 Consejo"},
+{id:"C072",texto:"Dales el peor consejo matrimonial que se te ocurra.",tipo:"😂 Humor"},
+{id:"C073",texto:"¿Cuál crees que es el secreto para aguantar muchos años juntos?",tipo:"💍 Consejo"},
+{id:"C074",texto:"¿Qué discusión matrimonial deberían aprender a evitar desde ahora?",tipo:"💍 Consejo"},
+{id:"C075",texto:"Completa: “Un matrimonio feliz necesita mucho amor y mucho…”",tipo:"💍 Consejo"},
+{id:"C076",texto:"¿Qué regla debería existir obligatoriamente en su matrimonio?",tipo:"💍 Consejo"},
+{id:"C077",texto:"¿Qué tradición deberían crear como matrimonio?",tipo:"💍 Consejo"},
+{id:"C078",texto:"Dales un consejo para cuando estén enojados el uno con el otro.",tipo:"💍 Consejo"},
+{id:"C079",texto:"Dales un consejo para mantener viva la diversión después de muchos años.",tipo:"💍 Consejo"},
+{id:"C080",texto:"Inventa uno de los “10 mandamientos” de este matrimonio.",tipo:"😂 Humor"},
+{id:"C081",texto:"Completa: “Yo sabía que se iban a casar cuando…”",tipo:"🤫 Confiesa"},
+{id:"C082",texto:"Completa: “Si tuviera que advertirle algo al novio sobre la novia sería…”",tipo:"🔥 Sin filtro"},
+{id:"C083",texto:"Completa: “Si tuviera que advertirle algo a la novia sobre el novio sería…”",tipo:"🔥 Sin filtro"},
+{id:"C084",texto:"Completa: “Lo más peligroso de dejar solos a estos dos es…”",tipo:"😂 Humor"},
+{id:"C085",texto:"Completa: “Dentro de 20 años estos dos seguirán…”",tipo:"🔮 Predicción"},
+{id:"C086",texto:"Completa: “Lo que jamás debería faltar en su casa es…”",tipo:"💍 Consejo"},
+{id:"C087",texto:"Completa: “Después de conocerlos, puedo confirmar que…”",tipo:"🤫 Confiesa"},
+{id:"C088",texto:"Completa: “Si su matrimonio fuera una película se llamaría…”",tipo:"😂 Humor"},
+{id:"C089",texto:"Completa: “Si los novios fueran un meme sería…”",tipo:"😂 Humor"},
+{id:"C090",texto:"Completa: “Lo que nadie te cuenta del matrimonio es…”",tipo:"🔥 Sin filtro"},
+{id:"C091",texto:"Deja un mensaje para que los novios vean en su primer aniversario.",tipo:"💌 Cápsula"},
+{id:"C092",texto:"Deja un mensaje para que los novios vean en su quinto aniversario.",tipo:"💌 Cápsula"},
+{id:"C093",texto:"Deja un mensaje para que los novios vean en su décimo aniversario.",tipo:"💌 Cápsula"},
+{id:"C094",texto:"Háblales directamente a los novios del futuro: ¿qué esperas que estén haciendo cuando vean esto?",tipo:"💌 Cápsula"},
+{id:"C095",texto:"Recuérdales por qué decidieron celebrar este día rodeados de todas estas personas.",tipo:"💌 Cápsula"},
+{id:"C096",texto:"Cuéntales algo de esta noche que quizás ellos no alcanzaron a ver.",tipo:"🤫 Confiesa"},
+{id:"C097",texto:"¿Qué cahuín inocente de esta boda tienes para contarles? 👀",tipo:"🔥 Sin filtro"},
+{id:"C098",texto:"Haz un brindis para los recién casados en máximo 15 segundos.",tipo:"🥂 Brindis"},
+{id:"C099",texto:"Mira a cámara y deja el mensaje que quieras para los recién casados. Sin reglas.",tipo:"💌 Libre"},
+{id:"C100",texto:"🎰 JACKPOT: di algo que quieras que los novios recuerden cuando vuelvan a ver este video dentro de muchos años.",tipo:"⭐ Jackpot"}
 
-     Así:
+];
 
-     1 carácter ≈ 1 byte.
-  */
 
-  let resultado = '';
+/* ============================================================
+   VARIABLES DE SESIÓN
+   ============================================================ */
 
-  const bloque =
-    'A'.repeat(
-      1024
+let confesionActual = null;
+let confesionDescartada = null;
+let cambioUtilizado = false;
+
+let streamCamara = null;
+let mediaRecorder = null;
+let fragmentosVideo = [];
+let videoBlob = null;
+let videoURL = null;
+let mimeGrabacion = '';
+
+let inicioGrabacion = null;
+let duracionReal = 0;
+
+let intervaloGrabacion = null;
+let timeoutGrabacion = null;
+
+let timeoutInactividad = null;
+let intervaloInactividad = null;
+let modalInactividadActivo = false;
+
+
+/* ============================================================
+   PANTALLAS
+   ============================================================ */
+
+function mostrarPantalla(id) {
+
+  document
+    .querySelectorAll('.pantalla')
+    .forEach(
+      pantalla => {
+        pantalla.classList.remove('activa');
+      }
     );
 
+  document
+    .getElementById(id)
+    .classList.add('activa');
 
-  const bloquesCompletos =
-    Math.floor(
-      cantidad / 1024
-    );
-
-
-  for (
-    let i = 0;
-    i < bloquesCompletos;
-    i++
-  ) {
-
-    resultado += bloque;
-
-  }
-
-
-  const resto =
-    cantidad % 1024;
-
-
-  if (resto > 0) {
-
-    resultado +=
-      'A'.repeat(
-        resto
-      );
-
-  }
-
-
-  return resultado;
+  reiniciarTemporizadorInactividad();
 
 }
 
 
 /* ============================================================
-   ENVIAR PRUEBA
+   SORTEO
    ============================================================ */
 
-function enviarPrueba(
-  kb
-) {
+function comenzarSorteo() {
+
+  limpiarSesion();
+
+  mostrarPantalla('sorteo');
+
+  ejecutarSlot(
+    function(confesion) {
+
+      confesionActual = confesion;
+
+      mostrarResultado();
+
+    }
+  );
+
+}
+
+
+function ejecutarSlot(callback) {
+
+  let iteracion = 0;
+
+  const total = 26;
+
+
+  function siguiente() {
+
+    const temporal =
+      obtenerConfesionAleatoria();
+
+    document
+      .getElementById('slotTipo')
+      .textContent =
+        temporal.tipo;
+
+    document
+      .getElementById('slotTexto')
+      .textContent =
+        temporal.texto;
+
+
+    iteracion++;
+
+
+    if (iteracion >= total) {
+
+      const definitiva =
+        obtenerConfesionAleatoria();
+
+      callback(definitiva);
+
+      return;
+
+    }
+
+
+    const progreso =
+      iteracion / total;
+
+    const demora =
+      45 +
+      Math.pow(progreso, 3) * 430;
+
+
+    setTimeout(
+      siguiente,
+      demora
+    );
+
+  }
+
+
+  siguiente();
+
+}
+
+
+function obtenerConfesionAleatoria(excluirId = '') {
+
+  const disponibles =
+    confesiones.filter(
+      item =>
+        item.id !== excluirId
+    );
+
+
+  return disponibles[
+    Math.floor(
+      Math.random() *
+      disponibles.length
+    )
+  ];
+
+}
+
+
+function mostrarResultado() {
+
+  document
+    .getElementById('resultadoTipo')
+    .textContent =
+      confesionActual.tipo;
+
+  document
+    .getElementById('resultadoTexto')
+    .textContent =
+      confesionActual.texto;
+
+  document
+    .getElementById('resultadoCodigo')
+    .textContent =
+      confesionActual.id;
+
+
+  const btnCambiar =
+    document.getElementById('btnCambiar');
+
+
+  if (cambioUtilizado) {
+
+    btnCambiar.style.display =
+      'none';
+
+  } else {
+
+    btnCambiar.style.display =
+      'block';
+
+  }
+
+
+  mostrarPantalla('resultado');
+
+}
+
+
+function cambiarConfesion() {
+
+  if (cambioUtilizado) {
+    return;
+  }
+
+
+  confesionDescartada =
+    confesionActual;
+
+  cambioUtilizado =
+    true;
+
+
+  mostrarPantalla('sorteo');
+
+
+  ejecutarSlot(
+    function(confesion) {
+
+      confesionActual =
+        confesion;
+
+      mostrarResultado();
+
+    }
+  );
+
+}
+
+
+function aceptarConfesion() {
+
+  document
+    .getElementById('confesionCamara')
+    .textContent =
+      confesionActual.texto;
+
+  mostrarPantalla(
+    'prepararCamara'
+  );
+
+}
+
+
+/* ============================================================
+   CÁMARA
+   ============================================================ */
+
+async function activarCamara() {
 
   try {
 
-    estado.innerHTML =
-      '⏳ Preparando <b>' +
-      kb +
-      ' KB</b>...';
+    detenerCamara();
 
 
-    const cantidadCaracteres =
-      kb * 1024;
+    streamCamara =
+      await navigator.mediaDevices.getUserMedia({
+
+        video: {
+          facingMode: 'user'
+        },
+
+        audio: true
+
+      });
 
 
-    const carga =
-      crearCarga(
-        cantidadCaracteres
+    const video =
+      document.getElementById(
+        'videoCamara'
       );
 
 
-    campoPrueba.value =
-      kb + ' KB';
+    video.srcObject =
+      streamCamara;
 
 
-    campoCarga.value =
-      carga;
+    await video.play();
 
 
-    estado.innerHTML =
-      '📤 Enviando <b>' +
-      kb +
-      ' KB</b> directamente a Apps Script...';
+    mostrarPantalla(
+      'camara'
+    );
+
+
+    document
+      .getElementById('estadoCamara')
+      .style.display =
+        'block';
+
+    document
+      .getElementById('cuentaRegresiva')
+      .style.display =
+        'none';
+
+    document
+      .getElementById('panelGrabacion')
+      .style.display =
+        'none';
+
+
+  } catch(error) {
+
+    alert(
+      'No pude activar la cámara y el micrófono.\n\n' +
+      error.name +
+      ': ' +
+      error.message
+    );
+
+  }
+
+}
+
+
+/* ============================================================
+   CUENTA 3 - 2 - 1
+   ============================================================ */
+
+function iniciarCuentaRegresiva() {
+
+  document
+    .getElementById('estadoCamara')
+    .style.display =
+      'none';
+
+  document
+    .getElementById('cuentaRegresiva')
+    .style.display =
+      'block';
+
+
+  let numero = 3;
+
+
+  const elemento =
+    document.getElementById(
+      'numeroCuenta'
+    );
+
+
+  elemento.textContent =
+    numero;
+
+
+  const intervalo =
+    setInterval(
+      function() {
+
+        numero--;
+
+
+        if (numero > 0) {
+
+          elemento.textContent =
+            numero;
+
+          return;
+
+        }
+
+
+        clearInterval(
+          intervalo
+        );
+
+
+        document
+          .getElementById('cuentaRegresiva')
+          .style.display =
+            'none';
+
+
+        comenzarGrabacion();
+
+      },
+      1000
+    );
+
+}
+
+
+/* ============================================================
+   GRABACIÓN
+   ============================================================ */
+
+function obtenerMimeCompatible() {
+
+  const opciones = [
+
+    'video/mp4',
+
+    'video/webm;codecs=vp8,opus',
+
+    'video/webm'
+
+  ];
+
+
+  for (
+    const tipo of opciones
+  ) {
+
+    if (
+      typeof MediaRecorder !==
+        'undefined' &&
+      MediaRecorder.isTypeSupported(tipo)
+    ) {
+
+      return tipo;
+
+    }
+
+  }
+
+
+  return '';
+
+}
+
+
+function comenzarGrabacion() {
+
+  if (!streamCamara) {
+
+    alert(
+      'La cámara no está activa.'
+    );
+
+    return;
+
+  }
+
+
+  fragmentosVideo = [];
+  videoBlob = null;
+  duracionReal = 0;
+
+
+  mimeGrabacion =
+    obtenerMimeCompatible();
+
+
+  try {
+
+    const opciones = {
+
+      videoBitsPerSecond:
+        700000,
+
+      audioBitsPerSecond:
+        64000
+
+    };
+
+
+    if (mimeGrabacion) {
+
+      opciones.mimeType =
+        mimeGrabacion;
+
+    }
+
+
+    mediaRecorder =
+      new MediaRecorder(
+        streamCamara,
+        opciones
+      );
+
+
+  } catch(error) {
+
+    mediaRecorder =
+      new MediaRecorder(
+        streamCamara
+      );
+
+  }
+
+
+  mediaRecorder.ondataavailable =
+    function(evento) {
+
+      if (
+        evento.data &&
+        evento.data.size > 0
+      ) {
+
+        fragmentosVideo.push(
+          evento.data
+        );
+
+      }
+
+    };
+
+
+  mediaRecorder.onstop =
+    function() {
+
+      finalizarVideo();
+
+    };
+
+
+  inicioGrabacion =
+    Date.now();
+
+
+  mediaRecorder.start();
+
+
+  document
+    .getElementById('panelGrabacion')
+    .style.display =
+      'block';
+
+
+  actualizarTiempoGrabacion();
+
+
+  intervaloGrabacion =
+    setInterval(
+      actualizarTiempoGrabacion,
+      200
+    );
+
+
+  timeoutGrabacion =
+    setTimeout(
+      detenerGrabacion,
+      MAX_GRABACION * 1000
+    );
+
+}
+
+
+function actualizarTiempoGrabacion() {
+
+  if (!inicioGrabacion) {
+    return;
+  }
+
+
+  const transcurrido =
+    Math.floor(
+      (Date.now() - inicioGrabacion) /
+      1000
+    );
+
+
+  const restante =
+    Math.max(
+      0,
+      MAX_GRABACION -
+      transcurrido
+    );
+
+
+  document
+    .getElementById('tiempoGrabacion')
+    .textContent =
+      '0:' +
+      String(restante)
+        .padStart(2, '0');
+
+
+  const aviso =
+    document.getElementById(
+      'avisoTiempo'
+    );
+
+
+  if (
+    MAX_GRABACION > 5 &&
+    restante <= 5 &&
+    restante > 0
+  ) {
+
+    aviso.textContent =
+      '⚠️ ' +
+      restante +
+      ' segundos...';
+
+  } else {
+
+    aviso.textContent = '';
+
+  }
+
+}
+
+
+function detenerGrabacion() {
+
+  if (
+    !mediaRecorder ||
+    mediaRecorder.state ===
+      'inactive'
+  ) {
+
+    return;
+
+  }
+
+
+  clearInterval(
+    intervaloGrabacion
+  );
+
+  clearTimeout(
+    timeoutGrabacion
+  );
+
+
+  duracionReal =
+    Math.min(
+      MAX_GRABACION,
+      (Date.now() - inicioGrabacion) /
+      1000
+    );
+
+
+  mediaRecorder.stop();
+
+}
+
+
+function finalizarVideo() {
+
+  const tipoFinal =
+    mediaRecorder &&
+    mediaRecorder.mimeType
+      ? mediaRecorder.mimeType
+      : (
+          mimeGrabacion ||
+          'video/webm'
+        );
+
+
+  videoBlob =
+    new Blob(
+      fragmentosVideo,
+      {
+        type: tipoFinal
+      }
+    );
+
+
+  mimeGrabacion =
+    tipoFinal;
+
+
+  if (videoURL) {
+
+    URL.revokeObjectURL(
+      videoURL
+    );
+
+  }
+
+
+  videoURL =
+    URL.createObjectURL(
+      videoBlob
+    );
+
+
+  const revision =
+    document.getElementById(
+      'videoRevision'
+    );
+
+
+  revision.src =
+    videoURL;
+
+
+  detenerCamara();
+
+
+  mostrarPantalla(
+    'revision'
+  );
+
+}
+
+
+/* ============================================================
+   REPETIR
+   ============================================================ */
+
+async function repetirGrabacion() {
+
+  limpiarVideo();
+
+
+  await activarCamara();
+
+}
+
+
+/* ============================================================
+   ENVÍO
+   ============================================================ */
+
+async function enviarConfesion() {
+
+  if (
+    !videoBlob ||
+    videoBlob.size === 0
+  ) {
+
+    alert(
+      'No hay un video para enviar.'
+    );
+
+    return;
+
+  }
+
+
+  mostrarPantalla(
+    'guardando'
+  );
+
+
+  try {
+
+    /*
+       IMPORTANTE:
+
+       Convertimos el Blob a Base64
+       antes de navegar a Apps Script.
+    */
+
+    const base64 =
+      await blobABase64(
+        videoBlob
+      );
+
+
+    const idEnvio =
+      generarIdEnvio();
+
+
+    document
+      .getElementById('fIdEnvio')
+      .value =
+        idEnvio;
+
+
+    document
+      .getElementById('fIdConfesion')
+      .value =
+        confesionActual.id;
+
+
+    document
+      .getElementById('fConfesion')
+      .value =
+        confesionActual.texto;
+
+
+    document
+      .getElementById('fTipo')
+      .value =
+        confesionActual.tipo;
+
+
+    document
+      .getElementById('fCambio')
+      .value =
+        cambioUtilizado
+          ? 'SI'
+          : 'NO';
+
+
+    document
+      .getElementById('fIdDescartada')
+      .value =
+        confesionDescartada
+          ? confesionDescartada.id
+          : '';
+
+
+    document
+      .getElementById('fDescartada')
+      .value =
+        confesionDescartada
+          ? confesionDescartada.texto
+          : '';
+
+
+    document
+      .getElementById('fDuracion')
+      .value =
+        duracionReal.toFixed(2);
+
+
+    document
+      .getElementById('fMime')
+      .value =
+        mimeGrabacion ||
+        videoBlob.type ||
+        'video/webm';
+
+
+    document
+      .getElementById('fVideo')
+      .value =
+        base64;
 
 
     /*
-       Dejamos un instante para que
-       Safari alcance a mostrar el mensaje.
+       Detenemos cualquier cámara
+       antes de abandonar GitHub.
+    */
+
+    detenerCamara();
+
+
+    /*
+       POST NORMAL.
+
+       NO FETCH.
+       NO IFRAME.
+       NO TARGET.
+
+       Safari navegará directamente
+       hacia Apps Script.
+    */
+
+    const formulario =
+      document.getElementById(
+        'formEnvio'
+      );
+
+
+    formulario.action =
+      API_URL;
+
+
+    /*
+       Damos un pequeño instante
+       para que Safari pinte
+       "Guardando tu confesión".
     */
 
     setTimeout(
@@ -470,23 +1618,504 @@ function enviarPrueba(
         formulario.submit();
 
       },
-      300
+      400
     );
 
 
   } catch(error) {
 
-    estado.innerHTML =
-      '❌ Error en Safari:<br><br>' +
-      error.message;
+    console.error(
+      error
+    );
+
+
+    alert(
+      'No pude preparar el video para enviarlo.\n\n' +
+      error.message
+    );
+
+
+    mostrarPantalla(
+      'revision'
+    );
 
   }
 
 }
 
+
+/* ============================================================
+   BLOB -> BASE64
+   ============================================================ */
+
+function blobABase64(blob) {
+
+  return new Promise(
+    function(resolve, reject) {
+
+      const lector =
+        new FileReader();
+
+
+      lector.onloadend =
+        function() {
+
+          try {
+
+            const resultado =
+              String(
+                lector.result || ''
+              );
+
+
+            /*
+               FileReader genera:
+
+               data:video/mp4;base64,AAAA...
+
+               Apps Script solo necesita
+               la parte después de la coma.
+            */
+
+            const coma =
+              resultado.indexOf(',');
+
+
+            if (coma === -1) {
+
+              reject(
+                new Error(
+                  'No pude obtener el Base64 del video.'
+                )
+              );
+
+              return;
+
+            }
+
+
+            resolve(
+              resultado.substring(
+                coma + 1
+              )
+            );
+
+
+          } catch(error) {
+
+            reject(error);
+
+          }
+
+        };
+
+
+      lector.onerror =
+        function() {
+
+          reject(
+            new Error(
+              'No pude leer el video grabado.'
+            )
+          );
+
+        };
+
+
+      lector.readAsDataURL(
+        blob
+      );
+
+    }
+  );
+
+}
+
+
+/* ============================================================
+   ID ÚNICO
+   ============================================================ */
+
+function generarIdEnvio() {
+
+  if (
+    window.crypto &&
+    typeof crypto.randomUUID ===
+      'function'
+  ) {
+
+    return crypto.randomUUID();
+
+  }
+
+
+  return (
+    'CONF-' +
+    Date.now() +
+    '-' +
+    Math.random()
+      .toString(36)
+      .substring(2, 10)
+  );
+
+}
+
+
+/* ============================================================
+   CÁMARA / VIDEO
+   ============================================================ */
+
+function detenerCamara() {
+
+  if (streamCamara) {
+
+    streamCamara
+      .getTracks()
+      .forEach(
+        track => {
+          track.stop();
+        }
+      );
+
+  }
+
+
+  streamCamara = null;
+
+
+  const video =
+    document.getElementById(
+      'videoCamara'
+    );
+
+
+  if (video) {
+
+    video.srcObject = null;
+
+  }
+
+}
+
+
+function limpiarVideo() {
+
+  clearInterval(
+    intervaloGrabacion
+  );
+
+  clearTimeout(
+    timeoutGrabacion
+  );
+
+
+  intervaloGrabacion = null;
+  timeoutGrabacion = null;
+
+
+  if (
+    mediaRecorder &&
+    mediaRecorder.state !==
+      'inactive'
+  ) {
+
+    try {
+
+      mediaRecorder.stop();
+
+    } catch(error) {}
+
+  }
+
+
+  mediaRecorder = null;
+
+  fragmentosVideo = [];
+
+  videoBlob = null;
+
+  mimeGrabacion = '';
+
+  inicioGrabacion = null;
+
+  duracionReal = 0;
+
+
+  if (videoURL) {
+
+    URL.revokeObjectURL(
+      videoURL
+    );
+
+  }
+
+
+  videoURL = null;
+
+
+  const revision =
+    document.getElementById(
+      'videoRevision'
+    );
+
+
+  revision.pause();
+
+  revision.removeAttribute(
+    'src'
+  );
+
+  revision.load();
+
+}
+
+
+/* ============================================================
+   ABANDONAR / RESET
+   ============================================================ */
+
+function abandonar() {
+
+  limpiarSesion();
+
+  mostrarPantalla(
+    'inicio'
+  );
+
+}
+
+
+function limpiarSesion() {
+
+  detenerCamara();
+
+  limpiarVideo();
+
+
+  confesionActual = null;
+
+  confesionDescartada = null;
+
+  cambioUtilizado = false;
+
+
+  cerrarModalInactividad();
+
+}
+
+
+/* ============================================================
+   INACTIVIDAD
+   ============================================================ */
+
+function actividadUsuario() {
+
+  if (
+    modalInactividadActivo
+  ) {
+
+    return;
+
+  }
+
+
+  reiniciarTemporizadorInactividad();
+
+}
+
+
+function reiniciarTemporizadorInactividad() {
+
+  clearTimeout(
+    timeoutInactividad
+  );
+
+
+  /*
+     No reiniciamos por inactividad
+     mientras está grabando o
+     preparando el POST.
+  */
+
+  if (
+    mediaRecorder &&
+    mediaRecorder.state ===
+      'recording'
+  ) {
+
+    return;
+
+  }
+
+
+  if (
+    document
+      .getElementById('guardando')
+      .classList
+      .contains('activa')
+  ) {
+
+    return;
+
+  }
+
+
+  timeoutInactividad =
+    setTimeout(
+      mostrarModalInactividad,
+      TIEMPO_INACTIVIDAD
+    );
+
+}
+
+
+function mostrarModalInactividad() {
+
+  if (
+    mediaRecorder &&
+    mediaRecorder.state ===
+      'recording'
+  ) {
+
+    return;
+
+  }
+
+
+  modalInactividadActivo =
+    true;
+
+
+  document
+    .getElementById('modalInactividad')
+    .classList
+    .add('visible');
+
+
+  let segundos =
+    CUENTA_INACTIVIDAD;
+
+
+  const cuenta =
+    document.getElementById(
+      'cuentaInactividad'
+    );
+
+
+  cuenta.textContent =
+    segundos;
+
+
+  intervaloInactividad =
+    setInterval(
+      function() {
+
+        segundos--;
+
+
+        cuenta.textContent =
+          segundos;
+
+
+        if (
+          segundos <= 0
+        ) {
+
+          clearInterval(
+            intervaloInactividad
+          );
+
+
+          limpiarSesion();
+
+
+          mostrarPantalla(
+            'inicio'
+          );
+
+        }
+
+      },
+      1000
+    );
+
+}
+
+
+function continuarSesion() {
+
+  cerrarModalInactividad();
+
+  reiniciarTemporizadorInactividad();
+
+}
+
+
+function cerrarModalInactividad() {
+
+  clearInterval(
+    intervaloInactividad
+  );
+
+
+  intervaloInactividad = null;
+
+  modalInactividadActivo = false;
+
+
+  document
+    .getElementById('modalInactividad')
+    .classList
+    .remove('visible');
+
+}
+
+
+/* ============================================================
+   EVENTOS DE ACTIVIDAD
+   ============================================================ */
+
+[
+  'touchstart',
+  'pointerdown',
+  'keydown'
+]
+.forEach(
+  evento => {
+
+    document.addEventListener(
+      evento,
+      actividadUsuario,
+      {
+        passive: true
+      }
+    );
+
+  }
+);
+
+
+/* ============================================================
+   AL SALIR DE LA PÁGINA
+   ============================================================ */
+
+window.addEventListener(
+  'pagehide',
+  function() {
+
+    detenerCamara();
+
+  }
+);
+
+
+/* ============================================================
+   INICIO
+   ============================================================ */
+
+reiniciarTemporizadorInactividad();
+
 </script>
 
-
 </body>
-
 </html>
